@@ -49,10 +49,6 @@ This folder contains example log files from flight tests.
 
 - **flight_log/qrbp/2024_10_16/flight_run_17_54_17/** contains flight data collected using the PID OMEGA control algorithm with VIO fusion and MOCAP logging.
 
-- **Flight_Data/2024/06/20240613/PID** contains flight data collected using the PID control algorithm.
-
-- **Flight_Data/2024/07/20240720/MRAC** contains flight data collected using the MRAC control algorithm.
-
 ### 5. CAD
 This folder contains the CAD files for the design of the Quad-Rotor Biplane (QRBP).
 
