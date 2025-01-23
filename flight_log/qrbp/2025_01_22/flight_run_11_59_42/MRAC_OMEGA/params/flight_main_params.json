@@ -1,0 +1,12 @@
+{
+	"FlightMainParams": {
+		"arm_time": 5,
+		"min_thrust_after_arm": 0.05,
+		"start_time": 10,
+		"user_defined_trajectory_file": "takeoff_1meter.json",
+		"hover_after_trajectory_time_seconds": 3.0,
+		"mocap": false,
+		"vio": false,
+		"controller_rate": 10
+	}
+}

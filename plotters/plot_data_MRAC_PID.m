@@ -11,7 +11,8 @@ close all
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 set(groot, 'defaultAxesFontSize', 30); % Increase axis font size
-addpath("../functions/");
+addpath("plotters/helpers/mrac_pid/");
+addpath("plotters/helpers/general/");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author: Giri Mugundan Kumar
 % Department of Mechanical Engineering
