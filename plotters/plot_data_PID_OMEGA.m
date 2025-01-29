@@ -52,6 +52,9 @@ plotErrAngleAngularVelocities(log, 'PID - Error In Euler Angle and Angular Veloc
 %% Integral Error in Euler Angles
 plotEulerIntError(log, 'PID - Integral error in Euler Angles');
 
+%% Desired Angular Acceleration
+plotDesiredAngularAcceleration(log, 'PID - Desired Euler Acceleration');
+
 %% Rotational Inner loop controls
 plotInnerLoopControls(log, 'PID - Rotational Control Moments');
 
@@ -70,14 +73,10 @@ plotInnerLoopBaselineContrib(log, der, 'PID - Rotational Baseline Contributions'
 %% Total Execution Time 
 plotTotalExecutionTime(log,der,'PID - Algorithm Execution Time');
 
-%% Desired Angular Acceleration
-plotDesiredAngularAcceleration(log, 'PID - Desired Euler Acceleration')
-
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================
 % MOCAP STUFF
 % =========================================================================
-
 %% Plot mocap time vs x,y,z
 plotMOCAPPosition(log, mocap, 'PID - Mocap Position');
     
@@ -88,7 +87,6 @@ plotMOCAPEulerAngles(log, mocap, 'PID - Mocap Orientation');
 % =========================================================================
 % VIO STUFF
 % =========================================================================
-
 %% Plot vio time vs x,y,z
 plotVIOPosition(log, vio, 'PID - VIO Position');
 
@@ -105,7 +103,6 @@ plotVIOAngularVelocity(log, vio, 'PID - VIO Angular Velocity');
 % =========================================================================
 % VIO AND MOCAP STUFF
 % =========================================================================
-
 %% Plot mocap,vio,controller for x,y,z
 plotMOCAPVIOPosition(log,mocap,vio,'PID - Mocap and VIO Position');
 

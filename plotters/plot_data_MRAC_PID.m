@@ -10,9 +10,13 @@
 close all
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
-set(groot, 'defaultAxesFontSize', 30); % Increase axis font size
-addpath("plotters/helpers/mrac_pid/");
+set(groot, 'defaultAxesFontSize', 30); 
 addpath("plotters/helpers/general/");
+addpath("plotters/helpers/mocap/");
+addpath("plotters/helpers/vio/");
+addpath("plotters/helpers/mocap_vio/");
+addpath("plotters/helpers/mrac_pid/");
+addpath("plotters/helpers/general/aerodynamics/");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author: Giri Mugundan Kumar
 % Department of Mechanical Engineering
@@ -21,216 +25,19 @@ addpath("plotters/helpers/general/");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Plot the translational user, reference and states.
-set(figure,'Color','white')
-subplot(3,1,1)
-plot(log.Controller_Time_s,log.User_Position_x_m,'r-.','LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Ref_Position_x_m,'b--', 'LineWidth',2)
-plot(log.Controller_Time_s,log.Position_x_m,'k-','LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                    [log.User_Position_x_m;...
-                     log.Ref_Position_x_m;...
-                     log.Position_x_m]);
-hold off
-l= legend('$$x_{\rm user}(t)$$','$$x_{\rm ref}(t)$$','$$x(t)$$','Quad', 'Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(3,1,2)
-plot(log.Controller_Time_s,log.User_Position_y_m,'r-.','LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Ref_Position_y_m,'b--', 'LineWidth',2)
-plot(log.Controller_Time_s,log.Position_y_m,'k-','LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                    [log.User_Position_y_m;...
-                     log.Ref_Position_y_m;...
-                     log.Position_y_m]);
-hold off
-l= legend('$$y_{\rm user}(t)$$','$$y_{\rm ref}(t)$$','$$y(t)$$','Quad', 'Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(3,1,3)
-plot(log.Controller_Time_s,log.User_Position_z_m,'r-.','LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Ref_Position_z_m,'b--', 'LineWidth',2)
-plot(log.Controller_Time_s,log.Position_z_m,'k-','LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                    [log.User_Position_z_m;...
-                     log.Ref_Position_z_m;...
-                     log.Position_z_m]);
-hold off
-l= legend('$$z_{\rm user}(t)$$','$$z_{\rm ref}(t)$$','$$z(t)$$','Quad', 'Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m]','interpreter','latex','fontsize',20)
-axis tight
-ax = gca;
-ax.YDir = 'reverse';
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Translational Position','Interpreter','latex','FontSize',20);
+plotPosRefUser(log, 'MRAC - Translational Position');
 
 %% Plot the translational velocity user, reference and states.
-set(figure,'Color','white')
-subplot(3,1,1)
-plot(log.Controller_Time_s,log.User_Velocity_x_ms,'r-.','LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Ref_Velocity_x_ms,'b--','LineWidth',2)
-plot(log.Controller_Time_s,log.Velocity_x_ms,'k-','LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.User_Velocity_x_ms;...
-                      log.Ref_Velocity_x_ms;...
-                      log.Velocity_x_ms]);
-hold off
-l= legend('$$\dot{x}_{\rm user}(t)$$','$$\dot{x}_{\rm ref}(t)$$','$$\dot{x}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m/s]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(3,1,2)
-plot(log.Controller_Time_s,log.User_Velocity_y_ms,'r-.','LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Ref_Velocity_y_ms,'b--','LineWidth',2)
-plot(log.Controller_Time_s,log.Velocity_y_ms,'k-','LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.User_Velocity_y_ms;...
-                      log.Ref_Velocity_y_ms;...
-                      log.Velocity_y_ms]);
-hold off
-l= legend('$$\dot{y}_{\rm user}(t)$$','$$\dot{y}_{\rm ref}(t)$$','$$\dot{y}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m/s]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(3,1,3)
-plot(log.Controller_Time_s,log.User_Velocity_z_ms,'r-.','LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Ref_Velocity_z_ms,'b--','LineWidth',2)
-plot(log.Controller_Time_s,log.Velocity_z_ms,'k-','LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.User_Velocity_z_ms;...
-                      log.Ref_Velocity_z_ms;...
-                      log.Velocity_z_ms]);
-hold off
-l= legend('$$\dot{z}_{\rm user}(t)$$','$$\dot{z}_{\rm ref}(t)$$','$$\dot{z}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m/s]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Translational Velocity','Interpreter','latex','FontSize',20);
+plotVelRefUser(log, 'MRAC - Translational Velocity');
 
 %% Plot the translational Acceleration user and reference.
-set(figure,'Color','white')
-subplot(3,1,1)
-plot(log.Controller_Time_s,log.User_Acceleration_x_ms2,'r-.','LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Ref_Acceleration_x_ms2,'b--','LineWidth',2)
-hold on
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.Ref_Acceleration_x_ms2;...
-                      log.User_Acceleration_x_ms2]);
-hold off
-l= legend('$$\ddot{x}_{\rm user}(t)$$','$$\ddot{x}_{\rm ref}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m/s$$^2$$]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(3,1,2)
-plot(log.Controller_Time_s,log.User_Acceleration_y_ms2,'r-.','LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Ref_Acceleration_y_ms2,'b--','LineWidth',2)
-hold on
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.Ref_Acceleration_y_ms2;...
-                      log.User_Acceleration_y_ms2]);
-hold off
-l= legend('$$\ddot{y}_{\rm user}(t)$$','$$\ddot{y}_{\rm ref}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m/s$$^2$$]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(3,1,3)
-plot(log.Controller_Time_s,log.User_Acceleration_z_ms2,'r-.','LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Ref_Acceleration_z_ms2,'b--','LineWidth',2)
-hold on
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.Ref_Acceleration_z_ms2;...
-                      log.User_Acceleration_z_ms2]);
-hold off
-l= legend('$$\ddot{z}_{\rm user}(t)$$','$$\ddot{z}_{\rm ref}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m/s$$^2$$]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Translational Acceleration','Interpreter','latex','FontSize',20);
+plotUserRefAcceleration(log, 'MRAC - Translational Acceleration');
 
 %% Plot the errors in the translational outer loop
-set(figure, 'Color', 'white')
-subplot(2,1,1)
-plot(log.Controller_Time_s, log.Error_in_position_x_m, 'LineWidth', 2)
-hold on
-plot(log.Controller_Time_s, log.Error_in_position_y_m, 'LineWidth', 2)
-plot(log.Controller_Time_s, log.Error_in_position_z_m, 'LineWidth', 2)
-hold on
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.Error_in_position_x_m; ...
-                     log.Error_in_position_y_m; ...
-                     log.Error_in_position_z_m]);
-hold off
-l= legend('$$e_{\rm x}(t)$$','$$e_{\rm y}(t)$$','$$e_{\rm z}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(2,1,2)
-plot(log.Controller_Time_s, log.Error_in_velocity_x_ms, 'LineWidth', 2)
-hold on
-plot(log.Controller_Time_s, log.Error_in_velocity_y_ms, 'LineWidth', 2)
-plot(log.Controller_Time_s, log.Error_in_velocity_z_ms, 'LineWidth', 2)
-hold on
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.Error_in_velocity_x_ms; ...
-                     log.Error_in_velocity_y_ms; ...
-                     log.Error_in_velocity_z_ms]);
-hold off
-l= legend('$$e_{\rm vx}(t)$$','$$e_{\rm vy}(t)$$','$$e_{\rm vz}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m/s]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Translational State Errors','Interpreter','latex','FontSize',20);
+plotTranslationalError(log, 'MRAC - Translational Error');
 
 %% Integral Error in Position
-set(figure,'Color','White')
-plot(log.Controller_Time_s,log.Integral_Error_in_x_m, 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Integral_Error_in_y_m, 'LineWidth',2)
-plot(log.Controller_Time_s,log.Integral_Error_in_z_m, 'LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.Integral_Error_in_x_m; ...
-                     log.Integral_Error_in_y_m; ...
-                     log.Integral_Error_in_z_m]);
-hold off
-l= legend('$$\int e_{\rm x}(t)$$','$$\int e_{\rm y}(t)$$','$$\int e_{\rm z}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[-]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Integral error in Position','Interpreter','latex','FontSize',20);
+plotTranslationalIntError(log, 'MRAC - Integral error in Position');
 
 %% Reference Errors in Position
 set(figure,'Color','white')
@@ -1014,339 +821,52 @@ grid minor
 xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
 sgtitle('Rotational Baseline Contributions','Interpreter','latex','FontSize',20);
 
-%%
+%% ////////////////////////////////////////////////////////////////////////
+% =========================================================================
+% AERODYNAMICS STUFF
+% =========================================================================
+
+%% Plot the coefficients of Lift, Drag and Moment
+plotAeroCoeff(log,'MRAC - Estimated Aerodynamic Coefficients');
+
+%% Plot the squared norm of the body velocities
+plotSqNormVel(log, 'MRAC - Squared Norm of Body Velocities');
+
+%% Plot the outerloop and inner loop dynamic inversion terms
+plotAeroDynInv(log, 'MRAC - Aero Dynamic Inversion');
+
+%% ////////////////////////////////////////////////////////////////////////
 % =========================================================================
 % MOCAP STUFF
 % =========================================================================
+%% Plot mocap time vs x,y,z
+plotMOCAPPosition(log, mocap, 'MRAC - Mocap Position');
+    
+%% Plot mocap time vs phi,theta,psi
+plotMOCAPEulerAngles(log, mocap, 'MRAC - Mocap Orientation');
 
-if (~der.not_flying_mocap && der.not_flying_vio)
-    %% Plot mocap time vs x,y,z
-    set(figure,'Color','white')
-    subplot(3,1,1)
-    plot(log.Controller_Time_s,log.Position_x_m,'b-.','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,mocap.x,'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$x(t)$$','$$x_{\rm mocap}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,2)
-    plot(log.Controller_Time_s,log.Position_y_m,'b-.','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,mocap.y,'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$y(t)$$','$$y_{\rm mocap}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,3)
-    plot(log.Controller_Time_s,log.Position_z_m,'b-.','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,mocap.z,'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$z(t)$$','$$z_{\rm mocap}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    ax = gca;
-    ax.YDir = 'reverse';
-    xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-    sgtitle('Mocap Position','Interpreter','latex','FontSize',20);
-    
-    %% Plot mocap time vs phi,theta,psi
-    set(figure,'Color','white')
-    subplot(3,1,1)
-    plot(log.Controller_Time_s,rad2deg(log.Angle_roll_rad),'b-.','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,rad2deg(mocap.roll),'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$\phi(t)$$','$$\phi_{\rm mocap}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[deg]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,2)
-    plot(log.Controller_Time_s,rad2deg(log.Angle_pitch_rad),'b-.','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,rad2deg(mocap.pitch),'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$\theta(t)$$','$$\theta_{\rm mocap}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[deg]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,3)
-    plot(log.Controller_Time_s,rad2deg(log.Angle_yaw_rad),'b-.','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,rad2deg(mocap.yaw),'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$\psi(t)$$','$$\psi_{\rm mocap}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[deg]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    ax = gca;
-    ax.YDir = 'reverse';
-    xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-    sgtitle('Mocap Orientation','Interpreter','latex','FontSize',20);
-end
-
-
-%%
+%% ////////////////////////////////////////////////////////////////////////
 % =========================================================================
 % VIO STUFF
 % =========================================================================
-if (~der.not_flying_vio && der.not_flying_mocap)
-    %% Plot vio time vs x,y,z
-    set(figure,'Color','white')
-    subplot(3,1,1)
-    plot(log.Controller_Time_s,log.Position_x_m,'b-.','LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,vio.x,'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$x(t)$$','$$x_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,2)
-    plot(log.Controller_Time_s,log.Position_y_m,'b-.','LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,vio.y,'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$y(t)$$','$$y_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,3)
-    plot(log.Controller_Time_s,log.Position_z_m,'b-.','LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,vio.z,'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$z(t)$$','$$z_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    ax = gca;
-    ax.YDir = 'reverse';
-    xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-    sgtitle('VIO Position','Interpreter','latex','FontSize',20);
-    
-    %% Plot vio time vs phi,theta,psi
-    set(figure,'Color','white')
-    subplot(3,1,1)
-    plot(log.Controller_Time_s,rad2deg(log.Angle_roll_rad),'b-.','LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,rad2deg(vio.roll),'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$\phi(t)$$','$$\phi_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[deg]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,2)
-    plot(log.Controller_Time_s,rad2deg(log.Angle_pitch_rad),'b-.','LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,rad2deg(vio.pitch),'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$\theta(t)$$','$$\theta_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[deg]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,3)
-    plot(log.Controller_Time_s,rad2deg(log.Angle_yaw_rad),'b-.','LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,rad2deg(vio.yaw),'r--', 'LineWidth',2)
-    hold off
-    l= legend('$$\psi(t)$$','$$\psi_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[deg]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    ax = gca;
-    ax.YDir = 'reverse';
-    xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-    sgtitle('VIO Orientation','Interpreter','latex','FontSize',20);
-end
+%% Plot vio time vs x,y,z
+plotVIOPosition(log, vio, 'MRAC - VIO Position');
 
-%%
+%% Plot vio time vs phi,theta,psi
+plotVIOEulerAngles(log, vio, 'MRAC - VIO Orientation');
+
+%% Plot vio time vs vx, vy, vz
+plotVIOVelocity(log, vio, 'MRAC - VIO Velocity');
+
+%% Plot vio time vs wx, wy, wz
+plotVIOAngularVelocity(log, vio, 'MRAC - VIO Angular Velocity');
+
+%% ////////////////////////////////////////////////////////////////////////
 % =========================================================================
 % VIO AND MOCAP STUFF
 % =========================================================================
-if (~der.not_flying_mocap && ~der.not_flying_vio)
-    %% Plot mocap,vio,controller for x,y,z
-    set(figure,'Color','white')
-    subplot(3,1,1)
-    plot(log.Controller_Time_s,log.Position_x_m,'k-','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,mocap.x,'r--', 'LineWidth',2)
-    plot(vio.controller_time_s,vio.x,'b-.', 'LineWidth',2)
-    hold off
-    l= legend('$$x(t)$$','$$x_{\rm mocap}(t)$$', '$$x_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,2)
-    plot(log.Controller_Time_s,log.Position_y_m,'k-','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,mocap.y,'r--', 'LineWidth',2)
-    plot(vio.controller_time_s,vio.y,'b-.','LineWidth',2)
-    hold off
-    l= legend('$$y(t)$$','$$y_{\rm mocap}(t)$$', '$$y_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,3)
-    plot(log.Controller_Time_s,log.Position_z_m,'k-','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,mocap.z,'r--', 'LineWidth',2)
-    plot(vio.controller_time_s,vio.z,'b-.', 'LineWidth',2)
-    hold off
-    l= legend('$$z(t)$$','$$z_{\rm mocap}(t)$$','$$z_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    ax = gca;
-    ax.YDir = 'reverse';
-    xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-    sgtitle('Mocap and VIO Position','Interpreter','latex','FontSize',20);
+%% Plot mocap,vio,controller for x,y,z
+plotMOCAPVIOPosition(log,mocap,vio,'MRAC - Mocap and VIO Position');
 
-    %% Plot the velocity (VIO and controller)
-    set(figure,'Color','white')
-    subplot(3,1,1)
-    plot(log.Controller_Time_s,log.Velocity_x_ms,'k-','LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,vio.vx,'b-.','LineWidth',2)
-    hold off
-    l= legend('$$\dot{x}(t)$$', '$$\dot{x}_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m/s]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,2)
-    plot(log.Controller_Time_s,log.Velocity_y_ms,'k-','LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,vio.vy,'b-.','LineWidth',2)
-    hold off
-    l= legend('$$\dot{y}(t)$$', '$$\dot{y}_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m/s]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,3)
-    plot(log.Controller_Time_s,log.Velocity_z_ms,'k-','LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,vio.vz,'b-.','LineWidth',2)
-    hold off
-    l= legend('$$\dot{z}(t)$$', '$$\dot{z}_{\rm vio}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[m/s]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    ax = gca;
-    ax.YDir = 'reverse';
-    xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-    sgtitle('VIO Velocity','Interpreter','latex','FontSize',20);
-    
-    %% Plot mocap,vio,controller for phi,theta,psi
-    set(figure,'Color','white')
-    subplot(3,1,1)
-    plot(log.Controller_Time_s,rad2deg(log.Angle_roll_rad),'k-','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,rad2deg(mocap.roll),'r--', 'LineWidth',2)
-    plot(vio.controller_time_s,rad2deg(vio.roll),'b-.','LineWidth',2)
-    hold off
-    l= legend('$$\phi(t)$$','$$\phi_{\rm mocap}(t)$$', '$$\phi_{\rm vio}$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[deg]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,2)
-    plot(log.Controller_Time_s,rad2deg(log.Angle_pitch_rad),'k-','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,rad2deg(mocap.pitch),'r--', 'LineWidth',2)
-    plot(vio.controller_time_s,rad2deg(vio.pitch),'b-.','LineWidth',2)
-    hold off
-    l= legend('$$\theta(t)$$','$$\theta_{\rm mocap}(t)$$', '$$\theta_{\rm vio}$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[deg]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,3)
-    plot(log.Controller_Time_s,rad2deg(log.Angle_yaw_rad),'k-','LineWidth',2)
-    hold on
-    plot(mocap.Mocap_time_s,rad2deg(mocap.yaw),'r--', 'LineWidth',2)
-    plot(vio.controller_time_s,rad2deg(vio.yaw),'b-.','LineWidth',2)
-    hold off
-    l= legend('$$\psi(t)$$','$$\psi_{\rm mocap}(t)$$', '$$\psi_{\rm vio}$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[deg]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    ax = gca;
-    ax.YDir = 'reverse';
-    xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-    sgtitle('Mocap and VIO Orientation','Interpreter','latex','FontSize',20);
-
-    %% Plot the angular velocity (VIO and controller)
-    set(figure,'Color','white')
-    subplot(3,1,1)
-    plot(log.Controller_Time_s,log.omega_x_rads,'k-', 'LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,vio.rollspeed,'b-.','LineWidth',2)
-    hold off
-    l= legend('$$\omega_x(t)$$','$$\omega_{x_{\rm vio}}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[rad/s]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,2)
-    plot(log.Controller_Time_s,log.omega_y_rads,'k-', 'LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,vio.pitchspeed,'b-.','LineWidth',2)
-    hold off
-    l= legend('$$\omega_y(t)$$','$$\omega_{y_{\rm vio}}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[rad/s]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor
-    
-    subplot(3,1,3)
-    plot(log.Controller_Time_s,log.omega_z_rads,'k-', 'LineWidth',2)
-    hold on
-    plot(vio.controller_time_s,vio.yawspeed,'b-.','LineWidth',2)
-    hold off
-    l= legend('$$\omega_z(t)$$','$$\omega_{z_{\rm vio}}(t)$$');
-    set(l,'interpreter','latex','fontsize',15);
-    ylabel('[rads/s]','interpreter','latex','fontsize',20)
-    axis tight
-    grid minor  
-    xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-    sgtitle('VIO Angular Velocity','Interpreter','latex','FontSize',20);
-
-end
+%% Plot mocap,vio,controller for phi,theta,psi
+plotMOCAPVIOEulerAngles(log,mocap,vio,'MRAC - Mocap and VIO Orientation');

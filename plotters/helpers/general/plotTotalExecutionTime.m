@@ -13,7 +13,7 @@
 function [] = plotTotalExecutionTime(log,der,title)
 
 set(figure,'Color','White')
-plot(log.Controller_Time_s,log.Alg_exe_time, '*', 'LineWidth',2)
+plot(log.Controller_Time_s, log.Alg_exe_time, '^', 'LineWidth', 2, 'Color', 'k');
 hold on
 % Plot the average execution time
 plot(log.Controller_Time_s,der.average_algorithm_execution_time_us ...

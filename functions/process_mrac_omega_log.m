@@ -175,13 +175,13 @@ function [] = process_mrac_omega_log(flightRunNames,baseDir,controller,MASS,I_q)
         log.mu_tran_adaptive_z = data.data(:, 81);
 
         % Calculate the total control input in the outer loop in I
-        der.mu_tran_x = log.mu_tran_baseline_x + log.mu_tran_adaptive_x;
-        der.mu_tran_y = log.mu_tran_baseline_y + log.mu_tran_adaptive_y;
-        der.mu_tran_z = log.mu_tran_baseline_z + log.mu_tran_adaptive_z;
+        log.Virutal_control_mu_in_I_x_N = log.mu_tran_baseline_x + log.mu_tran_adaptive_x;
+        log.Virutal_control_mu_in_I_y_N = log.mu_tran_baseline_y + log.mu_tran_adaptive_y;
+        log.Virutal_control_mu_in_I_z_N = log.mu_tran_baseline_z + log.mu_tran_adaptive_z;
 
-        log.mu_tran_J_x = data.data(:, 82);
-        log.mu_tran_J_y = data.data(:, 83);
-        log.mu_tran_J_z = data.data(:, 84);
+        log.Virtual_control_in_body_x_N = data.data(:, 82);
+        log.Virtual_control_in_body_y_N = data.data(:, 83);
+        log.Virtual_control_in_body_z_N = data.data(:, 84);
 
         log.Desired_phi_rad = data.data(:, 85);
         log.Desired_theta_rad = data.data(:, 86);
@@ -211,67 +211,71 @@ function [] = process_mrac_omega_log(flightRunNames,baseDir,controller,MASS,I_q)
         log.Omega_ref_y = data.data(:, 104);
         log.Omega_ref_z = data.data(:, 105);
 
-        log.Error_in_Euler_phi_rad = data.data(:, 106);
-        log.Error_in_Euler_theta_rad = data.data(:, 107);
-        log.Error_in_Euler_psi_rad = data.data(:, 108);    
+        log.alpha_ref_x = data.data(:, 106);
+        log.alpha_ref_y = data.data(:, 107);
+        log.alpha_ref_z = data.data(:, 108);
+
+        log.Error_in_Euler_phi_rad = data.data(:, 109);
+        log.Error_in_Euler_theta_rad = data.data(:, 110);
+        log.Error_in_Euler_psi_rad = data.data(:, 111);    
         
-        log.Integral_Error_in_phi_rads = data.data(:, 109);
-        log.Integral_Error_in_theta_rads = data.data(:, 110);
-        log.Integral_Error_in_psi_rads = data.data(:, 111);
+        log.Integral_Error_in_phi_rads = data.data(:, 112);
+        log.Integral_Error_in_theta_rads = data.data(:, 113);
+        log.Integral_Error_in_psi_rads = data.data(:, 114);
 
-        log.Reference_Error_omega_x = data.data(:, 112);
-        log.Reference_Error_omega_y = data.data(:, 113);
-        log.Reference_Error_omega_z = data.data(:, 114);
+        log.Reference_Error_omega_x = data.data(:, 115);
+        log.Reference_Error_omega_y = data.data(:, 116);
+        log.Reference_Error_omega_z = data.data(:, 117);
 
-        log.Error_in_omega_x_rads = data.data(:, 115);
-        log.Error_in_omega_y_rads = data.data(:, 116);
-        log.Error_in_omega_z_rads = data.data(:, 117);
+        log.Error_in_omega_x_rads = data.data(:, 118);
+        log.Error_in_omega_y_rads = data.data(:, 119);
+        log.Error_in_omega_z_rads = data.data(:, 120);
         
-        log.Integral_Reference_Error_omega_x = data.data(:, 118);
-        log.Integral_Reference_Error_omega_y = data.data(:, 119);
-        log.Integral_Reference_Error_omega_z = data.data(:, 120);
+        log.Integral_Reference_Error_omega_x = data.data(:, 121);
+        log.Integral_Reference_Error_omega_y = data.data(:, 122);
+        log.Integral_Reference_Error_omega_z = data.data(:, 123);
 
-        log.Tau_baseline_x = data.data(:, 121);
-        log.Tau_baseline_y = data.data(:, 122);
-        log.Tau_baseline_z = data.data(:, 123);
+        log.Tau_baseline_x = data.data(:, 124);
+        log.Tau_baseline_y = data.data(:, 125);
+        log.Tau_baseline_z = data.data(:, 126);
     
-        log.Tau_adaptive_x = data.data(:, 124);
-        log.Tau_adaptive_y = data.data(:, 125);
-        log.Tau_adaptive_z = data.data(:, 126);
+        log.Tau_adaptive_x = data.data(:, 127);
+        log.Tau_adaptive_y = data.data(:, 128);
+        log.Tau_adaptive_z = data.data(:, 129);
     
-        log.Control_input_u1_N = data.data(:, 127);
-        log.Control_input_u2_Nm = data.data(:, 128);
-        log.Control_input_u3_Nm = data.data(:, 129);
-        log.Control_input_u4_Nm = data.data(:, 130);
+        log.Control_input_u1_N = data.data(:, 130);
+        log.Control_input_u2_Nm = data.data(:, 131);
+        log.Control_input_u3_Nm = data.data(:, 132);
+        log.Control_input_u4_Nm = data.data(:, 133);
     
-        log.Thrust_Motor_1_N = data.data(:, 131);
-        log.Thrust_Motor_2_N = data.data(:, 132);
-        log.Thrust_Motor_3_N = data.data(:, 133);
-        log.Thrust_Motor_4_N = data.data(:, 134);
+        log.Thrust_Motor_1_N = data.data(:, 134);
+        log.Thrust_Motor_2_N = data.data(:, 135);
+        log.Thrust_Motor_3_N = data.data(:, 136);
+        log.Thrust_Motor_4_N = data.data(:, 137);
     
-        log.Thrust_Motor_1_Normalized_N = data.data(:, 135);
-        log.Thrust_Motor_2_Normalized_N = data.data(:, 136);
-        log.Thrust_Motor_3_Normalized_N = data.data(:, 137);
-        log.Thrust_Motor_4_Normalized_N = data.data(:, 138);  
+        log.Thrust_Motor_1_Normalized_N = data.data(:, 138);
+        log.Thrust_Motor_2_Normalized_N = data.data(:, 139);
+        log.Thrust_Motor_3_Normalized_N = data.data(:, 140);
+        log.Thrust_Motor_4_Normalized_N = data.data(:, 141);  
 
-        log.outer_loop.dead_zone_value = data.data(:, 139);
-        log.inner_loop.dead_zone_value = data.data(:, 140);
+        log.outer_loop.dead_zone_value = data.data(:, 142);
+        log.inner_loop.dead_zone_value = data.data(:, 143);
 
-        log.proj_op_activated.outer_loop.K_hat_x = data.data(:, 141);
-        log.proj_op_activated.outer_loop.K_hat_r = data.data(:, 142);
-        log.proj_op_activated.outer_loop.Theta_hat = data.data(:, 143);
-        log.proj_op_activated.inner_loop.K_hat_x = data.data(:, 144);
-        log.proj_op_activated.inner_loop.K_hat_r = data.data(:, 145);
-        log.proj_op_activated.inner_loop.Theta_hat = data.data(:, 146);
+        log.proj_op_activated.outer_loop.K_hat_x = data.data(:, 144);
+        log.proj_op_activated.outer_loop.K_hat_r = data.data(:, 145);
+        log.proj_op_activated.outer_loop.Theta_hat = data.data(:, 146);
+        log.proj_op_activated.inner_loop.K_hat_x = data.data(:, 147);
+        log.proj_op_activated.inner_loop.K_hat_r = data.data(:, 148);
+        log.proj_op_activated.inner_loop.Theta_hat = data.data(:, 149);
         
 
         % Process gains data
-        log = processGainMatrixLog(log, 'K_hat_x_tran', data, 147, 6, 3);
-        log = processGainMatrixLog(log, 'K_hat_r_tran', data, 165, 3, 3);
-        log = processGainMatrixLog(log, 'Theta_hat_tran', data, 174, 30, 3);
-        log = processGainMatrixLog(log, 'K_hat_x_rot', data, 264, 3, 3);
-        log = processGainMatrixLog(log, 'K_hat_r_rot', data, 273, 3, 3);
-        log = processGainMatrixLog(log, 'Theta_hat_rot', data, 282, 12, 3);
+        log = processGainMatrixLog(log, 'K_hat_x_tran', data, 150, 6, 3);
+        log = processGainMatrixLog(log, 'K_hat_r_tran', data, 168, 3, 3);
+        log = processGainMatrixLog(log, 'Theta_hat_tran', data, 177, 30, 3);
+        log = processGainMatrixLog(log, 'K_hat_x_rot', data, 267, 3, 3);
+        log = processGainMatrixLog(log, 'K_hat_r_rot', data, 276, 3, 3);
+        log = processGainMatrixLog(log, 'Theta_hat_rot', data, 285, 12, 3);
 
         % Average algorithm execution time 
         der.average_algorithm_execution_time_us = ...

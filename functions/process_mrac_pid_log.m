@@ -170,13 +170,13 @@ function [] = process_mrac_pid_log(flightRunNames,baseDir,controller,MASS,I_q,I_
         log.mu_tran_adaptive_z = data.data(:, 71);
         
         % Calculate the total control input in the outer loop in I
-        der.mu_tran_x = log.mu_tran_baseline_x + log.mu_tran_adaptive_x;
-        der.mu_tran_y = log.mu_tran_baseline_y + log.mu_tran_adaptive_y;
-        der.mu_tran_z = log.mu_tran_baseline_z + log.mu_tran_adaptive_z;
+        log.Virutal_control_mu_in_I_x_N = log.mu_tran_baseline_x + log.mu_tran_adaptive_x;
+        log.Virutal_control_mu_in_I_y_N = log.mu_tran_baseline_y + log.mu_tran_adaptive_y;
+        log.Virutal_control_mu_in_I_z_N = log.mu_tran_baseline_z + log.mu_tran_adaptive_z;
 
-        log.mu_tran_J_x = data.data(:, 72);
-        log.mu_tran_J_y = data.data(:, 73);
-        log.mu_tran_J_z = data.data(:, 74);
+        log.Virtual_control_in_body_x_N = data.data(:, 72);
+        log.Virtual_control_in_body_y_N = data.data(:, 73);
+        log.Virtual_control_in_body_z_N = data.data(:, 74);
 
         log.Desired_phi_rad = data.data(:, 75);
         log.Desired_theta_rad = data.data(:, 76);

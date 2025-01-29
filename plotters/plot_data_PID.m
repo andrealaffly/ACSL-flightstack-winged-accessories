@@ -74,7 +74,6 @@ plotDesiredEulerAcceleration(log, 'PID - Desired Euler Acceleration');
 % =========================================================================
 % MOCAP STUFF
 % =========================================================================
-
 %% Plot mocap time vs x,y,z
 plotMOCAPPosition(log, mocap, 'PID - Mocap Position');
     
@@ -85,7 +84,6 @@ plotMOCAPEulerAngles(log, mocap, 'PID - Mocap Orientation');
 % =========================================================================
 % VIO STUFF
 % =========================================================================
-
 %% Plot vio time vs x,y,z
 plotVIOPosition(log, vio, 'PID - VIO Position');
 
@@ -102,7 +100,6 @@ plotVIOAngularVelocity(log, vio, 'PID - VIO Angular Velocity');
 % =========================================================================
 % VIO AND MOCAP STUFF
 % =========================================================================
-
 %% Plot mocap,vio,controller for x,y,z
 plotMOCAPVIOPosition(log,mocap,vio,'PID - Mocap and VIO Position');
 

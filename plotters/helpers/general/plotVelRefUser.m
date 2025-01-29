@@ -1,7 +1,59 @@
-function [outputArg1,outputArg2] = plotVelRefUser(inputArg1,inputArg2)
-%PLOTVELREFUSER Summary of this function goes here
-%   Detailed explanation goes here
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This function is used to plot the desired user velocity, reference model 
+% velocity and the actual velocity of the uav w.r.t time
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Author: Giri Mugundan Kumar
+% Department of Mechanical Engineering
+% Virginia Tech
+% 01/23/2024
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+function [] = plotVelRefUser(log, title)
+
+set(figure,'Color', 'white')
+
+subplot(3,1,1)
+plot(log.Controller_Time_s,log.User_Velocity_x_ms,'r-.','LineWidth',2)
+hold on
+plot(log.Controller_Time_s,log.Ref_Velocity_x_ms,'b--','LineWidth',2)
+plot(log.Controller_Time_s,log.Velocity_x_ms,'k-','LineWidth',2)
+hold off
+l= legend('$$\dot{x}_{\rm cmd}(t)$$','$$\dot{x}_{\rm ref}(t)$$', ...
+          '$$\dot{x}(t)$$');
+set(l,'interpreter','latex','fontsize',15);
+ylabel('[m/s]','interpreter','latex','fontsize',20)
+axis tight
+grid minor
+
+subplot(3,1,2)
+plot(log.Controller_Time_s,log.User_Velocity_y_ms,'r-.','LineWidth',2)
+hold on
+plot(log.Controller_Time_s,log.Ref_Velocity_y_ms,'b--','LineWidth',2)
+plot(log.Controller_Time_s,log.Velocity_y_ms,'k-','LineWidth',2)
+hold off
+l= legend('$$\dot{y}_{\rm cmd}(t)$$','$$\dot{y}_{\rm ref}(t)$$', ...
+          '$$\dot{y}(t)$$');
+set(l,'interpreter','latex','fontsize',15);
+ylabel('[m/s]','interpreter','latex','fontsize',20)
+axis tight
+grid minor
+
+subplot(3,1,3)
+plot(log.Controller_Time_s,log.User_Velocity_z_ms,'r-.','LineWidth',2)
+hold on
+plot(log.Controller_Time_s,log.Ref_Velocity_z_ms,'b--','LineWidth',2)
+plot(log.Controller_Time_s,log.Velocity_z_ms,'k-','LineWidth',2)
+hold off
+l= legend('$$\dot{z}_{\rm cmd}(t)$$','$$\dot{z}_{\rm ref}(t)$$', ...
+          '$$\dot{z}(t)$$');
+set(l,'interpreter','latex','fontsize',15);
+ylabel('[m/s]','interpreter','latex','fontsize',20)
+axis tight
+grid minor
+xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
+sgtitle(title,'Interpreter','latex','FontSize',20);
+
 end
 
