@@ -116,19 +116,19 @@
     },
     "ROTATIONAL" : {
         "KP_omega_ref": {
-          "scaling_coef" : 0.6,
+          "scaling_coef" : 0.45,
           "matrix": [
             [14.0,  0.0, 0.0],
             [ 0.0, 12.0, 0.0],
-            [ 0.0,  0.0, 2.0]
+            [ 0.0,  0.0, 2.2]
           ]
         },
         "KI_omega_ref": {
-          "scaling_coef": 0.6,
+          "scaling_coef": 0.04,
           "matrix": [
             [0.1,  0.0, 0.0],
             [0.0, 0.15, 0.0],
-            [0.0,  0.0, 0.4]
+            [0.0,  0.0, 0.5]
           ]
         },
         "KP_rotational": {

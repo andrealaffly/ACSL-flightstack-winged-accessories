@@ -48,9 +48,6 @@ hold off
 l= legend('$$\omega_{\rm z,cmd}(t)$$', '$$\omega_{\rm z,ref}(t)$$', '$$\omega_{\rm z}(t)$$');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('[rad/s]','interpreter','latex','fontsize',20)
-axis tight
-ax = gca;
-ax.YDir = 'reverse';
 grid minor
 xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
 sgtitle(title,'Interpreter','latex','FontSize',20);

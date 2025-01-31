@@ -16,6 +16,7 @@ addpath("plotters/helpers/mocap/");
 addpath("plotters/helpers/vio/");
 addpath("plotters/helpers/mocap_vio/");
 addpath("plotters/helpers/general/aerodynamics/");
+addpath("plotters/helpers/mrac_omega/");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author: Giri Mugundan Kumar
 % Department of Mechanical Engineering
@@ -100,6 +101,29 @@ plotMotorThrusts(log, 'MRAC - Motor Thrusts');
 % =========================================================================
 % ADAPTIVE GAINS STUFF
 % =========================================================================
+%% Plot Deadzone value - Outer Loop
+plotOuterloop_err_dz_op(log, der, 'MRAC - Outerloop DeadZone');
+
+%% Plot K Hat X - Outer Loop
+plotOLKx(log, der, 'MRAC - OL $$\hat{K}_{\rm x}$$');
+
+%% Plot K Hat R - Outer Loop
+plotOLKr(log, der, 'MRAC - OL $$\hat{K}_{\rm r}$$');
+
+%% Plot Theta Hat - Outer Loop
+plotOLTheta(log, der, 'MRAC - OL $$\hat{\Theta}$$');
+
+%% Plot Deadzone value - Inner Loop
+plotInnerloop_err_dz_op(log, der, 'MRAC - Innerloop DeadZone');
+
+%% Plot K Hat X - Inner Loop
+plotILKx(log, der, 'MRAC - IL $$\hat{K}_{\rm x}$$');
+
+%% Plot K Hat R - Inner Loop
+plotILKr(log, der, 'MRAC - IL $$\hat{K}_{\rm r}$$');
+
+%% Plot Theta Hat - Inner Loop
+plotILTheta(log, der, 'MRAC - IL $$\hat{\Theta}$$');
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================

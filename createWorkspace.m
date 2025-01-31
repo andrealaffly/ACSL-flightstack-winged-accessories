@@ -20,7 +20,7 @@ addpath("functions/helpers/");
 
 %==================== INPUT PARAMETERS ====================%
 % Specify the date in YYYY_MM_DD
-date = "2025_01_29";
+date = "2025_01_31";
 
 % Uncomment the platform - Should match the flightstack
 picked_platform = "qrbp";

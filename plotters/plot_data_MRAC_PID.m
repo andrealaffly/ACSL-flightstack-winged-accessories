@@ -24,162 +24,41 @@ addpath("plotters/helpers/general/aerodynamics/");
 % 07/19/2024
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Plot the translational user, reference and states.
+%% ////////////////////////////////////////////////////////////////////////
+% =========================================================================
+% OUTERLOOP STUFF
+% =========================================================================
+%% Plot the translational command, reference and state
 plotPosRefUser(log, 'MRAC - Translational Position');
 
-%% Plot the translational velocity user, reference and states.
+%% Plot the translational velocity command, reference and state
 plotVelRefUser(log, 'MRAC - Translational Velocity');
 
-%% Plot the translational Acceleration user and reference.
+%% Plot User vs Ref Acceleration
 plotUserRefAcceleration(log, 'MRAC - Translational Acceleration');
 
-%% Plot the errors in the translational outer loop
+%% Plot translational errors in position and velocity
 plotTranslationalError(log, 'MRAC - Translational Error');
 
-%% Integral Error in Position
-plotTranslationalIntError(log, 'MRAC - Integral error in Position');
+%% Plot translational integral error in position 
+plotTranslationalIntError(log, 'MRAC - Integral Error in Position');
 
-%% Reference Errors in Position
-set(figure,'Color','white')
-subplot(2,1,1)
-plot(log.Controller_Time_s,log.Reference_Error_in_position_x_m, 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Reference_Error_in_position_y_m, 'LineWidth',2)  
-plot(log.Controller_Time_s,log.Reference_Error_in_position_z_m, 'LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.Reference_Error_in_position_x_m; ...
-                     log.Reference_Error_in_position_y_m; ...
-                     log.Reference_Error_in_position_z_m]);
-hold off
-l= legend('$$e_{\rm x,ref}^{\mathbf{I}}(t)$$', ...
-          '$$e_{\rm y,ref}^{\mathbf{I}}(t)$$', ...
-          '$$e_{\rm z,ref}^{\mathbf{I}}(t)$$', ...
-          'Quad', 'Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[m]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
+%% Plot the reference model errors in the outer loop
+plotRefModelErrTran(log, 'MRAC - Translational Reference Model Errors');
 
-subplot(2,1,2)
-plot(log.Controller_Time_s,log.Integral_Reference_Error_in_position_x_m, 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Integral_Reference_Error_in_position_y_m, 'LineWidth',2)
-plot(log.Controller_Time_s,log.Integral_Reference_Error_in_position_z_m, 'LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.Integral_Reference_Error_in_position_x_m; ...
-                     log.Integral_Reference_Error_in_position_y_m; ...
-                     log.Integral_Reference_Error_in_position_z_m]);
-hold off
-l= legend('$$\int e_{\rm x,ref}^{\mathbf{I}}(t)$$', ...
-          '$$\int e_{\rm y,ref}^{\mathbf{I}}(t)$$', ...
-          '$$\int e_{\rm z,ref}^{\mathbf{I}}(t)$$', ...
-          'Quad', 'Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[-]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Translational Reference Errors','Interpreter','latex','FontSize',20);
-
-%% Translational r_cmd
-set(figure,'Color','White')
-plot(log.Controller_Time_s,log.r_cmd_in_position_x, 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.r_cmd_in_position_y, 'LineWidth',2)
-plot(log.Controller_Time_s,log.r_cmd_in_position_z, 'LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.r_cmd_in_position_x; ...
-                     log.r_cmd_in_position_y; ...
-                     log.r_cmd_in_position_z]);
-hold off
-l= legend('$$r_{\rm cmd, x}(t)$$','$$r_{\rm cmd, y}(t)$$','$$r_{\rm cmd, z}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[-]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Translational $$r_{\rm cmd}$$','Interpreter','latex','FontSize',20);
+%% Plot the reference model r_cmd in the outer loop
+plotTranslationalRCMD(log, 'MRAC - Translational R Cmd');
 
 %% Translational outerloop virtual controls
-set(figure,'Color','white')
-subplot(3,1,1)
-plot(log.Controller_Time_s,log.mu_tran_baseline_x, 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.mu_tran_baseline_y, 'LineWidth',2)  
-plot(log.Controller_Time_s,log.mu_tran_baseline_z, 'LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.mu_tran_baseline_x; ...
-                     log.mu_tran_baseline_y; ...
-                     log.mu_tran_baseline_z]);
-hold off
-l= legend('$$\mu_{\rm x,baseline}^{\mathbf{I}}(t)$$', ...
-          '$$\mu_{\rm y,baseline}^{\mathbf{I}}(t)$$', ...
-          '$$\mu_{\rm z,baseline}^{\mathbf{I}}(t)$$', ...
-          'Quad', 'Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[N]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
+plotOuterLoopVirtualControls(log, 'MRAC - OuterLoop Virtual Controls');
 
-subplot(3,1,2)
-plot(log.Controller_Time_s,log.mu_tran_adaptive_x, 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.mu_tran_adaptive_y, 'LineWidth',2)
-plot(log.Controller_Time_s,log.mu_tran_adaptive_z, 'LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.mu_tran_adaptive_x; ...
-                     log.mu_tran_adaptive_y; ...
-                     log.mu_tran_adaptive_z]);
-hold off
-l= legend('$$\mu_{\rm x,adaptive}^{\mathbf{I}}(t)$$', ...
-          '$$\mu_{\rm y,adaptive}^{\mathbf{I}}(t)$$', ...
-          '$$\mu_{\rm z,adaptive}^{\mathbf{I}}(t)$$', ...
-          'Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[N]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
+%% Plot baseline and Adaptive Control inputs
+plotTranslationalBaselineAdaptiveU(log, 'MRAC - OutLoop Control Contributions');
 
-subplot(3,1,3)
-plot(log.Controller_Time_s,der.mu_tran_x, 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,der.mu_tran_y, 'LineWidth',2)
-plot(log.Controller_Time_s,der.mu_tran_z, 'LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [der.mu_tran_x; ...
-                     der.mu_tran_y; ...
-                     der.mu_tran_z]);
-hold off
-l= legend('$$\mu_{\rm x}^{\mathbf{I}}(t)$$', ...
-          '$$\mu_{\rm y}^{\mathbf{I}}(t)$$', ...
-          '$$\mu_{\rm z}^{\mathbf{I}}(t)$$', ...
-          'Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[N]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Translational Virtual Forces','Interpreter','latex','FontSize',20);
-
-%% virtual forces in Body frame
-set(figure,'Color','White')
-plot(log.Controller_Time_s,log.mu_tran_J_x, 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.mu_tran_J_y, 'LineWidth',2)
-plot(log.Controller_Time_s,log.mu_tran_J_z, 'LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.mu_tran_J_x; ...
-                     log.mu_tran_J_y; ...
-                     log.mu_tran_J_z]);
-hold off
-l= legend('$$\mu_{\rm tran, x}^{\mathbf{J}}(t)$$','$$\mu_{\rm tran, y}^{\mathbf{J}}(t)$$','$$\mu_{\rm tran, z}^{\mathbf{J}}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[N]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Virtual Translational Forces in Body $$\mathbf{J}$$','Interpreter','latex','FontSize',20);
-
+%% ////////////////////////////////////////////////////////////////////////
+% =========================================================================
+% INNERLOOP STUFF
+% =========================================================================
 %% Euler Angles
 set(figure,'Color','white')
 subplot(3,1,1)
@@ -659,167 +538,22 @@ grid minor
 xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
 sgtitle('Rotational Moments','Interpreter','latex','FontSize',20);
 
-%% Total Thrust in N
-set(figure,'Color','White')
-plot(log.Controller_Time_s,log.Control_input_u1_N, 'LineWidth',2)
-hold on
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s,log.Control_input_u1_N);
-l= legend('$$u_{1}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[N]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Total Thrust in N','Interpreter','latex','FontSize',20);
+%% ////////////////////////////////////////////////////////////////////////
+% =========================================================================
+% THRUST REALIZATION STUFF
+% =========================================================================
+%% Plot the total thrust
+plotTotalThrustN(log, 'MRAC - Total Thrust');
 
-%% Thrust Inputs for individual motors
-set(figure,'Color','White')
-subplot(2,1,1)
-plot(log.Controller_Time_s,log.Thrust_Motor_1_N, 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Thrust_Motor_2_N, 'LineWidth',2)
-plot(log.Controller_Time_s,log.Thrust_Motor_3_N, 'LineWidth',2)
-plot(log.Controller_Time_s,log.Thrust_Motor_4_N, 'LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.Thrust_Motor_1_N; ...
-                      log.Thrust_Motor_2_N; ...
-                      log.Thrust_Motor_3_N; ...
-                      log.Thrust_Motor_4_N]);
-hold off
-l= legend('$$T_{1}(t)$$','$$T_{2}(t)$$','$$T_{3}(t)$$','$$T_{4}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[N]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
+%% Plot the individual motor thrusts
+plotMotorThrusts(log, 'MRAC - Motor Thrusts');
 
-subplot(2,1,2)
-plot(log.Controller_Time_s,log.Thrust_Motor_1_Normalized_N, 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,log.Thrust_Motor_2_Normalized_N, 'LineWidth',2)
-plot(log.Controller_Time_s,log.Thrust_Motor_3_Normalized_N, 'LineWidth',2)
-plot(log.Controller_Time_s,log.Thrust_Motor_4_Normalized_N, 'LineWidth',2)
-quad_biplane_plotter(log.is_biplane, log.Controller_Time_s, ...
-                     [log.Thrust_Motor_1_Normalized_N; ...
-                      log.Thrust_Motor_2_Normalized_N; ...
-                      log.Thrust_Motor_3_Normalized_N; ...
-                      log.Thrust_Motor_4_Normalized_N]);
-hold off
-l= legend('$$T_{1}(t)$$','$$T_{2}(t)$$','$$T_{3}(t)$$','$$T_{4}(t)$$','Quad','Biplane');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[-]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Individual Thrust Inputs','Interpreter','latex','FontSize',20);
-
-%% Total Execution Time 
-set(figure,'Color','White')
-plot(log.Controller_Time_s,log.Alg_exe_time, '*', 'LineWidth',2)
-hold on
-% Plot the average execution time
-plot(log.Controller_Time_s,der.average_algorithm_execution_time_us ...
-    * ones(size(log.Controller_Time_s)),'--','LineWidth',2)
-% Plot standard deviation band
-std_upper = der.average_algorithm_execution_time_us + der.standard_deviation_algorithm_execution_time_us;
-std_lower = der.average_algorithm_execution_time_us - der.standard_deviation_algorithm_execution_time_us;
-fill([log.Controller_Time_s(1), log.Controller_Time_s(end), log.Controller_Time_s(end), log.Controller_Time_s(1)], ...
-    [std_lower, std_lower, std_upper, std_upper], ...
-    'r', 'EdgeColor', 'none', 'FaceAlpha', 0.3);
-l = legend('', ['Average execution time: ', num2str(der.average_algorithm_execution_time_us), ' $\mu$s'], ...
-           ['$\pm$ Standard deviation: ', num2str(der.standard_deviation_algorithm_execution_time_us), ' $\mu$s']);
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[$$\mu$s]','interpreter','latex','fontsize',20)
-axis tight
-hold off
-% ylim([300, 600])
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Algorithm Execution Time','Interpreter','latex','FontSize',20);
-
-%% Contribution of PID tran
-set(figure,'Color','White')
-subplot(3,1,1)
-plot(log.Controller_Time_s,der.Kp_tran_contrib(1,:)', 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,der.Kd_tran_contrib(1,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Ki_tran_contrib(1,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Tran_baseline_Total(1,:)', 'LineWidth',2)
-hold off
-l= legend('$$K_{p,x}(t)$$ contrib','$$K_{d,x}(t)$$ contrib','$$K_{i,x}(t)$$ contrib', 'Sum(t)');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[N]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(3,1,2)
-plot(log.Controller_Time_s,der.Kp_tran_contrib(2,:)', 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,der.Kd_tran_contrib(2,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Ki_tran_contrib(2,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Tran_baseline_Total(2,:)', 'LineWidth',2)
-hold off
-l= legend('$$K_{p,y}(t)$$ contrib','$$K_{d,y}(t)$$ contrib','$$K_{i,y}(t)$$ contrib', 'Sum(t)');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[N]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(3,1,3)
-plot(log.Controller_Time_s,der.Kp_tran_contrib(3,:)', 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,der.Kd_tran_contrib(3,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Ki_tran_contrib(3,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Tran_baseline_Total(3,:)', 'LineWidth',2)
-hold off
-l= legend('$$K_{p,z}(t)$$ contrib','$$K_{d,z}(t)$$ contrib','$$K_{i,z}(t)$$ contrib', 'Sum(t)');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[N]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Translational Baseline Contributions','Interpreter','latex','FontSize',20);
-
-%% Contribution of PID rot
-set(figure,'Color','White')
-subplot(3,1,1)
-plot(log.Controller_Time_s,der.Kp_rot_contrib(1,:)', 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,der.Kd_rot_contrib(1,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Ki_rot_contrib(1,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Rot_baseline_Total(1,:)', 'LineWidth',2)
-hold off
-l= legend('$$K_{p,\phi}(t)$$ contrib','$$K_{d,\phi}(t)$$ contrib','$$K_{i,\phi}(t)$$ contrib', 'Sum(t)');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[Nm]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(3,1,2)
-plot(log.Controller_Time_s,der.Kp_rot_contrib(2,:)', 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,der.Kd_rot_contrib(2,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Ki_rot_contrib(2,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Rot_baseline_Total(2,:)', 'LineWidth',2)
-hold off
-l= legend('$$K_{p,\theta}(t)$$ contrib','$$K_{d,\theta}(t)$$ contrib','$$K_{i,\theta}(t)$$ contrib', 'Sum(t)');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[Nm]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-
-subplot(3,1,3)
-plot(log.Controller_Time_s,der.Kp_rot_contrib(3,:)', 'LineWidth',2)
-hold on
-plot(log.Controller_Time_s,der.Kd_rot_contrib(3,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Ki_rot_contrib(3,:)', 'LineWidth',2)
-plot(log.Controller_Time_s,der.Rot_baseline_Total(3,:)', 'LineWidth',2)
-hold off
-l= legend('$$K_{p,\psi}(t)$$ contrib','$$K_{d,\psi}(t)$$ contrib','$$K_{i,\psi}(t)$$ contrib', 'Sum(t)');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('[Nm]','interpreter','latex','fontsize',20)
-axis tight
-grid minor
-xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)
-sgtitle('Rotational Baseline Contributions','Interpreter','latex','FontSize',20);
+%% ////////////////////////////////////////////////////////////////////////
+% =========================================================================
+% TOTAL COMPUTE TIME
+% =========================================================================
+%% Plot the total compute time 
+plotTotalExecutionTime(log, der, 'MRAC - Compute Load');
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================

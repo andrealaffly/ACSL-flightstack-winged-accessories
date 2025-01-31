@@ -70,6 +70,29 @@ function [] = process_mrac_omega_log(flightRunNames,baseDir,controller,MASS,I_q)
                         GainsData.ROTATIONAL.KI_rotational.matrix;
         gains.Kd_rot = GainsData.ROTATIONAL.KD_rotational.scaling_coef * ...
                         GainsData.ROTATIONAL.KD_rotational.matrix;
+    
+        % Add the projection operator data
+        % Outer loop
+        gains.outer_loop.projection_operator.x_max.x = GainsData.ROBUSTIFICATION.projection_x_max_x_translational;
+        gains.outer_loop.projection_operator.epsilon.x = GainsData.ROBUSTIFICATION.projection_epsilon_x_translational;
+
+        gains.outer_loop.projection_operator.x_max.r = GainsData.ROBUSTIFICATION.projection_x_max_r_translational;
+        gains.outer_loop.projection_operator.epsilon.r = GainsData.ROBUSTIFICATION.projection_epsilon_r_translational;
+
+        gains.outer_loop.projection_operator.x_max.Theta = GainsData.ROBUSTIFICATION.projection_x_max_Theta_translational;
+        gains.outer_loop.projection_operator.epsilon.Theta = GainsData.ROBUSTIFICATION.projection_epsilon_Theta_translational;
+
+        % Inner loop
+        gains.inner_loop.projection_operator.x_max.x = GainsData.ROBUSTIFICATION.projection_x_max_x_rotational;
+        gains.inner_loop.projection_operator.epsilon.x = GainsData.ROBUSTIFICATION.projection_epsilon_x_rotational;
+
+        gains.inner_loop.projection_operator.x_max.r = GainsData.ROBUSTIFICATION.projection_x_max_r_rotational;
+        gains.inner_loop.projection_operator.epsilon.r = GainsData.ROBUSTIFICATION.projection_epsilon_r_rotational;
+
+        gains.inner_loop.projection_operator.x_max.Theta = GainsData.ROBUSTIFICATION.projection_x_max_Theta_rotational;
+        gains.inner_loop.projection_operator.epsilon.Theta = GainsData.ROBUSTIFICATION.projection_epsilon_Theta_rotational;
+
+
 
         % Add data to the log object
         log.Controller_Time_s = data.data(:,1);
@@ -323,6 +346,53 @@ function [] = process_mrac_omega_log(flightRunNames,baseDir,controller,MASS,I_q)
         der.Rot_baseline_Total = (der.Kp_rot_contrib + ...
                                   der.Kd_rot_contrib + ...
                                   der.Ki_rot_contrib);
+
+        % Process the L2 norm of the tracking errors in the outer loop
+        der.outer_loop.err_norm = sqrt(sum([log.Error_in_position_x_m, ...
+                                            log.Error_in_position_y_m, ...
+                                            log.Error_in_position_z_m, ...
+                                            log.Error_in_velocity_x_ms, ...
+                                            log.Error_in_velocity_y_ms, ...
+                                            log.Error_in_velocity_z_ms].^2,2));
+
+        % Process the L2 norm of the tracking errors in the inner loop
+        der.inner_loop.err_norm = sqrt(sum([log.Error_in_Euler_phi_rad, ...
+                                            log.Error_in_Euler_theta_rad, ...
+                                            log.Error_in_Euler_psi_rad, ...
+                                            log.Error_in_omega_x_rads, ...
+                                            log.Error_in_omega_y_rads, ...
+                                            log.Error_in_omega_z_rads].^2,2));
+
+        % Get the upper and lower bounds for the projection operator
+        der.outer_loop.projection_operator.up_bound.x = sqrt(gains.outer_loop.projection_operator.x_max.x + ...
+            gains.outer_loop.projection_operator.epsilon.x);
+
+        der.outer_loop.projection_operator.lw_bound.x = sqrt(gains.outer_loop.projection_operator.x_max.x);
+
+        der.outer_loop.projection_operator.up_bound.r = sqrt(gains.outer_loop.projection_operator.x_max.r + ...
+            gains.outer_loop.projection_operator.epsilon.r);
+
+        der.outer_loop.projection_operator.lw_bound.r = sqrt(gains.outer_loop.projection_operator.x_max.r);
+
+        der.outer_loop.projection_operator.up_bound.Theta = sqrt(gains.outer_loop.projection_operator.x_max.Theta + ...
+            gains.outer_loop.projection_operator.epsilon.Theta);
+
+        der.outer_loop.projection_operator.lw_bound.Theta = sqrt(gains.outer_loop.projection_operator.x_max.Theta);
+
+        der.inner_loop.projection_operator.up_bound.x = sqrt(gains.inner_loop.projection_operator.x_max.x + ...
+            gains.inner_loop.projection_operator.epsilon.x);
+
+        der.inner_loop.projection_operator.lw_bound.x = sqrt(gains.inner_loop.projection_operator.x_max.x);
+
+        der.inner_loop.projection_operator.up_bound.r = sqrt(gains.inner_loop.projection_operator.x_max.r + ...
+            gains.inner_loop.projection_operator.epsilon.r);
+
+        der.inner_loop.projection_operator.lw_bound.r = sqrt(gains.inner_loop.projection_operator.x_max.r);
+
+        der.inner_loop.projection_operator.up_bound.Theta = sqrt(gains.inner_loop.projection_operator.x_max.Theta + ...
+            gains.inner_loop.projection_operator.epsilon.Theta);
+        
+        der.inner_loop.projection_operator.lw_bound.Theta = sqrt(gains.inner_loop.projection_operator.x_max.Theta);
 
         % If you are flying mocap process the data
         if (~der.not_flying_mocap)
