@@ -1,0 +1,17 @@
+# WeatherSTEM API Configuration
+api_key: "keltql0i"
+station: "vtdronepark@montgomery.weatherstem.com"
+
+# Data Processing
+alpha: 0.6  # Smoothing factor for sensor data (0 < alpha <= 1)
+
+# Request Settings
+wait_time: 1   # Fixed wait time (seconds) between API requests
+reset_time: 2  # Fixed reset time (seconds) if the API times out restart the HTTP connection
+
+# UDP Configuration
+udp_ip: "192.168.12.1"
+udp_port: 53000
+
+# Processing U and V components of the wind on Groundstation. Make sure you are flying aliged with the N-S axis
+send_uv_components: false

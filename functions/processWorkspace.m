@@ -1,16 +1,36 @@
 function [] = processWorkspace(picked_platform, picked_controller, date)
 
 % Properties of qrbp
-G = 9.81;
-MASS = 1.95056951; 
-I_q = [0.03170556, -0.00000810,  0.00102548;
+properties.G = 9.81;
+
+properties.MASS = 1.95056951; 
+
+properties.I_q = [0.03170556, -0.00000810,  0.00102548;
 	  -0.00000810,  0.02125186, -0.00000107;
 	   0.00102548, -0.00000107,  0.03765785];
 
-I_b = [ 0.03676930,  0.00000339, -0.00005560;
+properties.I_b = [ 0.03676930,  0.00000339, -0.00005560;
         0.00000339,  0.01964797, -0.00000662;
        -0.00005560, -0.00000662,  0.03093953];
 
+properties.RHO_HAT = 1.225;
+
+properties.LX = 0.097509;                                        % dist to motor along x^J         [m]
+properties.LY = 0.110688;                                        % dist to motor along y^J         [m]
+properties.LZ_S = 0.038779;                                      % dist to aero center of stabs    [m]
+properties.SPAN_W = 0.50;                                        % span of wings                   [m]
+properties.CHORD_W = 0.12;                                       % chord of wings                  [m]
+properties.SPAN_S = 0.175;                                       % span of stabs                   [m]
+properties.CHORD_S = 0.02;                                       % chord of stabs                  [m]
+properties.PLANFORM_AREA_W = (2.0 * properties.SPAN_W * properties.CHORD_S);           % planform area of wings        [m^2]
+properties.PLANFORM_AREA_S = (2.0 * properties.SPAN_S * properties.CHORD_S);           % planform area of stabs        [m^2]
+
+% Aerodynamic Dynamic Coefficient Defines
+properties.DYN_PRESS_COEFF_W = (0.5 * properties.RHO_HAT * properties.PLANFORM_AREA_W);     
+properties.DYN_PRESS_COEFF_S = (0.5 * properties.RHO_HAT * properties.PLANFORM_AREA_S);
+
+
+% Logic for which controller is picked
 if (strcmp(picked_controller,'PID'))
     controller = 'PID/';
 elseif (strcmp(picked_controller,'MRAC_PID'))
@@ -52,14 +72,15 @@ end
 disp('Flight run subfolders:');
 disp(flightRunNames);
 
+% Logic for calling the right function to process the data
 if (strcmp(picked_controller,'PID'))
-    process_pid_log(flightRunNames,baseDir,controller,MASS,I_q);
+    process_pid_log(flightRunNames,baseDir,controller,properties);
 elseif (strcmp(picked_controller,'MRAC_PID'))
-    process_mrac_pid_log(flightRunNames,baseDir,controller,MASS,I_q,I_b);
+    process_mrac_pid_log(flightRunNames,baseDir,controller,properties);
 elseif (strcmp(picked_controller, 'PID_OMEGA'))
-    process_pid_omega_log(flightRunNames,baseDir,controller,MASS,I_q);
+    process_pid_omega_log(flightRunNames,baseDir,controller,properties);
 elseif (strcmp(picked_controller, 'MRAC_OMEGA'))
-    process_mrac_omega_log(flightRunNames,baseDir,controller,MASS,I_q);
+    process_mrac_omega_log(flightRunNames,baseDir,controller,properties);
 end
 
 % all the data after saving them so that we can load what we want and plot
