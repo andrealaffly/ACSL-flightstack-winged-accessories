@@ -1,11 +1,11 @@
 # Ignore everything inside flight_log
 flight_log/*
 
-# Allow qrbp itself
+# Allow qrbp itself (so we can include specific subfolders)
 !flight_log/qrbp/
 
-# Allow tracking of all subfolders inside qrbp (otherwise, the specific ones won't be tracked)
-!flight_log/qrbp/*
+# Ignore all subdirectories inside qrbp by default
+flight_log/qrbp/*
 
 # Allow tracking of specific folders inside qrbp
 !flight_log/qrbp/2024_07_23/
@@ -13,7 +13,7 @@ flight_log/*
 !flight_log/qrbp/2024_10_16/
 !flight_log/qrbp/2025_01_31/
 
-# Ensure all files inside those folders are tracked
+# Ensure all files inside those allowed folders are tracked
 !flight_log/qrbp/2024_07_23/**
 !flight_log/qrbp/2024_07_25/**
 !flight_log/qrbp/2024_10_16/**
