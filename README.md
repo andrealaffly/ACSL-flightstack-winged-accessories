@@ -15,22 +15,22 @@ sudo chmod +x <script-name>.sh
   Helps ssh into the drone for tests.
   
   > **NOTE:**  
-  Change the username, password, and IP to match your companion computer.
+  > Change the username, password, and IP to match your companion computer.
 
 - `send-weather.sh`  
   Runs the Python script that is used to send the weather data from your local WeatherSTEM station.
 
   > **NOTE:**  
-  - `weatherAPP/config.yaml` has the configuration file. You will need to generate your own API key and input the correct URL for your weather station.
-  - You might also need to modify the `udp_ip` according to the companion computer's IP that you set up.  
-  - You can leave the rest to default, as it was found to work best with our testing.
+  > - `weatherAPP/config.yaml` has the configuration file. You will need to generate your own API key and input the correct URL for your weather station.
+  > - You might also need to modify the `udp_ip` according to the companion computer's IP that you set up.  
+  > - You can leave the rest to default, as it was found to work best with our testing.
 
 - `get-logs.sh`  
   Gets the logs from the drone and stores them in `flight_log/...`.
 
   > **NOTE:**  
-  - Change the `REMOTE_DIR` to the correct flight log path on the Odroid.
-  - `REMOTE_USER` and `REMOTE_HOST` need to match your companion computer's setup as well.
+  > - Change the `REMOTE_DIR` to the correct flight log path on the Odroid.
+  > - `REMOTE_USER` and `REMOTE_HOST` need to match your companion computer's setup as well.
 
 
 To run the scripts use
