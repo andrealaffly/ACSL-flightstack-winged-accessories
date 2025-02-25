@@ -1,6 +1,6 @@
 # WeatherSTEM API Configuration
-api_key: "keltql0i"
-station: "vtdronepark@montgomery.weatherstem.com"
+api_key: "keltql0i"                                   # Enter your api_key that you generate after registering with WeatherSTEM
+station: "vtdronepark@montgomery.weatherstem.com"     # Enter the url to your weather station. This is set to VT
 
 # Data Processing
 alpha: 0.6  # Smoothing factor for sensor data (0 < alpha <= 1)

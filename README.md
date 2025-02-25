@@ -52,5 +52,26 @@ This folder contains example log files from flight tests.
 ### 5. CAD
 This folder contains the CAD files for the design of the Quad-Rotor Biplane (QRBP).
 
+### 5. Scripts
+The parent folder contains the scripts to help with the groundstation functionality. To make them executable run the following for each of the scripts
+
+```bash
+sudo chmod +x <script-name>.sh
+```
+
+- ``ssh-drone.sh`` Helps ssh into the drone for tests.
+
+- ``send-weather.sh`` Runs the python script that is used to send the weather data from your local WeatherSTEM station. ``weatherAPP/config.yaml`` has the configuration file. You will need to generate your own api-key and then input the correct url for your weather station.
+
+- ``get-logs.sh`` Gets the logs from the drone and stores it in ``flight_log\...``
+
+
+To run the scripts use
+
+```bash
+./<script-name>.sh
+```
+
+
 
 ---
