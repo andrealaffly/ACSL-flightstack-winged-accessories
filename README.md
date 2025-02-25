@@ -11,6 +11,12 @@ The parent folder contains the scripts to help with the groundstation functional
 sudo chmod +x <script-name>.sh
 ```
 
+To run the scripts use
+
+```bash
+./<script-name>.sh
+```
+
 - `ssh-drone.sh`  
   Helps ssh into the drone for tests.
   
@@ -31,13 +37,6 @@ sudo chmod +x <script-name>.sh
   > **NOTE:**  
   > - Change the `REMOTE_DIR` to the correct flight log path on the Odroid.
   > - `REMOTE_USER` and `REMOTE_HOST` need to match your companion computer's setup as well.
-
-
-To run the scripts use
-
-```bash
-./<script-name>.sh
-```
 
 - **`createWorkspace.m`**  
   This script imports log files and creates a workspace in the MATLAB environment for processing. It serves as the entry point for working with flight data logs.
