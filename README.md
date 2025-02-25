@@ -4,12 +4,40 @@ This repository provides accessory files to help process and visualize log file 
 
 ## Repository Content
 
-### 1. Project root Directory
-This folder contains the script file ``get-logs.sh`` to import the data from the odroid. 
+### 1. Project Root Directory
+The parent folder contains the scripts to help with the groundstation functionality. To make them executable, run the following for each of the scripts:
 
-> **NOTE:** Change the ``REMOTE_DIR`` to the correct flight log path on the odroid.
+```bash
+sudo chmod +x <script-name>.sh
+```
 
-> **IMPORTANT:** Type in ``sudo chmod +x get-logs.sh`` to make the script executable in the terminal and then run ``./get-logs.sh`` to execute the script to import data after every flight run.
+- `ssh-drone.sh`  
+  Helps ssh into the drone for tests.
+  
+  > **NOTE:**  
+  Change the username, password, and IP to match your companion computer.
+
+- `send-weather.sh`  
+  Runs the Python script that is used to send the weather data from your local WeatherSTEM station.
+
+  > **NOTE:**  
+  - `weatherAPP/config.yaml` has the configuration file. You will need to generate your own API key and input the correct URL for your weather station.
+  - You might also need to modify the `udp_ip` according to the companion computer's IP that you set up.  
+  - You can leave the rest to default, as it was found to work best with our testing.
+
+- `get-logs.sh`  
+  Gets the logs from the drone and stores them in `flight_log/...`.
+
+  > **NOTE:**  
+  - Change the `REMOTE_DIR` to the correct flight log path on the Odroid.
+  - `REMOTE_USER` and `REMOTE_HOST` need to match your companion computer's setup as well.
+
+
+To run the scripts use
+
+```bash
+./<script-name>.sh
+```
 
 - **`createWorkspace.m`**  
   This script imports log files and creates a workspace in the MATLAB environment for processing. It serves as the entry point for working with flight data logs.
@@ -51,27 +79,5 @@ This folder contains example log files from flight tests.
 
 ### 5. CAD
 This folder contains the CAD files for the design of the Quad-Rotor Biplane (QRBP).
-
-### 5. Scripts
-The parent folder contains the scripts to help with the groundstation functionality. To make them executable run the following for each of the scripts
-
-```bash
-sudo chmod +x <script-name>.sh
-```
-
-- ``ssh-drone.sh`` Helps ssh into the drone for tests.
-
-- ``send-weather.sh`` Runs the python script that is used to send the weather data from your local WeatherSTEM station. ``weatherAPP/config.yaml`` has the configuration file. You will need to generate your own api-key and then input the correct url for your weather station.
-
-- ``get-logs.sh`` Gets the logs from the drone and stores it in ``flight_log\...``
-
-
-To run the scripts use
-
-```bash
-./<script-name>.sh
-```
-
-
 
 ---
