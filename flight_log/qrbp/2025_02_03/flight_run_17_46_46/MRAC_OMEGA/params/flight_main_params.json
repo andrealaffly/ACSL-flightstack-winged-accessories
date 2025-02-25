@@ -1,0 +1,12 @@
+{
+	"FlightMainParams": {
+		"arm_time": 5,
+		"min_thrust_after_arm": 0.05,
+		"start_time": 10,
+		"user_defined_trajectory_file": "bean_trajectory0p3.json",
+		"hover_after_trajectory_time_seconds": 10.0,
+		"mocap": true,
+		"vio": false,
+		"controller_rate": 10
+	}
+}
