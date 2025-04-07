@@ -20,7 +20,7 @@ addpath("functions/helpers/");
 
 %==================== INPUT PARAMETERS ====================%
 % Specify the date in YYYY_MM_DD
-date = "2025_02_18";
+date = "2017_08_04";
 
 % Uncomment the platform - Should match the flightstack
 picked_platform = "qrbp";
@@ -31,6 +31,7 @@ picked_platform = "qrbp";
 % picked_controller = 'MRAC_PID';
 % picked_controller = 'PID_OMEGA';
 picked_controller = 'MRAC_OMEGA';
+% picked_controller = 'MRAC_HYBRID';
 
 %==========================================================%
 

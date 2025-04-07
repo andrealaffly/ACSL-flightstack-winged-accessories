@@ -39,6 +39,8 @@ elseif (strcmp(picked_controller, 'PID_OMEGA'))
     controller = 'PID_OMEGA/';
 elseif (strcmp(picked_controller, 'MRAC_OMEGA'))
     controller = 'MRAC_OMEGA/';
+elseif (strcmp(picked_controller, 'MRAC_HYBRID'))
+    controller = 'MRAC_HYBRID/';
 end
 
 % Define the directory containing the flight logs
@@ -81,6 +83,8 @@ elseif (strcmp(picked_controller, 'PID_OMEGA'))
     process_pid_omega_log(flightRunNames,baseDir,controller,properties);
 elseif (strcmp(picked_controller, 'MRAC_OMEGA'))
     process_mrac_omega_log(flightRunNames,baseDir,controller,properties);
+elseif (strcmp(picked_controller, 'MRAC_HYBRID'))
+    process_mrac_hybrid_log(flightRunNames,baseDir,controller,properties);
 end
 
 % all the data after saving them so that we can load what we want and plot
