@@ -26,7 +26,7 @@
 # ***********************************************************************************************************************
 # File:     weatherSTEM.py
 # Author:   Giri Mugundan Kumar
-# Date:     February 24, 2024
+# Date:     February 24, 2025
 # For info: Andrea L'Afflitto
 #           a.lafflitto@vt.edu
 # 
@@ -251,9 +251,10 @@ def format_output(filtered_data, send_uv):
     """
 
     if send_uv:
-        return "WT, {Barometer}, {Thermometer}, {Anemometer}, {10 Minute Wind Gust}, {Wind Vane}, {U}, {V}".format(**filtered_data)
+        return "W, {Barometer}, {Thermometer}, {Anemometer}, {10 Minute Wind Gust}, {Wind Vane}, {U}, {V}".format(**filtered_data)
     else:
-        return "WF, {Barometer}, {Thermometer}, {Anemometer}, {10 Minute Wind Gust}, {Wind Vane}".format(**filtered_data)
+        return "W, {Barometer}, {Thermometer}, {Anemometer}, {10 Minute Wind Gust}, {Wind Vane}, 0, 0".format(**filtered_data)
+
 
 # Send the output string via UDP
 def send_udp_message(output_string, udp_ip, udp_port):
