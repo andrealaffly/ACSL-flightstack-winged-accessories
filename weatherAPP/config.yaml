@@ -9,7 +9,8 @@ alpha: 0.6  # Smoothing factor for sensor data (0 < alpha <= 1)
 wait_time: 1   # Fixed wait time (seconds) between API requests
 reset_time: 2  # Fixed reset time (seconds) if the API times out restart the HTTP connection
 
-# UDP Configuration
+# UDP Configuration - set it to 192.168.12.1 while streaming data to odroid. 
+# udp_ip: "127.0.0.1"
 udp_ip: "192.168.12.1"
 udp_port: 53000
 
