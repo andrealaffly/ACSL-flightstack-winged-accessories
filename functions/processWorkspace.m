@@ -1,4 +1,4 @@
-function [] = processWorkspace(picked_platform, picked_controller, date)
+function [] = processWorkspace(picked_platform, picked_controller, date, sim)
 
 % Properties of qrbp
 properties.G = 9.81;
@@ -44,7 +44,17 @@ elseif (strcmp(picked_controller, 'MRAC_HYBRID'))
 end
 
 % Define the directory containing the flight logs
-baseDir = fullfile(pwd, 'flight_log', picked_platform, date);
+% IF it is flightstack mode, it reads the logs in the parent flight_log
+% folder.
+% ELSE it is in simulation mode, it reads the logs in the root folder of
+% the codebase from 'sim-log'
+if (~sim)
+    baseDir = fullfile(pwd, 'flight_log', picked_platform, date);
+else
+    parentDir = fileparts(pwd);           % one level up
+    grandParentDir = fileparts(parentDir); % two levels up
+    baseDir = fullfile(grandParentDir, 'sim-log', picked_platform, date);
+end
 
 % Check if the directory exists
 if ~isfolder(baseDir)

@@ -19,8 +19,12 @@ addpath("functions/helpers/");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %==================== INPUT PARAMETERS ====================%
+% Specify if the simulator is used or flightstack
+% Set true for simulator mode
+acsl_sim_mode = true;
+
 % Specify the date in YYYY_MM_DD
-date = "2017_08_04";
+date = "2025_10_08";
 
 % Uncomment the platform - Should match the flightstack
 picked_platform = "qrbp";
@@ -29,13 +33,13 @@ picked_platform = "qrbp";
 % Uncomment the controller - Should match the flightstack
 % picked_controller = 'PID';
 % picked_controller = 'MRAC_PID';
-% picked_controller = 'PID_OMEGA';
-picked_controller = 'MRAC_OMEGA';
+picked_controller = 'PID_OMEGA';
+% picked_controller = 'MRAC_OMEGA';
 % picked_controller = 'MRAC_HYBRID';
 
 %==========================================================%
 
 % Process all the data and create workspaces for the specified date and
 % controller.
-processWorkspace(picked_platform, picked_controller, date)
+processWorkspace(picked_platform, picked_controller, date, acsl_sim_mode)
 
