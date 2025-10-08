@@ -51,9 +51,7 @@ end
 if (~sim)
     baseDir = fullfile(pwd, 'flight_log', picked_platform, date);
 else
-    parentDir = fileparts(pwd);           % one level up
-    grandParentDir = fileparts(parentDir); % two levels up
-    baseDir = fullfile(grandParentDir, 'sim-log', picked_platform, date);
+    baseDir = fullfile(pwd, 'sim-log', picked_platform, date);
 end
 
 % Check if the directory exists

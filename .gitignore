@@ -18,3 +18,16 @@ flight_log/qrbp/*
 !flight_log/qrbp/2024_07_25/**
 !flight_log/qrbp/2024_10_16/**
 !flight_log/qrbp/2025_01_31/**
+
+# Ignore everything inside sim-log
+sim-log/*
+
+# Allow qrbp itself (so we can include specific subfolders)
+!sim-log/qrbp/
+
+# Ignore all subdirectories inside qrbp by default
+sim-log/qrbp/*
+
+# Allow tracking of specific folders inside qrbp
+
+# Ensure all files inside those folders are tracked
