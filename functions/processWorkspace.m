@@ -3,15 +3,15 @@ function [] = processWorkspace(picked_platform, picked_controller, date, sim)
 % Properties of qrbp
 properties.G = 9.81;
 
-properties.MASS = 1.95056951; 
+properties.MASS = 1.68817748; 
 
-properties.I_q = [0.03170556, -0.00000810,  0.00102548;
-	  -0.00000810,  0.02125186, -0.00000107;
-	   0.00102548, -0.00000107,  0.03765785];
+properties.I_q = [0.02353227, -0.00000011,  0.00047910;
+                 -0.00000011,  0.01623841, -0.00000128;
+                  0.00047910, -0.00000128,  0.02753728];
 
-properties.I_b = [ 0.03676930,  0.00000339, -0.00005560;
-        0.00000339,  0.01964797, -0.00000662;
-       -0.00005560, -0.00000662,  0.03093953];
+properties.I_b = [ 0.02753728,  0.00000128, -0.00047910;
+                   0.00000128,  0.01623841, -0.00000011;
+                  -0.00047910, -0.00000011,  0.02353227];
 
 properties.RHO_HAT = 1.225;
 
@@ -41,6 +41,8 @@ elseif (strcmp(picked_controller, 'MRAC_OMEGA'))
     controller = 'MRAC_OMEGA/';
 elseif (strcmp(picked_controller, 'MRAC_HYBRID'))
     controller = 'MRAC_HYBRID/';
+elseif (strcmp(picked_controller, 'MRAC_OBSERVER'))
+    controller = 'MRAC_OBSERVER/';
 end
 
 % Define the directory containing the flight logs
@@ -93,6 +95,8 @@ elseif (strcmp(picked_controller, 'MRAC_OMEGA'))
     process_mrac_omega_log(flightRunNames,baseDir,controller,properties);
 elseif (strcmp(picked_controller, 'MRAC_HYBRID'))
     process_mrac_hybrid_log(flightRunNames,baseDir,controller,properties);
+elseif (strcmp(picked_controller, 'MRAC_OBSERVER'))
+    process_mrac_observer_log(flightRunNames,baseDir,controller,properties);
 end
 
 % all the data after saving them so that we can load what we want and plot

@@ -33,9 +33,10 @@ picked_platform = "qrbp";
 % Uncomment the controller - Should match the flightstack
 % picked_controller = 'PID';
 % picked_controller = 'MRAC_PID';
-picked_controller = 'PID_OMEGA';
+% picked_controller = 'PID_OMEGA';
 % picked_controller = 'MRAC_OMEGA';
 % picked_controller = 'MRAC_HYBRID';
+picked_controller = 'MRAC_OBSERVER';
 
 %==========================================================%
 
