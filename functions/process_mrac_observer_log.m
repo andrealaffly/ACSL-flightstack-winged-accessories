@@ -323,29 +323,29 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         log = processGainMatrixLog(log, 'Theta_hat_rot', data, 285, 12, 3);
 
         % Process adaptive observer specific data
-        log.outer_loop.observer.x_hat_estimated.x = data.data(:, 322);
-        log.outer_loop.observer.x_hat_estimated.y = data.data(:, 323);
-        log.outer_loop.observer.x_hat_estimated.z = data.data(:, 324);
-        log.outer_loop.observer.x_hat_estimated.vx = data.data(:, 325);
-        log.outer_loop.observer.x_hat_estimated.vy = data.data(:, 326);
-        log.outer_loop.observer.x_hat_estimated.vz = data.data(:, 327);
-        log.outer_loop.observer.y_estimated.x = data.data(:, 328);
-        log.outer_loop.observer.y_estimated.y = data.data(:, 329);
-        log.outer_loop.observer.y_estimated.z = data.data(:, 330);
-        log.outer_loop.observer.y_output.x = data.data(:, 331);
-        log.outer_loop.observer.y_output.y = data.data(:, 332);
-        log.outer_loop.observer.y_output.z = data.data(:, 333);
-        log.outer_loop.observer.est_error.x = data.data(:, 334);
-        log.outer_loop.observer.est_error.y = data.data(:, 335);
-        log.outer_loop.observer.est_error.z = data.data(:, 336);
+        log.outer_loop.observer.x_hat_estimated.x = data.data(:, 321);
+        log.outer_loop.observer.x_hat_estimated.y = data.data(:, 322);
+        log.outer_loop.observer.x_hat_estimated.z = data.data(:, 323);
+        log.outer_loop.observer.x_hat_estimated.vx = data.data(:, 324);
+        log.outer_loop.observer.x_hat_estimated.vy = data.data(:, 325);
+        log.outer_loop.observer.x_hat_estimated.vz = data.data(:, 326);
+        log.outer_loop.observer.y_estimated.x = data.data(:, 327);
+        log.outer_loop.observer.y_estimated.y = data.data(:, 328);
+        log.outer_loop.observer.y_estimated.z = data.data(:, 329);
+        log.outer_loop.observer.y_output.x = data.data(:, 330);
+        log.outer_loop.observer.y_output.y = data.data(:, 331);
+        log.outer_loop.observer.y_output.z = data.data(:, 332);
+        log.outer_loop.observer.est_error.x = data.data(:, 333);
+        log.outer_loop.observer.est_error.y = data.data(:, 334);
+        log.outer_loop.observer.est_error.z = data.data(:, 335);
 
         % Process gains data for the adaptive observer
-        log.outer_loop.observer.dead_zone_value_K_hat_y = data.data(:, 337);
-        log.outer_loop.observer.dead_zone_value_Theta_hat_y = data.data(:, 338);
-        log.outer_loop.observer.proj_op_activated_K_hat_tran_observer_y = data.data(:, 339);
-        log.outer_loop.observer.proj_op_activated_Theta_hat_tran_observer_y = data.data(:, 340);
-        log = processGainMatrixLog(log, 'K_hat_tran_observer_y', data, 341, 3, 3);
-        log = processGainMatrixLog(log, 'Theta_hat_tran_observer_y', data, 351, 4, 3);
+        log.outer_loop.observer.dead_zone_value_K_hat_y = data.data(:, 336);
+        log.outer_loop.observer.dead_zone_value_Theta_hat_y = data.data(:, 337);
+        log.outer_loop.observer.proj_op_activated_K_hat_tran_observer_y = data.data(:, 338);
+        log.outer_loop.observer.proj_op_activated_Theta_hat_tran_observer_y = data.data(:, 339);
+        log = processGainMatrixLog(log, 'K_hat_tran_observer_y', data, 340, 3, 3);
+        log = processGainMatrixLog(log, 'Theta_hat_tran_observer_y', data, 349, 4, 3);
 
         % Average algorithm execution time 
         der.average_algorithm_execution_time_us = ...

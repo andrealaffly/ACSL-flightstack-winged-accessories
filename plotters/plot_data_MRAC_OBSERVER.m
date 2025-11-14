@@ -166,7 +166,7 @@ plotOLEstVsMeasuredStates(log, 'ADP OBS - OL Estimated vs Measured States');
 plotOLEstError(log, 'ADP OBS - OL Estimation Error');
 
 %% Plot the L2 Norm of the estimation error
-plotOLEstErrorL2Norm(log, 'ADP OBS - OL Estimation Error L2 Norm');
+plotOLEstErrorL2Norm(log, der, 'ADP OBS - OL Estimation Error L2 Norm');
 
 %% Plot the Gains for the outerloop observer K_hat_y 
 plotOLObsKy(log, der, 'ADP OBS - OL $$\hat{K}_{\rm y, observer}$$');

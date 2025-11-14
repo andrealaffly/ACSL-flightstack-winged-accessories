@@ -40,7 +40,7 @@ grid minor
 subplot(3,1,3)
 hold on
 plot(log.Controller_Time_s,log.outer_loop.observer.y_estimated.z,'k--','LineWidth',2)
-plot(log.Controller_Time_s,log.outer_loop.observer.y_output.z,'g-','LineWidth',2)
+plot(log.Controller_Time_s,log.outer_loop.observer.y_output.z,'b-','LineWidth',2)
 hold off
 l= legend('$$y_{\rm estimated, z}(t)$$', '$$y_{\rm measured, z}(t)$$');
 set(l,'interpreter','latex','fontsize',15);
