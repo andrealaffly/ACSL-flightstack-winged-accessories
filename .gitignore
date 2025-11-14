@@ -1,3 +1,74 @@
+#------------------------------------------------------------------------------
+# MATLAB
+#------------------------------------------------------------------------------
+
+# Compiled MEX files (platform-specific)
+*.mex*
+*.mexw32
+*.mexw64
+*.mexa32
+*.mexa64
+*.mexglx
+*.dll
+*.so
+*.dylib
+
+# MATLAB backup and autosave files
+*~
+*.asv
+*.autosave
+
+# MATLAB project files
+*.mlappinstall
+*.mltbx
+*.mlproj
+*.mldatx
+
+# MATLAB code generation
+codegen/
+slprj/
+sfunctions/
+_work/
+
+# Simulink
+*.slxc
+*.slx
+*.mdl
+*.mdlp
+*.slxp
+*.sldd
+*.sfx
+
+# Unit testing artifacts
+*.testresults
+
+# Live scripts checkpoints
+*.mlx.autosave
+
+#------------------------------------------------------------------------------
+# macOS
+#------------------------------------------------------------------------------
+
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+#------------------------------------------------------------------------------
+# Editor/IDE files
+#------------------------------------------------------------------------------
+
+.vscode/
+.idea/
+*.code-workspace
+
+#------------------------------------------------------------------------------
+# User-defined data/output (optional)
+#------------------------------------------------------------------------------
+
 # Ignore everything inside flight_log
 flight_log/*
 
