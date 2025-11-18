@@ -25,6 +25,27 @@ addpath("plotters/helpers/mrac_observer/");
 % 11/13/2025
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% ////////////////////////////////////////////////////////////////////////
+% =========================================================================
+% ADAPTIVE OBSERVER STUFF
+% =========================================================================
+%% Plot the estimated output (y_est) vs the measured output (y_output)
+plotOLEstVsMeasuredOutput(log, 'ADP OBS - OL Estimated vs Measured Output');
+
+%% Plot the estimated states (x_hat) vs the actual states (x)
+plotOLEstVsMeasuredStates(log, 'ADP OBS - OL Estimated vs Measured States');
+
+%% Plot the estimation error
+plotOLEstError(log, 'ADP OBS - OL Estimation Error');
+
+%% Plot the L2 Norm of the estimation error
+plotOLEstErrorL2Norm(log, der, 'ADP OBS - OL Estimation Error L2 Norm');
+
+%% Plot the Gains for the outerloop observer K_hat_y 
+plotOLObsKy(log, der, 'ADP OBS - OL $$\hat{K}_{\rm y, observer}$$');
+
+%% Plot the Gains for the outerloop observer Theta_hat_y
+plotOLObsThetay(log, der, 'ADP OBS - OL $$\hat{\Theta}_{\rm y, observer}$$');
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================
@@ -151,28 +172,6 @@ plotAeroForcesMoments(log, 'ADP OBS - Estimated Aerodynamic Forces and Moments')
 
 %% Plot the outerloop and inner loop dynamic inversion terms
 plotAeroDynInv(log, 'ADP OBS - Aero Dynamic Inversion');
-
-%% ////////////////////////////////////////////////////////////////////////
-% =========================================================================
-% ADAPTIVE OBSERVER STUFF
-% =========================================================================
-%% Plot the estimated output (y_est) vs the measured output (y_output)
-plotOLEstVsMeasuredOutput(log, 'ADP OBS - OL Estimated vs Measured Output');
-
-%% Plot the estimated states (x_hat) vs the actual states (x)
-plotOLEstVsMeasuredStates(log, 'ADP OBS - OL Estimated vs Measured States');
-
-%% Plot the estimation error
-plotOLEstError(log, 'ADP OBS - OL Estimation Error');
-
-%% Plot the L2 Norm of the estimation error
-plotOLEstErrorL2Norm(log, der, 'ADP OBS - OL Estimation Error L2 Norm');
-
-%% Plot the Gains for the outerloop observer K_hat_y 
-plotOLObsKy(log, der, 'ADP OBS - OL $$\hat{K}_{\rm y, observer}$$');
-
-%% Plot the Gains for the outerloop observer Theta_hat_y
-plotOLObsThetay(log, der, 'ADP OBS - OL $$\hat{\Theta}_{\rm y, observer}$$');
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================

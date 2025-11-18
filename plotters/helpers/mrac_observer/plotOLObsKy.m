@@ -13,7 +13,7 @@
 function [] = plotOLObsKy(log, der, title)
 
 % Extract the numbers in the indices using regular expressions
-fields = fieldnames(log.K_hat_x_rot);
+fields = fieldnames(log.K_hat_tran_observer_y);
 indices = cellfun(@(x) regexp(x, '\d+','match'), fields, 'UniformOutput', false);
 
 % Convert to numerical format
@@ -57,7 +57,7 @@ for i = (1:length(m_ind))
         
         fieldName = sprintf('ind%d_%d', nn, mm); % Generate the field name
         
-        gains = log.K_hat_x_rot.(fieldName);     % Extract the data
+        gains = log.K_hat_tran_observer_y.(fieldName);     % Extract the data
         
         % Store the index in the legend
         % Format the legend string and append it to the array
@@ -71,7 +71,7 @@ for i = (1:length(m_ind))
     yLimits = ylim;  % Get the current y-axis limits
 
     % Add semi-transparent vertical rectangles where projection operator is activated
-    proj_op_activated =log.outer_loop.observer.proj_op_activated_K_hat_tran_observer_y;  % Boolean vector
+    proj_op_activated =log.outer_loop.observer.proj_op_activated_K_hat_tran_observer_y ;  % Boolean vector
     time = log.Controller_Time_s;
     
     % Find intervals where projection operator is activated

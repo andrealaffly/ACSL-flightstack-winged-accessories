@@ -67,6 +67,20 @@ items = dir(baseDir);
 % Initialize a cell array to store the names of the flight run subfolders
 flightRunNames = {};
 
+% % Loop through each item in the directory - Does not check for previously
+% % processed flight-runs and skips them
+% for i = 1:length(items)
+%     % Skip '.' and '..' directories
+%     if strcmp(items(i).name, '.') || strcmp(items(i).name, '..')
+%         continue;
+%     end
+%     % Check if the item is a folder and matches the flight_run_ pattern
+%     if items(i).isdir && startsWith(items(i).name, 'flight_run_')
+%         % Add the name of the subfolder to the list
+%         flightRunNames{end+1} = items(i).name; %#ok<SAGROW>
+%     end
+% end
+
 % Loop through each item in the directory
 for i = 1:length(items)
     % Skip '.' and '..' directories
@@ -75,10 +89,16 @@ for i = 1:length(items)
     end
     % Check if the item is a folder and matches the flight_run_ pattern
     if items(i).isdir && startsWith(items(i).name, 'flight_run_')
-        % Add the name of the subfolder to the list
-        flightRunNames{end+1} = items(i).name; %#ok<SAGROW>
+        folderPath = fullfile(items(i).folder, items(i).name);
+        matFiles = dir(fullfile(folderPath, '*.mat'));
+        if ~isempty(matFiles)
+            fprintf('Flight run "%s" is already processed (MAT file present).\n', items(i).name);
+        else
+            flightRunNames{end+1} = items(i).name; %#ok<SAGROW>
+        end
     end
 end
+
 
 % Display the names of the flight run subfolders
 disp('Flight run subfolders:');

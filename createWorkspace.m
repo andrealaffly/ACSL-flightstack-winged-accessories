@@ -24,7 +24,7 @@ addpath("functions/helpers/");
 acsl_sim_mode = true;
 
 % Specify the date in YYYY_MM_DD
-date = "2025_11_14";
+date = "2025_11_17";
 
 % Uncomment the platform - Should match the flightstack
 picked_platform = "qrbp";
