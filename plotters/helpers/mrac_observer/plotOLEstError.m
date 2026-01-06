@@ -17,7 +17,7 @@ set(figure,'Color', 'white')
 
 subplot(3,1,1)
 hold on
-plot(log.Controller_Time_s,log.outer_loop.observer.x_hat_estimated.x,'r-','LineWidth',2)
+plot(log.Controller_Time_s,log.outer_loop.observer.est_error.x,'r-','LineWidth',2)
 hold off
 l= legend('$$y_{\rm estimated, x}(t) - y_{\rm measured, x}(t)$$');
 set(l,'interpreter','latex','fontsize',15);
@@ -27,7 +27,7 @@ grid minor
 
 subplot(3,1,2)
 hold on
-plot(log.Controller_Time_s,log.outer_loop.observer.x_hat_estimated.y,'g-','LineWidth',2)
+plot(log.Controller_Time_s,log.outer_loop.observer.est_error.y,'g-','LineWidth',2)
 hold off
 l= legend('$$y_{\rm estimated, y}(t) - y_{\rm measured, y}(t)$$');
 set(l,'interpreter','latex','fontsize',15);
@@ -37,7 +37,7 @@ grid minor
 
 subplot(3,1,3)
 hold on
-plot(log.Controller_Time_s,log.outer_loop.observer.x_hat_estimated.z,'b-','LineWidth',2)
+plot(log.Controller_Time_s,log.outer_loop.observer.est_error.z,'b-','LineWidth',2)
 hold off
 l= legend('$$y_{\rm estimated, z}(t) - y_{\rm measured, z}(t)$$');
 set(l,'interpreter','latex','fontsize',15);

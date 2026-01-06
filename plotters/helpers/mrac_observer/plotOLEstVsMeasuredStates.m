@@ -40,7 +40,7 @@ grid minor
 subplot(3,1,3)
 hold on
 plot(log.Controller_Time_s,log.outer_loop.observer.x_hat_estimated.z,'k--','LineWidth',2)
-plot(log.Controller_Time_s,log.Position_y_m,'b-','LineWidth',2)
+plot(log.Controller_Time_s,log.Position_z_m,'b-','LineWidth',2)
 hold off
 l= legend('$$\hat{X}_{\rm z}(t)$$', '$$X_{\rm z}(t)$$');
 set(l,'interpreter','latex','fontsize',15);

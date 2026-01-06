@@ -20,9 +20,9 @@ hold on
 plot(log.Controller_Time_s,log.outer_loop.observer.y_estimated.x,'k--','LineWidth',2)
 plot(log.Controller_Time_s,log.outer_loop.observer.y_output.x,'r-','LineWidth',2)
 hold off
-l= legend('$$y_{\rm estimated, x}(t)$$', '$$y_{\rm measured, x}(t)$$');
+l= legend('$$C \hat{x}(t)$$', '$$C X(t)$$');
 set(l,'interpreter','latex','fontsize',15);
-ylabel('[m]','interpreter','latex','fontsize',20)
+ylabel('$$\dot{x}$$ [m/s]','interpreter','latex','fontsize',20)
 axis tight
 grid minor
 
@@ -31,9 +31,9 @@ hold on
 plot(log.Controller_Time_s,log.outer_loop.observer.y_estimated.y,'k--','LineWidth',2)
 plot(log.Controller_Time_s,log.outer_loop.observer.y_output.y,'g-','LineWidth',2)
 hold off
-l= legend('$$y_{\rm estimated, y}(t)$$', '$$y_{\rm measured, y}(t)$$');
+l= legend('$$C \hat{x}(t)$$', '$$C X(t)$$');
 set(l,'interpreter','latex','fontsize',15);
-ylabel('[m]','interpreter','latex','fontsize',20)
+ylabel('$$\dot{y}$$ [m/s]','interpreter','latex','fontsize',20)
 axis tight
 grid minor
 
@@ -42,9 +42,9 @@ hold on
 plot(log.Controller_Time_s,log.outer_loop.observer.y_estimated.z,'k--','LineWidth',2)
 plot(log.Controller_Time_s,log.outer_loop.observer.y_output.z,'b-','LineWidth',2)
 hold off
-l= legend('$$y_{\rm estimated, z}(t)$$', '$$y_{\rm measured, z}(t)$$');
+l= legend('$$C \hat{x}(t)$$', '$$C X(t)$$');
 set(l,'interpreter','latex','fontsize',15);
-ylabel('[m]','interpreter','latex','fontsize',20)
+ylabel('$$\dot{z}$$ [m/s]','interpreter','latex','fontsize',20)
 axis tight
 ax = gca;
 ax.YDir = 'reverse';
