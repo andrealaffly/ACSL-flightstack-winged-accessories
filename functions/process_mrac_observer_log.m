@@ -92,29 +92,11 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         gains.inner_loop.projection_operator.x_max.Theta = GainsData.ROBUSTIFICATION.projection_x_max_Theta_rotational;
         gains.inner_loop.projection_operator.epsilon.Theta = GainsData.ROBUSTIFICATION.projection_epsilon_Theta_rotational;
 
-        % Adaptive observer gains
-        gains.outer_loop.observer.C_tran_observer = GainsData.OBSERVER.C_tran_observer.scaling_coef * ...
-                                                    GainsData.OBSERVER.C_tran_observer.matrix;
-        gains.outer_loop.observer.A_tran_observer_ref = GainsData.OBSERVER.A_tran_observer_ref.scaling_coef * ...
-                                                        GainsData.OBSERVER.A_tran_observer_ref.matrix;
-        gains.outer_loop.observer.B_tran_observer = GainsData.OBSERVER.B_tran_observer.scaling_coef * ...
-                                                    GainsData.OBSERVER.B_tran_observer.matrix;
-        gains.outer_loop.observer.L_tran_observer = GainsData.OBSERVER.L_tran_observer.scaling_coef * ...
-                                                    GainsData.OBSERVER.L_tran_observer.matrix;
-        gains.outer_loop.observer.Gamma_tran_observer_y = GainsData.OBSERVER.Gamma_tran_observer_y.scaling_coef * ...
-                                                          GainsData.OBSERVER.Gamma_tran_observer_y.matrix;
-        gains.outer_loop.observer.Gamma_tran_observer_Theta = GainsData.OBSERVER.Gamma_tran_observer_Theta.scaling_coef * ...
-                                                              GainsData.OBSERVER.Gamma_tran_observer_Theta.matrix;
-        gains.outer_loop.observer.K_tran_observer_ye = GainsData.OBSERVER.K_tran_observer_ye.scaling_coef * ...
-                                                       GainsData.OBSERVER.K_tran_observer_ye.matrix;
-        
-        gains.outer_loop.observer.projection_operator.x_max.Gamma_y = GainsData.OBSERVER.projection_x_max_Gamma_tran_observer_y;
-        gains.outer_loop.observer.projection_operator.epsilon.Gamma_y = GainsData.OBSERVER.projection_epsilon_Gamma_tran_observer_y;
-        gains.outer_loop.observer.projection_operator.x_max.Gamma_Theta = GainsData.OBSERVER.projection_x_max_Gamma_tran_observer_Theta;
-        gains.outer_loop.observer.projection_operator.epsilon.Gamma_Theta = GainsData.OBSERVER.projection_epsilon_Gamma_tran_observer_Theta;
-
-        gains.outer_loop.observer.dead_zone_e0_Gamma_tran_observer_y = GainsData.OBSERVER.dead_zone_e0_Gamma_tran_observer_y;
-        gains.outer_loop.observer.dead_zone_e0_Gamma_tran_observer_Theta = GainsData.OBSERVER.dead_zone_e0_Gamma_tran_observer_Theta;
+        % Adaptive observer gains projection parameters     
+        gains.observer.projection_operator.x_max.K_hat_y = GainsData.OBSERVER.projection_x_max_K_hat_y;
+        gains.observer.projection_operator.epsilon.K_hat_y = GainsData.OBSERVER.projection_epsilon_K_hat_y_;
+        gains.observer.projection_operator.x_max.Theta_hat = GainsData.OBSERVER.projection_x_max_Theta_hat;
+        gains.observer.projection_operator.epsilon.Theta_hat = GainsData.OBSERVER.projection_epsilon_Theta_hat;
 
         % Add data to the log object
         log.Controller_Time_s = data.data(:,1);
@@ -323,29 +305,31 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         log = processGainMatrixLog(log, 'Theta_hat_rot', data, 285, 12, 3);
 
         % Process adaptive observer specific data
-        log.outer_loop.observer.x_hat_estimated.x = data.data(:, 321);
-        log.outer_loop.observer.x_hat_estimated.y = data.data(:, 322);
-        log.outer_loop.observer.x_hat_estimated.z = data.data(:, 323);
-        log.outer_loop.observer.x_hat_estimated.vx = data.data(:, 324);
-        log.outer_loop.observer.x_hat_estimated.vy = data.data(:, 325);
-        log.outer_loop.observer.x_hat_estimated.vz = data.data(:, 326);
-        log.outer_loop.observer.y_estimated.x = data.data(:, 327);
-        log.outer_loop.observer.y_estimated.y = data.data(:, 328);
-        log.outer_loop.observer.y_estimated.z = data.data(:, 329);
-        log.outer_loop.observer.y_output.x = data.data(:, 330);
-        log.outer_loop.observer.y_output.y = data.data(:, 331);
-        log.outer_loop.observer.y_output.z = data.data(:, 332);
-        log.outer_loop.observer.est_error.x = data.data(:, 333);
-        log.outer_loop.observer.est_error.y = data.data(:, 334);
-        log.outer_loop.observer.est_error.z = data.data(:, 335);
+        log.observer.mrao.x_hat.x = data.data(:, 321);
+        log.observer.mrao.x_hat.y = data.data(:, 322);
+        log.observer.mrao.x_hat.z = data.data(:, 323);
+        log.observer.mrao.x_hat.vx = data.data(:, 324);
+        log.observer.mrao.x_hat.vy = data.data(:, 325);
+        log.observer.mrao.x_hat.vz = data.data(:, 326);
+        log.observer.mrao2l.x_hat.x = data.data(:, 327);
+        log.observer.mrao2l.x_hat.y = data.data(:, 328);
+        log.observer.mrao2l.x_hat.z = data.data(:, 329);
+        log.observer.mrao2l.x_hat.vx = data.data(:, 330);
+        log.observer.mrao2l.x_hat.vy = data.data(:, 331);
+        log.observer.mrao2l.x_hat.vz = data.data(:, 332);
 
         % Process gains data for the adaptive observer
-        log.outer_loop.observer.dead_zone_value_K_hat_y = data.data(:, 336);
-        log.outer_loop.observer.dead_zone_value_Theta_hat_y = data.data(:, 337);
-        log.outer_loop.observer.proj_op_activated_K_hat_tran_observer_y = data.data(:, 338);
-        log.outer_loop.observer.proj_op_activated_Theta_hat_tran_observer_y = data.data(:, 339);
-        log = processGainMatrixLog(log, 'K_hat_tran_observer_y', data, 340, 3, 3);
-        log = processGainMatrixLog(log, 'Theta_hat_tran_observer_y', data, 349, 4, 3);
+        log.observer.mrao.proj_op_activated_K_hat_y = data.data(:, 333);
+        log.observer.mrao.proj_op_activated_Theta_hat = data.data(:, 334);
+        log.observer.mrao2l.proj_op_activated_K_hat_y = data.data(:, 335);
+        log.observer.mrao2l.proj_op_activated_Theta_hat = data.data(:, 336);
+        log.observer.mrao2l.proj_op_activated_K_hat_g_y = data.data(:, 337);
+        log = processGainMatrixLog(log, 'K_hat_y_mrao',      data, 338, 3, 3);
+        log = processGainMatrixLog(log, 'Theta_hat_mrao',    data, 347, 4, 3);
+        log = processGainMatrixLog(log, 'K_hat_y_2l_mrao',   data, 359, 3, 3);
+        log = processGainMatrixLog(log, 'Theta_hat_2l_mrao', data, 368, 4, 3);
+        log = processGainMatrixLog(log, 'K_hat_g_y_mrao',    data, 380, 3, 3);
+
 
         % Average algorithm execution time 
         der.average_algorithm_execution_time_us = ...
@@ -449,15 +433,15 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
 
         % Get the upper and lower bounds for the projection operator in the
         % adaptive observer
-        der.outer_loop.observer.projection_operator.up_bound.Gamma_y = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_y + ...
-                                                                            gains.outer_loop.observer.projection_operator.epsilon.Gamma_y);
-        
-        der.outer_loop.observer.projection_operator.lw_bound.Gamma_y = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_y);
-        
-        der.outer_loop.observer.projection_operator.up_bound.Gamma_Theta = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_Theta + ...
-                                                                                gains.outer_loop.observer.projection_operator.epsilon.Gamma_Theta);
-        
-        der.outer_loop.observer.projection_operator.lw_bound.Gamma_Theta = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_Theta);
+        % der.outer_loop.observer.projection_operator.up_bound.Gamma_y = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_y + ...
+        %                                                                     gains.outer_loop.observer.projection_operator.epsilon.Gamma_y);
+        % 
+        % der.outer_loop.observer.projection_operator.lw_bound.Gamma_y = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_y);
+        % 
+        % der.outer_loop.observer.projection_operator.up_bound.Gamma_Theta = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_Theta + ...
+        %                                                                         gains.outer_loop.observer.projection_operator.epsilon.Gamma_Theta);
+        % 
+        % der.outer_loop.observer.projection_operator.lw_bound.Gamma_Theta = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_Theta);
 
         % If you are flying mocap process the data
         if (~der.not_flying_mocap)
