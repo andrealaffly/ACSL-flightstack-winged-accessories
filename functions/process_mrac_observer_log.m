@@ -97,6 +97,8 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         gains.observer.projection_operator.epsilon.K_hat_y = GainsData.OBSERVER.projection_epsilon_K_hat_y_;
         gains.observer.projection_operator.x_max.Theta_hat = GainsData.OBSERVER.projection_x_max_Theta_hat;
         gains.observer.projection_operator.epsilon.Theta_hat = GainsData.OBSERVER.projection_epsilon_Theta_hat;
+        gains.observer.projection_operator.x_max.K_hat_g_y = GainsData.OBSERVER.projection_x_max_K_hat_g_y;
+        gains.observer.projection_operator.epsilon.K_hat_g_y = GainsData.OBSERVER.projection_epsilon_K_hat_g_y;
 
         % Add data to the log object
         log.Controller_Time_s = data.data(:,1);
@@ -330,6 +332,56 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         log = processGainMatrixLog(log, 'Theta_hat_2l_mrao', data, 368, 4, 3);
         log = processGainMatrixLog(log, 'K_hat_g_y_mrao',    data, 380, 3, 3);
 
+        % Compute the errors
+        der.observer.mrao.obs_err.x = log.Position_x_m - log.observer.mrao.x_hat.x;
+        der.observer.mrao.obs_err.y = log.Position_y_m - log.observer.mrao.x_hat.y;
+        der.observer.mrao.obs_err.z = log.Position_z_m - log.observer.mrao.x_hat.z;
+        der.observer.mrao.obs_err.vx = log.Velocity_x_ms - log.observer.mrao.x_hat.vx;
+        der.observer.mrao.obs_err.vy = log.Velocity_y_ms - log.observer.mrao.x_hat.vy;
+        der.observer.mrao.obs_err.vz = log.Velocity_z_ms - log.observer.mrao.x_hat.vz;
+
+        der.observer.mrao2l.obs_err.x = log.Position_x_m - log.observer.mrao2l.x_hat.x;
+        der.observer.mrao2l.obs_err.y = log.Position_y_m - log.observer.mrao2l.x_hat.y;
+        der.observer.mrao2l.obs_err.z = log.Position_z_m - log.observer.mrao2l.x_hat.z;
+        der.observer.mrao2l.obs_err.vx = log.Velocity_x_ms - log.observer.mrao2l.x_hat.vx;
+        der.observer.mrao2l.obs_err.vy = log.Velocity_y_ms - log.observer.mrao2l.x_hat.vy;
+        der.observer.mrao2l.obs_err.vz = log.Velocity_z_ms - log.observer.mrao2l.x_hat.vz;
+
+        % Compute the L2 norm of the estimation errors
+
+        % -- position error vectors
+        e_pos_mrao   = [der.observer.mrao.obs_err.x, ...
+                        der.observer.mrao.obs_err.y, ...
+                        der.observer.mrao.obs_err.z];
+        e_pos_mrao2l = [der.observer.mrao2l.obs_err.x, ...
+                        der.observer.mrao2l.obs_err.y, ...
+                        der.observer.mrao2l.obs_err.z];
+
+        % -- velocity error vectors
+        e_vel_mrao   = [der.observer.mrao.obs_err.vx, ...
+                        der.observer.mrao.obs_err.vy, ...
+                        der.observer.mrao.obs_err.vz];
+        e_vel_mrao2l = [der.observer.mrao2l.obs_err.vx, ...
+                        der.observer.mrao2l.obs_err.vy, ...
+                        der.observer.mrao2l.obs_err.vz];
+
+        % -- pointwise euclidean norms
+        e_pos_mrao_norm   = vecnorm(e_pos_mrao,   2, 2);   % ||e_pos(t)|| [web:83][web:84]
+        e_pos_mrao2l_norm = vecnorm(e_pos_mrao2l, 2, 2);
+        
+        e_vel_mrao_norm   = vecnorm(e_vel_mrao,   2, 2);   % ||e_vel(t)||
+        e_vel_mrao2l_norm = vecnorm(e_vel_mrao2l, 2, 2);
+
+        % L2 norms over time: sqrt(∫ ||e(t)||^2 dt)
+        der.observer.mrao.L2_norm_pos   = sqrt(trapz(t, e_pos_mrao_norm.^2));
+        der.observer.mrao2l.L2_norm_pos = sqrt(trapz(t, e_pos_mrao2l_norm.^2));
+        
+        der.observer.mrao.L2_norm_vel   = sqrt(trapz(t, e_vel_mrao_norm.^2));
+        der.observer.mrao2l.L2_norm_vel = sqrt(trapz(t, e_vel_mrao2l_norm.^2)); 
+
+        % Combined position+velocity L2 norms (same as 6D error)
+        der.observer.mrao.L2_norm_combined   = sqrt(der.observer.mrao.L2_norm_pos^2   + der.observer.mrao.L2_norm_vel^2);
+        der.observer.mrao2l.L2_norm_combined = sqrt(der.observer.mrao2l.L2_norm_pos^2 + der.observer.mrao2l.L2_norm_vel^2);
 
         % Average algorithm execution time 
         der.average_algorithm_execution_time_us = ...
@@ -433,15 +485,22 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
 
         % Get the upper and lower bounds for the projection operator in the
         % adaptive observer
-        % der.outer_loop.observer.projection_operator.up_bound.Gamma_y = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_y + ...
-        %                                                                     gains.outer_loop.observer.projection_operator.epsilon.Gamma_y);
-        % 
-        % der.outer_loop.observer.projection_operator.lw_bound.Gamma_y = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_y);
-        % 
-        % der.outer_loop.observer.projection_operator.up_bound.Gamma_Theta = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_Theta + ...
-        %                                                                         gains.outer_loop.observer.projection_operator.epsilon.Gamma_Theta);
-        % 
-        % der.outer_loop.observer.projection_operator.lw_bound.Gamma_Theta = sqrt(gains.outer_loop.observer.projection_operator.x_max.Gamma_Theta);
+        gains.observer.projection_operator.x_max.K_hat_y = GainsData.OBSERVER.projection_x_max_K_hat_y;
+        gains.observer.projection_operator.epsilon.K_hat_y = GainsData.OBSERVER.projection_epsilon_K_hat_y_;
+        gains.observer.projection_operator.x_max.Theta_hat = GainsData.OBSERVER.projection_x_max_Theta_hat;
+        gains.observer.projection_operator.epsilon.Theta_hat = GainsData.OBSERVER.projection_epsilon_Theta_hat;
+
+        der.observer.projection_operator.up_bound.K_hat_y = sqrt(gains.observer.projection_operator.x_max.K_hat_y + ...
+                                                                 gains.observer.projection_operator.epsilon.K_hat_y);
+        der.observer.projection_operator.lw_bound.K_hat_y = sqrt(gains.observer.projection_operator.x_max.K_hat_y);
+
+        der.observer.projection_operator.up_bound.Theta_hat = sqrt(gains.observer.projection_operator.x_max.Theta_hat + ...
+                                                                 gains.observer.projection_operator.epsilon.Theta_hat);
+        der.observer.projection_operator.lw_bound.Theta_hat = sqrt(gains.observer.projection_operator.x_max.Theta_hat);
+
+        der.observer.projection_operator.up_bound.K_hat_g_y = sqrt(gains.observer.projection_operator.x_max.K_hat_g_y + ...
+                                                                 gains.observer.projection_operator.epsilon.K_hat_g_y);
+        der.observer.projection_operator.lw_bound.K_hat_g_y = sqrt(gains.observer.projection_operator.x_max.K_hat_g_y);
 
         % If you are flying mocap process the data
         if (~der.not_flying_mocap)
