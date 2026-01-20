@@ -29,23 +29,20 @@ addpath("plotters/helpers/mrac_observer/");
 % =========================================================================
 % ADAPTIVE OBSERVER STUFF
 % =========================================================================
-%% Plot the estimated output (y_est) vs the measured output (y_output)
-plotOLEstVsMeasuredOutput(log, 'ADP OBS - OL Estimated vs Measured Output');
+%% Plot the estimated singal (position) vs time
+plotEstimatedPos(log, der, 'Observer - Estimated Translational Position');
 
-%% Plot the estimated states (x_hat) vs the actual states (x)
-plotOLEstVsMeasuredStates(log, 'ADP OBS - OL Estimated vs Measured States');
+%% Plot the observed/reconstructed singal (velocity) vs time
+plotEstimatedVel(log, 'Observer - Estimated Translational Velocity');
 
-%% Plot the estimation error
-plotOLEstError(log, 'ADP OBS - OL Estimation Error');
+%% Plot the observation error in positon
+plotEstErrPos(log, der, 'Observer - Observation Error Positon');
 
-%% Plot the L2 Norm of the estimation error
-plotOLEstErrorL2Norm(log, der, 'ADP OBS - OL Estimation Error L2 Norm');
+%% Plot the observation error in velocity
+plotEstErrVel(log, der, 'Observer - Observation Error Velocity');
 
-%% Plot the Gains for the outerloop observer K_hat_y 
-plotOLObsKy(log, der, 'ADP OBS - OL $$\hat{K}_{\rm y, observer}$$');
-
-%% Plot the Gains for the outerloop observer Theta_hat_y
-plotOLObsThetay(log, der, 'ADP OBS - OL $$\hat{\Theta}_{\rm y, observer}$$');
+%% Plot the L2 Norm of the Errors
+plotEstErrL2Norm(log, der, 'Observer - L2 Norm of Observation Error');
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================

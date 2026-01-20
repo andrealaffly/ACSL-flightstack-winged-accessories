@@ -365,6 +365,11 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
                         der.observer.mrao2l.obs_err.vy, ...
                         der.observer.mrao2l.obs_err.vz];
 
+        % Compute the integrated position values
+        der.observer.integrated_pos_from_vel.x = ;
+        der.observer.integrated_pos_from_vel.y = ;
+        der.observer.integrated_pos_from_vel.z = ;
+
         % -- pointwise euclidean norms
         e_pos_mrao_norm   = vecnorm(e_pos_mrao,   2, 2);   % ||e_pos(t)|| [web:83][web:84]
         e_pos_mrao2l_norm = vecnorm(e_pos_mrao2l, 2, 2);
