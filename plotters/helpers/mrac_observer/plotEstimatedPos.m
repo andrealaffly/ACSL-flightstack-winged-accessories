@@ -42,7 +42,7 @@ grid minor
 
 subplot(3,1,3)
 hold on
-plot(log.Controller_Time_s, log.Position_y_m, 'k:', 'LineWidth', 2)
+plot(log.Controller_Time_s, log.Position_z_m, 'k:', 'LineWidth', 2)
 plot(log.Controller_Time_s, der.observer.integrated_pos_from_vel.z, 'm--', 'LineWidth', 2.5)
 plot(log.Controller_Time_s, log.observer.mrao.x_hat.z, 'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, log.observer.mrao2l.x_hat.z, 'r-', 'LineWidth', 1.5)
