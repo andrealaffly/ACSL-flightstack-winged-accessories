@@ -45,8 +45,6 @@ l= legend('MRA0', '2L MRAO');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('$$\sqrt{\int_0^t \Vert e_{\rm vel}(\tau) \Vert^2 {\rm d} \tau}$$','interpreter','latex','fontsize',30)
 axis tight
-ax = gca;
-ax.YDir = 'reverse';
 grid minor
 xlabel('t [s]','interpreter','latex','fontsize',30)
 sgtitle(title,'Interpreter','latex','FontSize',20);

@@ -347,46 +347,60 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         der.observer.mrao2l.obs_err.vy = log.Velocity_y_ms - log.observer.mrao2l.x_hat.vy;
         der.observer.mrao2l.obs_err.vz = log.Velocity_z_ms - log.observer.mrao2l.x_hat.vz;
 
-        % Compute the L2 norm of the estimation errors
+        % ----- START OF L2 NORM CALCULATION FOR THE OBSERVER
+        t = log.Controller_Time_s;   % N×1
 
-        % -- position error vectors
-        e_pos_mrao   = [der.observer.mrao.obs_err.x, ...
-                        der.observer.mrao.obs_err.y, ...
-                        der.observer.mrao.obs_err.z];
-        e_pos_mrao2l = [der.observer.mrao2l.obs_err.x, ...
-                        der.observer.mrao2l.obs_err.y, ...
-                        der.observer.mrao2l.obs_err.z];
-
-        % -- velocity error vectors
-        e_vel_mrao   = [der.observer.mrao.obs_err.vx, ...
-                        der.observer.mrao.obs_err.vy, ...
-                        der.observer.mrao.obs_err.vz];
-        e_vel_mrao2l = [der.observer.mrao2l.obs_err.vx, ...
-                        der.observer.mrao2l.obs_err.vy, ...
-                        der.observer.mrao2l.obs_err.vz];
-
+        % ---- position error components (N×1 each)
+        ex_mrao   = der.observer.mrao.obs_err.x;
+        ey_mrao   = der.observer.mrao.obs_err.y;
+        ez_mrao   = der.observer.mrao.obs_err.z;
+        
+        ex_mrao2l = der.observer.mrao2l.obs_err.x;
+        ey_mrao2l = der.observer.mrao2l.obs_err.y;
+        ez_mrao2l = der.observer.mrao2l.obs_err.z;
+        
+        % ---- velocity error components (N×1 each)
+        evx_mrao   = der.observer.mrao.obs_err.vx;
+        evy_mrao   = der.observer.mrao.obs_err.vy;
+        evz_mrao   = der.observer.mrao.obs_err.vz;
+        
+        evx_mrao2l = der.observer.mrao2l.obs_err.vx;
+        evy_mrao2l = der.observer.mrao2l.obs_err.vy;
+        evz_mrao2l = der.observer.mrao2l.obs_err.vz;
+        
+        % ---- squared magnitude of position and velocity errors (no pointwise norms)
+        e_pos_mrao_sq   = ex_mrao.^2   + ey_mrao.^2   + ez_mrao.^2;
+        e_pos_mrao2l_sq = ex_mrao2l.^2 + ey_mrao2l.^2 + ez_mrao2l.^2;
+        
+        e_vel_mrao_sq   = evx_mrao.^2   + evy_mrao.^2   + evz_mrao.^2;
+        e_vel_mrao2l_sq = evx_mrao2l.^2 + evy_mrao2l.^2 + evz_mrao2l.^2;
+        
+        % ---- cumulative integrals: ∫_0^{t_k} ||e(τ)||^2 dτ
+        I_pos_mrao   = cumtrapz(t, e_pos_mrao_sq);
+        I_pos_mrao2l = cumtrapz(t, e_pos_mrao2l_sq);
+        
+        I_vel_mrao   = cumtrapz(t, e_vel_mrao_sq);
+        I_vel_mrao2l = cumtrapz(t, e_vel_mrao2l_sq);   % [web:96][web:131]
+        
+        % ---- time-series L2 norms: ||e||_{L2}(t_k) = sqrt(∫_0^{t_k} ||e(τ)||^2 dτ)
+        der.observer.mrao.L2_norm_pos   = sqrt(I_pos_mrao);
+        der.observer.mrao2l.L2_norm_pos = sqrt(I_pos_mrao2l);
+        
+        der.observer.mrao.L2_norm_vel   = sqrt(I_vel_mrao);
+        der.observer.mrao2l.L2_norm_vel = sqrt(I_vel_mrao2l);
+        
+        % ---- combined 6D error L2 time series
+        I_comb_mrao   = I_pos_mrao   + I_vel_mrao;     % ∫(||e_pos||^2 + ||e_vel||^2)
+        I_comb_mrao2l = I_pos_mrao2l + I_vel_mrao2l;
+        
+        der.observer.mrao.L2_norm_combined   = sqrt(I_comb_mrao);
+        der.observer.mrao2l.L2_norm_combined = sqrt(I_comb_mrao2l);
+        % ----- END OF L2 NORM CALCULATION FOR THE OBSERVER
+        
         % Compute the integrated position values
-        der.observer.integrated_pos_from_vel.x = cumtrapz(log.Controller_Time_s, log.Velocity_x_ms);
-        der.observer.integrated_pos_from_vel.y = cumtrapz(log.Controller_Time_s, log.Velocity_y_ms);
-        der.observer.integrated_pos_from_vel.z = cumtrapz(log.Controller_Time_s, log.Velocity_z_ms);
-
-        % -- pointwise euclidean norms
-        e_pos_mrao_norm   = vecnorm(e_pos_mrao,   2, 2);   % ||e_pos(t)|| [web:83][web:84]
-        e_pos_mrao2l_norm = vecnorm(e_pos_mrao2l, 2, 2);
-        
-        e_vel_mrao_norm   = vecnorm(e_vel_mrao,   2, 2);   % ||e_vel(t)||
-        e_vel_mrao2l_norm = vecnorm(e_vel_mrao2l, 2, 2);
-
-        % L2 norms over time: sqrt(∫ ||e(t)||^2 dt)
-        der.observer.mrao.L2_norm_pos   = sqrt(trapz(log.Controller_Time_s, e_pos_mrao_norm.^2));
-        der.observer.mrao2l.L2_norm_pos = sqrt(trapz(log.Controller_Time_s, e_pos_mrao2l_norm.^2));
-        
-        der.observer.mrao.L2_norm_vel   = sqrt(trapz(log.Controller_Time_s, e_vel_mrao_norm.^2));
-        der.observer.mrao2l.L2_norm_vel = sqrt(trapz(log.Controller_Time_s, e_vel_mrao2l_norm.^2)); 
-
-        % Combined position+velocity L2 norms (same as 6D error)
-        der.observer.mrao.L2_norm_combined   = sqrt(der.observer.mrao.L2_norm_pos^2   + der.observer.mrao.L2_norm_vel^2);
-        der.observer.mrao2l.L2_norm_combined = sqrt(der.observer.mrao2l.L2_norm_pos^2 + der.observer.mrao2l.L2_norm_vel^2);
+        der.observer.integrated_pos_from_vel.x = log.Position_x_m(1) + cumtrapz(log.Controller_Time_s, log.Velocity_x_ms);
+        der.observer.integrated_pos_from_vel.y = log.Position_y_m(1) + cumtrapz(log.Controller_Time_s, log.Velocity_y_ms);
+        der.observer.integrated_pos_from_vel.z = log.Position_z_m(1) + cumtrapz(log.Controller_Time_s, log.Velocity_z_ms);
 
         % Average algorithm execution time 
         der.average_algorithm_execution_time_us = ...
