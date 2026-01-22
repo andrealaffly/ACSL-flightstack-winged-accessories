@@ -22,7 +22,7 @@ addpath("functions/helpers/");
 %==================== INPUT PARAMETERS ====================%
 % Specify if the simulator is used or flightstack
 % Set true for simulator mode
-acsl_sim_mode = true;
+acsl_sim_mode = false;
 
 % Specify the date in YYYY_MM_DD
 date = "2026_01_21";
