@@ -330,9 +330,49 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         log = processGainMatrixLog(log, 'Theta_hat_mrao',    data, 347, 4, 3);
         log = processGainMatrixLog(log, 'K_hat_y_2l_mrao',   data, 359, 3, 3);
         log = processGainMatrixLog(log, 'Theta_hat_2l_mrao', data, 368, 4, 3);
-        log = processGainMatrixLog(log, 'K_hat_g_y_mrao',    data, 380, 3, 3);
+        log = processGainMatrixLog(log, 'K_hat_g_y_2l_mrao',    data, 380, 3, 3);
+
+        % Data related to variable structure variant
+        log.observer.mraovs.x_hat.x  = data.data(:, 389);
+        log.observer.mraovs.x_hat.y  = data.data(:, 390);
+        log.observer.mraovs.x_hat.z  = data.data(:, 391);
+        log.observer.mraovs.x_hat.vx = data.data(:, 392);
+        log.observer.mraovs.x_hat.vy = data.data(:, 393);
+        log.observer.mraovs.x_hat.vz = data.data(:, 394);
+
+        log.observer.mrao2lvs.x_hat.x  = data.data(:, 395);
+        log.observer.mrao2lvs.x_hat.y  = data.data(:, 396);
+        log.observer.mrao2lvs.x_hat.z  = data.data(:, 397);
+        log.observer.mrao2lvs.x_hat.vx = data.data(:, 398);
+        log.observer.mrao2lvs.x_hat.vy = data.data(:, 399);
+        log.observer.mrao2lvs.x_hat.vz = data.data(:, 400);
+
+        % Process gains data for the variable structure variant 
+        log.observer.mraovs.proj_op_activated_K_hat_y     = data.data(:, 401);
+        log.observer.mraovs.proj_op_activated_Theta_hat   = data.data(:, 402);
+        log.observer.mrao2lvs.proj_op_activated_K_hat_y   = data.data(:, 403);
+        log.observer.mrao2lvs.proj_op_activated_Theta_hat = data.data(:, 404);
+        log.observer.mrao2lvs.proj_op_activated_K_hat_g_y = data.data(:, 405);
+
+        log.observer.mraovs.rho   = data.data(:, 406);
+        log.observer.mraovs.beta.x = data.data(:, 407);
+        log.observer.mraovs.beta.y = data.data(:, 408);
+        log.observer.mraovs.beta.z = data.data(:, 409);
+
+        log.observer.mrao2lvs.rho   = data.data(:, 410);
+        log.observer.mrao2lvs.beta.x = data.data(:, 411);
+        log.observer.mrao2lvs.beta.y = data.data(:, 412);
+        log.observer.mrao2lvs.beta.z = data.data(:, 413);
+
+        log = processGainMatrixLog(log, 'K_hat_y_vs_mrao',        data, 414, 3, 3);
+        log = processGainMatrixLog(log, 'Theta_hat_vs_mrao',      data, 423, 4, 3);
+        log = processGainMatrixLog(log, 'K_hat_y_vs_2l_mrao',     data, 435, 3, 3);
+        log = processGainMatrixLog(log, 'Theta_hat_vs_2l_mrao',   data, 444, 4, 3);
+        log = processGainMatrixLog(log, 'K_hat_g_y_vs_2l_mrao',   data, 456, 3, 3);
+
 
         % Compute the errors
+        % MRAO observer errors
         der.observer.mrao.obs_err.x = log.Position_x_m - log.observer.mrao.x_hat.x;
         der.observer.mrao.obs_err.y = log.Position_y_m - log.observer.mrao.x_hat.y;
         der.observer.mrao.obs_err.z = log.Position_z_m - log.observer.mrao.x_hat.z;
@@ -340,6 +380,7 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         der.observer.mrao.obs_err.vy = log.Velocity_y_ms - log.observer.mrao.x_hat.vy;
         der.observer.mrao.obs_err.vz = log.Velocity_z_ms - log.observer.mrao.x_hat.vz;
 
+        % 2-layer MRAO observer errors
         der.observer.mrao2l.obs_err.x = log.Position_x_m - log.observer.mrao2l.x_hat.x;
         der.observer.mrao2l.obs_err.y = log.Position_y_m - log.observer.mrao2l.x_hat.y;
         der.observer.mrao2l.obs_err.z = log.Position_z_m - log.observer.mrao2l.x_hat.z;
@@ -347,9 +388,24 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         der.observer.mrao2l.obs_err.vy = log.Velocity_y_ms - log.observer.mrao2l.x_hat.vy;
         der.observer.mrao2l.obs_err.vz = log.Velocity_z_ms - log.observer.mrao2l.x_hat.vz;
 
+        % Variable-structure MRAO observer errors
+        der.observer.mraovs.obs_err.x  = log.Position_x_m   - log.observer.mraovs.x_hat.x;
+        der.observer.mraovs.obs_err.y  = log.Position_y_m   - log.observer.mraovs.x_hat.y;
+        der.observer.mraovs.obs_err.z  = log.Position_z_m   - log.observer.mraovs.x_hat.z;
+        der.observer.mraovs.obs_err.vx = log.Velocity_x_ms  - log.observer.mraovs.x_hat.vx;
+        der.observer.mraovs.obs_err.vy = log.Velocity_y_ms  - log.observer.mraovs.x_hat.vy;
+        der.observer.mraovs.obs_err.vz = log.Velocity_z_ms  - log.observer.mraovs.x_hat.vz;
+
+        % Variable-structure 2-layer MRAO observer errors
+        der.observer.mrao2lvs.obs_err.x  = log.Position_x_m   - log.observer.mrao2lvs.x_hat.x;
+        der.observer.mrao2lvs.obs_err.y  = log.Position_y_m   - log.observer.mrao2lvs.x_hat.y;
+        der.observer.mrao2lvs.obs_err.z  = log.Position_z_m   - log.observer.mrao2lvs.x_hat.z;
+        der.observer.mrao2lvs.obs_err.vx = log.Velocity_x_ms  - log.observer.mrao2lvs.x_hat.vx;
+        der.observer.mrao2lvs.obs_err.vy = log.Velocity_y_ms  - log.observer.mrao2lvs.x_hat.vy;
+        der.observer.mrao2lvs.obs_err.vz = log.Velocity_z_ms  - log.observer.mrao2lvs.x_hat.vz;
+
         % ----- START OF L2 NORM CALCULATION FOR THE OBSERVER
         t = log.Controller_Time_s;   % N×1
-
         % ---- position error components (N×1 each)
         ex_mrao   = der.observer.mrao.obs_err.x;
         ey_mrao   = der.observer.mrao.obs_err.y;
@@ -358,6 +414,14 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         ex_mrao2l = der.observer.mrao2l.obs_err.x;
         ey_mrao2l = der.observer.mrao2l.obs_err.y;
         ez_mrao2l = der.observer.mrao2l.obs_err.z;
+
+        ex_mraovs   = der.observer.mraovs.obs_err.x;
+        ey_mraovs   = der.observer.mraovs.obs_err.y;
+        ez_mraovs   = der.observer.mraovs.obs_err.z;
+
+        ex_mrao2lvs = der.observer.mrao2lvs.obs_err.x;
+        ey_mrao2lvs = der.observer.mrao2lvs.obs_err.y;
+        ez_mrao2lvs = der.observer.mrao2lvs.obs_err.z;
         
         % ---- velocity error components (N×1 each)
         evx_mrao   = der.observer.mrao.obs_err.vx;
@@ -367,34 +431,66 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         evx_mrao2l = der.observer.mrao2l.obs_err.vx;
         evy_mrao2l = der.observer.mrao2l.obs_err.vy;
         evz_mrao2l = der.observer.mrao2l.obs_err.vz;
+
+        evx_mraovs   = der.observer.mraovs.obs_err.vx;
+        evy_mraovs   = der.observer.mraovs.obs_err.vy;
+        evz_mraovs   = der.observer.mraovs.obs_err.vz;
+
+        evx_mrao2lvs = der.observer.mrao2lvs.obs_err.vx;
+        evy_mrao2lvs = der.observer.mrao2lvs.obs_err.vy;
+        evz_mrao2lvs = der.observer.mrao2lvs.obs_err.vz;
         
         % ---- squared magnitude of position and velocity errors (no pointwise norms)
-        e_pos_mrao_sq   = ex_mrao.^2   + ey_mrao.^2   + ez_mrao.^2;
-        e_pos_mrao2l_sq = ex_mrao2l.^2 + ey_mrao2l.^2 + ez_mrao2l.^2;
+        e_pos_mrao_sq     = ex_mrao.^2     + ey_mrao.^2     + ez_mrao.^2;
+        e_pos_mrao2l_sq   = ex_mrao2l.^2   + ey_mrao2l.^2   + ez_mrao2l.^2;
+
+        e_pos_mraovs_sq   = ex_mraovs.^2   + ey_mraovs.^2   + ez_mraovs.^2;
+        e_pos_mrao2lvs_sq = ex_mrao2lvs.^2 + ey_mrao2lvs.^2 + ez_mrao2lvs.^2;
         
-        e_vel_mrao_sq   = evx_mrao.^2   + evy_mrao.^2   + evz_mrao.^2;
-        e_vel_mrao2l_sq = evx_mrao2l.^2 + evy_mrao2l.^2 + evz_mrao2l.^2;
+        e_vel_mrao_sq     = evx_mrao.^2     + evy_mrao.^2     + evz_mrao.^2;
+        e_vel_mrao2l_sq   = evx_mrao2l.^2   + evy_mrao2l.^2   + evz_mrao2l.^2;
+
+        e_vel_mraovs_sq   = evx_mraovs.^2   + evy_mraovs.^2   + evz_mraovs.^2;
+        e_vel_mrao2lvs_sq = evx_mrao2lvs.^2 + evy_mrao2lvs.^2 + evz_mrao2lvs.^2;
         
         % ---- cumulative integrals: ∫_0^{t_k} ||e(τ)||^2 dτ
-        I_pos_mrao   = cumtrapz(t, e_pos_mrao_sq);
-        I_pos_mrao2l = cumtrapz(t, e_pos_mrao2l_sq);
+        I_pos_mrao     = cumtrapz(t, e_pos_mrao_sq);
+        I_pos_mrao2l   = cumtrapz(t, e_pos_mrao2l_sq);
+
+        I_pos_mraovs   = cumtrapz(t, e_pos_mraovs_sq);
+        I_pos_mrao2lvs = cumtrapz(t, e_pos_mrao2lvs_sq);
         
-        I_vel_mrao   = cumtrapz(t, e_vel_mrao_sq);
-        I_vel_mrao2l = cumtrapz(t, e_vel_mrao2l_sq);   % [web:96][web:131]
+        I_vel_mrao     = cumtrapz(t, e_vel_mrao_sq);
+        I_vel_mrao2l   = cumtrapz(t, e_vel_mrao2l_sq);
+
+        I_vel_mraovs   = cumtrapz(t, e_vel_mraovs_sq);
+        I_vel_mrao2lvs = cumtrapz(t, e_vel_mrao2lvs_sq);   % [web:101][web:106]
         
         % ---- time-series L2 norms: ||e||_{L2}(t_k) = sqrt(∫_0^{t_k} ||e(τ)||^2 dτ)
-        der.observer.mrao.L2_norm_pos   = sqrt(I_pos_mrao);
-        der.observer.mrao2l.L2_norm_pos = sqrt(I_pos_mrao2l);
+        der.observer.mrao.L2_norm_pos     = sqrt(I_pos_mrao);
+        der.observer.mrao2l.L2_norm_pos   = sqrt(I_pos_mrao2l);
+
+        der.observer.mraovs.L2_norm_pos   = sqrt(I_pos_mraovs);
+        der.observer.mrao2lvs.L2_norm_pos = sqrt(I_pos_mrao2lvs);
         
-        der.observer.mrao.L2_norm_vel   = sqrt(I_vel_mrao);
-        der.observer.mrao2l.L2_norm_vel = sqrt(I_vel_mrao2l);
+        der.observer.mrao.L2_norm_vel     = sqrt(I_vel_mrao);
+        der.observer.mrao2l.L2_norm_vel   = sqrt(I_vel_mrao2l);
+
+        der.observer.mraovs.L2_norm_vel   = sqrt(I_vel_mraovs);
+        der.observer.mrao2lvs.L2_norm_vel = sqrt(I_vel_mrao2lvs);
         
         % ---- combined 6D error L2 time series
-        I_comb_mrao   = I_pos_mrao   + I_vel_mrao;     % ∫(||e_pos||^2 + ||e_vel||^2)
-        I_comb_mrao2l = I_pos_mrao2l + I_vel_mrao2l;
+        I_comb_mrao     = I_pos_mrao     + I_vel_mrao;       % ∫(||e_pos||^2 + ||e_vel||^2)
+        I_comb_mrao2l   = I_pos_mrao2l   + I_vel_mrao2l;
+
+        I_comb_mraovs   = I_pos_mraovs   + I_vel_mraovs;
+        I_comb_mrao2lvs = I_pos_mrao2lvs + I_vel_mrao2lvs;
         
-        der.observer.mrao.L2_norm_combined   = sqrt(I_comb_mrao);
-        der.observer.mrao2l.L2_norm_combined = sqrt(I_comb_mrao2l);
+        der.observer.mrao.L2_norm_combined     = sqrt(I_comb_mrao);
+        der.observer.mrao2l.L2_norm_combined   = sqrt(I_comb_mrao2l);
+
+        der.observer.mraovs.L2_norm_combined   = sqrt(I_comb_mraovs);
+        der.observer.mrao2lvs.L2_norm_combined = sqrt(I_comb_mrao2lvs);
         % ----- END OF L2 NORM CALCULATION FOR THE OBSERVER
         
         % Compute the integrated position values
@@ -600,7 +696,7 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         
         % Define the folder path
         folder_path = fullfile(baseDir, flightRunNames{ii});
-        file_name = ['MRAC_OMEGA_log_', flightRunNames{ii}, '.mat'];
+        file_name = ['MRAC_OBSERVER_log_', flightRunNames{ii}, '.mat'];
         full_path = fullfile(folder_path, file_name); % Corrected full_path
 
         % save the data to the specified file

@@ -18,8 +18,10 @@ subplot(3,1,1)
 hold on
 plot(log.Controller_Time_s, der.observer.mrao.L2_norm_combined, 'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, der.observer.mrao2l.L2_norm_combined, 'r-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, der.observer.mraovs.L2_norm_combined, 'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, der.observer.mrao2lvs.L2_norm_combined, 'c-', 'LineWidth', 1.5)
 hold off
-l= legend('MRA0', '2L MRAO');
+l= legend('MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('$$\sqrt{\int_0^t \Vert e_{\rm total}(\tau) \Vert^2 {\rm d} \tau}$$','interpreter','latex','fontsize',30)
 axis tight
@@ -29,8 +31,10 @@ subplot(3,1,2)
 hold on
 plot(log.Controller_Time_s, der.observer.mrao.L2_norm_pos, 'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, der.observer.mrao2l.L2_norm_pos, 'r-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, der.observer.mraovs.L2_norm_pos, 'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, der.observer.mrao2lvs.L2_norm_pos, 'c-', 'LineWidth', 1.5)
 hold off
-l= legend('MRA0', '2L MRAO');
+l= legend('MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('$$\sqrt{\int_0^t \Vert e_{\rm pos}(\tau) \Vert^2 {\rm d} \tau}$$','interpreter','latex','fontsize',30)
 axis tight
@@ -40,8 +44,10 @@ subplot(3,1,3)
 hold on
 plot(log.Controller_Time_s, der.observer.mrao.L2_norm_vel, 'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, der.observer.mrao2l.L2_norm_vel, 'r-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, der.observer.mraovs.L2_norm_vel, 'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, der.observer.mrao2lvs.L2_norm_vel, 'c-', 'LineWidth', 1.5)
 hold off
-l= legend('MRA0', '2L MRAO');
+l= legend('MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('$$\sqrt{\int_0^t \Vert e_{\rm vel}(\tau) \Vert^2 {\rm d} \tau}$$','interpreter','latex','fontsize',30)
 axis tight

@@ -22,10 +22,10 @@ addpath("functions/helpers/");
 %==================== INPUT PARAMETERS ====================%
 % Specify if the simulator is used or flightstack
 % Set true for simulator mode
-acsl_sim_mode = false;
+acsl_sim_mode = true;
 
 % Specify the date in YYYY_MM_DD
-date = "2026_01_21";
+date = "2026_02_02";
 
 % Uncomment the platform - Should match the flightstack
 picked_platform = "qrbp";

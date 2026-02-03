@@ -55,49 +55,52 @@ addpath("functions/");
 %%%%%%%%%%%%%%%%%% ADAPTIVE OBSERVER TUNABLE PARAMETERS %%%%%%%%%%%%%%%%%%
 
 % GAINS FOR THE A_ref_y MATRIX
-K_P_ref_y = [17,  0.0,  0.0;
-             0.0,  45,  0.0;
-             0.0,  0.0,  17];
-K_D_ref_y = [ 90, 0.0,  0.0;
-             0.0,  110,  0.0;
-             0.0, 0.0,  140];
+K_P_ref_y = [2.4,  0.0,  0.0;
+             0.0,  2.7,  0.0;
+             0.0,  0.0,  5.8];
+K_D_ref_y = [6.0, 0.0,  0.0;
+             0.0, 6.0,  0.0;
+             0.0, 0.0,  15.0];
 
 % GAINS FOR THE A_tran_y MATRIX
-K_P_tran_y = [17,  0.0,  0.0;
-              0.0,  17,  0.0;
-              0.0,  0.0,  16];
-K_D_tran_y = [ 90, 0.0,  0.0;
-              0.0,  90,  0.0;
-              0.0, 0.0,  57];
+K_P_tran_y = [4.0,  0.0,  0.0;
+             0.0,  4.5,  0.0;
+             0.0,  0.0,  16.0];
+K_D_tran_y = [10.0, 0.0, 0.0;
+             0.0, 10.0, 0.0;
+             0.0, 0.0, 41.0];
 
 % BOOLEANS FOR HOW YOU WANT TO CONTRUCT THE PLANT MATRICES
 build_transient_A_from_reference_A = true;
 build_reference_A_from_transient_A = false;
 
+% BOOLEAN FOR SETTING THE INTIAL GAINS AS ZERO
+set_initial_adaptive_gains_zero = false;
+
 % OBSERVER ADAPTIVE RATES
-param.Gamma_y = blkdiag(8500, ...
-                        9950, ...
-                        9950);
+param.Gamma_y = blkdiag(600, ...
+                        600, ...
+                        600);
 
 param.Gamma_Theta_y = blkdiag(1e-5, ...
                               1e-5, ...
                               1e-5, ...
                               1e-5); 
 
-param.Gamma_g_y = blkdiag(8000, ...
-                          8000, ...
-                          8000);
+param.Gamma_g_y = blkdiag(0, ...
+                          0, ...
+                          0);
 
 % OBSERVER GAINS PROJECTION OPERTAOR PARAMETERS
-param.projection_x_max_K_hat_y_observer = 200^2;
-param.projection_epsilon_K_hat_y_observer = 50;
+param.projection_x_max_K_hat_y_observer = 20^2;
+param.projection_epsilon_K_hat_y_observer = 5;
 
 param.projection_x_max_Theta_hat_observer = 0.095^2;
 param.projection_epsilon_Theta_hat_observer = 0.0001;
 
 % OBSERVER GAINS DEADZONE SWITCH TOLERANCE
-param.projection_x_max_K_hat_g_y_observer = 350^2;
-param.projection_epsilon_K_hat_g_y_observer = 200;
+param.projection_x_max_K_hat_g_y_observer = 35^2;
+param.projection_epsilon_K_hat_g_y_observer = 10;
 
 %% -----------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%% DO NOT MODIFY BEYOND THIS COMMENT %%%%%%%%%%%%%%%%%%%
@@ -181,6 +184,12 @@ param.P = lyap(param.A_tran_y', param.Q_tran);
 param.K_ye = pinv(param.B * param.Lambda) * (param.A_ref_y - param.A) * pinv(param.C);
 param.Theta_e_observer = zeros(4,3);
 param.K_gye = pinv(param.B * param.Lambda) * (param.A_tran_y - param.A_ref_y) * pinv(param.C);
+
+if (set_initial_adaptive_gains_zero)
+    param.K_ye = zeros(size(param.K_ye));
+    param.Theta_e_observer = zeros(size(param.Theta_e_observer));
+    param.K_gye = zeros(size(param.K_gye));
+end
 
 %% -----------------------------------------------------------------------
 % Start finding the other parameters

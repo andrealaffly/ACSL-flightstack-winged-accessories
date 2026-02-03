@@ -19,8 +19,10 @@ hold on
 plot(log.Controller_Time_s, log.Velocity_x_ms, 'k:', 'LineWidth', 2)
 plot(log.Controller_Time_s, log.observer.mrao.x_hat.vx, 'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, log.observer.mrao2l.x_hat.vx, 'r-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, log.observer.mraovs.x_hat.vx, 'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, log.observer.mrao2lvs.x_hat.vx, 'c-', 'LineWidth', 1.5)
 hold off
-l= legend('PX4 EKF2', 'MRA0', '2L MRAO');
+l= legend('PX4 EKF2', 'MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('$$\dot{x}(t)$$ [m/s]','interpreter','latex','fontsize',30)
 axis tight
@@ -31,8 +33,10 @@ hold on
 plot(log.Controller_Time_s, log.Velocity_y_ms, 'k:', 'LineWidth', 2)
 plot(log.Controller_Time_s, log.observer.mrao.x_hat.vy, 'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, log.observer.mrao2l.x_hat.vy, 'r-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, log.observer.mraovs.x_hat.vy, 'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, log.observer.mrao2lvs.x_hat.vy, 'c-', 'LineWidth', 1.5)
 hold off
-l= legend('PX4 EKF2', 'MRA0', '2L MRAO');
+l= legend('PX4 EKF2', 'MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('$$\dot{y}(t)$$ [m/s]','interpreter','latex','fontsize',30)
 axis tight
@@ -43,8 +47,10 @@ hold on
 plot(log.Controller_Time_s, log.Velocity_z_ms, 'k:', 'LineWidth', 2)
 plot(log.Controller_Time_s, log.observer.mrao.x_hat.vz, 'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, log.observer.mrao2l.x_hat.vz, 'r-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, log.observer.mraovs.x_hat.vz, 'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, log.observer.mrao2lvs.x_hat.vz, 'c-', 'LineWidth', 1.5)
 hold off
-l= legend('PX4 EKF2', 'MRA0', '2L MRAO');
+l= legend('PX4 EKF2', 'MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('$$\dot{z}(t)$$ [m/s]','interpreter','latex','fontsize',30)
 axis tight

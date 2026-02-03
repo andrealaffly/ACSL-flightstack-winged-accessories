@@ -18,8 +18,10 @@ subplot(3,1,1)
 hold on
 plot(log.Controller_Time_s, abs(der.observer.mrao.obs_err.vx), 'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, abs(der.observer.mrao2l.obs_err.vx), 'r-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, abs(der.observer.mraovs.obs_err.vx), 'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao2lvs.obs_err.vx), 'c-', 'LineWidth', 1.5)
 hold off
-l= legend('MRA0', '2L MRAO');
+l= legend('MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('$$\| e_{\dot{x}} \|$$ [m/s]','interpreter','latex','fontsize',30)
 axis tight
@@ -29,8 +31,10 @@ subplot(3,1,2)
 hold on
 plot(log.Controller_Time_s, abs(der.observer.mrao.obs_err.vy), 'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, abs(der.observer.mrao2l.obs_err.vy), 'r-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, abs(der.observer.mraovs.obs_err.vy), 'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao2lvs.obs_err.vy), 'c-', 'LineWidth', 1.5)
 hold off
-l= legend('MRA0', '2L MRAO');
+l= legend('MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('$$\| e_{\dot{y}} \|$$ [m/s]','interpreter','latex','fontsize',30)
 axis tight
@@ -40,8 +44,10 @@ subplot(3,1,3)
 hold on
 plot(log.Controller_Time_s, abs(der.observer.mrao.obs_err.vz), 'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, abs(der.observer.mrao2l.obs_err.vz), 'r-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, abs(der.observer.mraovs.obs_err.vz), 'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao2lvs.obs_err.vz), 'c-', 'LineWidth', 1.5)
 hold off
-l= legend('MRA0', '2L MRAO');
+l= legend('MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('$$\| e_{\dot{z}} \|$$ [m/s]','interpreter','latex','fontsize',30)
 axis tight
