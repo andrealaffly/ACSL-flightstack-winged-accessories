@@ -17,8 +17,8 @@ subplot(2,1,1)
 hold on
 plot(log.Controller_Time_s, der.differentiator.L2norm.mrad.euler,      'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, der.differentiator.L2norm.mrad_2l.euler,    'r-',  'LineWidth', 1.5)
-plot(log.Controller_Time_s, der.differentiator.L2norm.mrad_vs.euler,    'c--', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, der.differentiator.L2norm.mrad_2l_vs.euler,  'g-',  'LineWidth', 1.5)
+plot(log.Controller_Time_s, der.differentiator.L2norm.mrad_vs.euler,    'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, der.differentiator.L2norm.mrad_2l_vs.euler,  'c-',  'LineWidth', 1.5)
 hold off
 l = legend('MRAO', '2L MRAO', 'VS MRAO', '2L VS MRAO');
 set(l,'interpreter','latex','fontsize',15);
@@ -29,8 +29,8 @@ subplot(2,1,2)
 hold on
 plot(log.Controller_Time_s, der.differentiator.L2norm.mrad.euler_dot,      'b-.', 'LineWidth', 1.5)
 plot(log.Controller_Time_s, der.differentiator.L2norm.mrad_2l.euler_dot,    'r-',  'LineWidth', 1.5)
-plot(log.Controller_Time_s, der.differentiator.L2norm.mrad_vs.euler_dot,    'c--', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, der.differentiator.L2norm.mrad_2l_vs.euler_dot,  'g-',  'LineWidth', 1.5)
+plot(log.Controller_Time_s, der.differentiator.L2norm.mrad_vs.euler_dot,    'g-.', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, der.differentiator.L2norm.mrad_2l_vs.euler_dot,  'c-',  'LineWidth', 1.5)
 hold off
 l = legend('MRAO', '2L MRAO', 'VS MRAO', '2L VS MRAO');
 set(l,'interpreter','latex','fontsize',15);

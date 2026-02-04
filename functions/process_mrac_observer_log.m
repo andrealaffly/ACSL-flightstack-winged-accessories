@@ -431,6 +431,8 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         log.inner_loop.theta_dot = data.data(:, 514);
         log.inner_loop.psi_dot = data.data(:, 515);
 
+        log.inner_loop.psi_unwrapped = data.data(:, 516);
+
     
         % Compute the errors
         % MRAO observer errors
@@ -565,19 +567,19 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         % (a) Error between the euler angles for all four methods
         der.differentiator.mrad.error.phi       = log.Angle_roll_rad  - log.differentiator.mrad.x_hat.phi;
         der.differentiator.mrad.error.theta     = log.Angle_pitch_rad - log.differentiator.mrad.x_hat.theta;
-        der.differentiator.mrad.error.psi       = log.Angle_yaw_rad   - log.differentiator.mrad.x_hat.psi;
+        der.differentiator.mrad.error.psi       = log.inner_loop.psi_unwrapped  - log.differentiator.mrad.x_hat.psi;
         
         der.differentiator.mrad_2l.error.phi    = log.Angle_roll_rad  - log.differentiator.mrad_2l.x_hat.phi;
         der.differentiator.mrad_2l.error.theta  = log.Angle_pitch_rad - log.differentiator.mrad_2l.x_hat.theta;
-        der.differentiator.mrad_2l.error.psi    = log.Angle_yaw_rad   - log.differentiator.mrad_2l.x_hat.psi;
+        der.differentiator.mrad_2l.error.psi    = log.inner_loop.psi_unwrapped   - log.differentiator.mrad_2l.x_hat.psi;
         
         der.differentiator.mrad_vs.error.phi    = log.Angle_roll_rad  - log.differentiator.mrad_vs.x_hat.phi;
         der.differentiator.mrad_vs.error.theta  = log.Angle_pitch_rad - log.differentiator.mrad_vs.x_hat.theta;
-        der.differentiator.mrad_vs.error.psi    = log.Angle_yaw_rad   - log.differentiator.mrad_vs.x_hat.psi;
+        der.differentiator.mrad_vs.error.psi    = log.inner_loop.psi_unwrapped   - log.differentiator.mrad_vs.x_hat.psi;
         
         der.differentiator.mrad_2l_vs.error.phi   = log.Angle_roll_rad  - log.differentiator.mrad_2l_vs.x_hat.phi;
         der.differentiator.mrad_2l_vs.error.theta = log.Angle_pitch_rad - log.differentiator.mrad_2l_vs.x_hat.theta;
-        der.differentiator.mrad_2l_vs.error.psi   = log.Angle_yaw_rad   - log.differentiator.mrad_2l_vs.x_hat.psi;
+        der.differentiator.mrad_2l_vs.error.psi   = log.inner_loop.psi_unwrapped   - log.differentiator.mrad_2l_vs.x_hat.psi;
         
         % (b) Error between the euler rates for all four methods
         der.differentiator.mrad.error.phi_dot       = log.inner_loop.phi_dot   - log.differentiator.mrad.x_hat_dot.phi_dot;
