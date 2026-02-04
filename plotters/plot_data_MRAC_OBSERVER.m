@@ -24,6 +24,24 @@ addpath("plotters/helpers/mrac_observer/");
 % Virginia Tech
 % 11/13/2025
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ////////////////////////////////////////////////////////////////////////
+% =========================================================================
+% ADAPTIVE DIFFERENTIATOR STUFF
+% =========================================================================
+%% Plot the sginal (Euler Angles) vs time
+plotEstimatedEulerAngles(log, 'Differentiator - Estimated Euler Angles');
+
+%% Plot the differentiated signal (Euler Rates) vs time
+plotDifferentiatedEulerRates(log, 'Differentiator - Estimated Euler Rates');
+
+%% Plot the error for the signals in Euler angles
+plotEstErrEulerAngles(log, der, 'Differentiator - Observation Error Euler Angles');
+
+%% Plot the error for the signals in Euler rates
+plotDiffErrEulerRates(log, der, 'Differentiator - Observation Error Euler Rates');
+
+%% Plot the L2 norm of the error for the Euler angle and the rate estimates
+plotL2NormDifferentiator(log, der, 'Differentiator - L2 Norm of Observation Error');
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================

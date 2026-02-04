@@ -370,7 +370,68 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         log = processGainMatrixLog(log, 'Theta_hat_vs_2l_mrao',   data, 444, 4, 3);
         log = processGainMatrixLog(log, 'K_hat_g_y_vs_2l_mrao',   data, 456, 3, 3);
 
+        % Process stuff for the adaptive differentiator -------------------
+        log.differentiator.mrad.x_hat.intphi      = data.data(:,465);
+        log.differentiator.mrad.x_hat.inttheta    = data.data(:,466);
+        log.differentiator.mrad.x_hat.intpsi      = data.data(:,467);
+        log.differentiator.mrad.x_hat.phi         = data.data(:,468);
+        log.differentiator.mrad.x_hat.theta       = data.data(:,469);
+        log.differentiator.mrad.x_hat.psi         = data.data(:,470);
+        
+        log.differentiator.mrad_2l.x_hat.intphi   = data.data(:,471);
+        log.differentiator.mrad_2l.x_hat.inttheta = data.data(:,472);
+        log.differentiator.mrad_2l.x_hat.intpsi   = data.data(:,473);
+        log.differentiator.mrad_2l.x_hat.phi      = data.data(:,474);
+        log.differentiator.mrad_2l.x_hat.theta    = data.data(:,475);
+        log.differentiator.mrad_2l.x_hat.psi      = data.data(:,476);
+        
+        log.differentiator.mrad_vs.x_hat.intphi   = data.data(:,477);
+        log.differentiator.mrad_vs.x_hat.inttheta = data.data(:,478);
+        log.differentiator.mrad_vs.x_hat.intpsi   = data.data(:,479);
+        log.differentiator.mrad_vs.x_hat.phi      = data.data(:,480);
+        log.differentiator.mrad_vs.x_hat.theta    = data.data(:,481);
+        log.differentiator.mrad_vs.x_hat.psi      = data.data(:,482);
+        
+        log.differentiator.mrad_2l_vs.x_hat.intphi   = data.data(:,483);
+        log.differentiator.mrad_2l_vs.x_hat.inttheta = data.data(:,484);
+        log.differentiator.mrad_2l_vs.x_hat.intpsi   = data.data(:,485);
+        log.differentiator.mrad_2l_vs.x_hat.phi      = data.data(:,486);
+        log.differentiator.mrad_2l_vs.x_hat.theta    = data.data(:,487);
+        log.differentiator.mrad_2l_vs.x_hat.psi      = data.data(:,488);
+        
+        log.differentiator.mrad.x_hat_dot.phi        = data.data(:,489);
+        log.differentiator.mrad.x_hat_dot.theta      = data.data(:,490);
+        log.differentiator.mrad.x_hat_dot.psi        = data.data(:,491);
+        log.differentiator.mrad.x_hat_dot.phi_dot    = data.data(:,492);
+        log.differentiator.mrad.x_hat_dot.theta_dot  = data.data(:,493);
+        log.differentiator.mrad.x_hat_dot.psi_dot    = data.data(:,494);
+        
+        log.differentiator.mrad_2l.x_hat_dot.phi       = data.data(:,495);
+        log.differentiator.mrad_2l.x_hat_dot.theta     = data.data(:,496);
+        log.differentiator.mrad_2l.x_hat_dot.psi       = data.data(:,497);
+        log.differentiator.mrad_2l.x_hat_dot.phi_dot   = data.data(:,498);
+        log.differentiator.mrad_2l.x_hat_dot.theta_dot = data.data(:,499);
+        log.differentiator.mrad_2l.x_hat_dot.psi_dot   = data.data(:,500);
+        
+        log.differentiator.mrad_vs.x_hat_dot.phi       = data.data(:,501);
+        log.differentiator.mrad_vs.x_hat_dot.theta     = data.data(:,502);
+        log.differentiator.mrad_vs.x_hat_dot.psi       = data.data(:,503);
+        log.differentiator.mrad_vs.x_hat_dot.phi_dot   = data.data(:,504);
+        log.differentiator.mrad_vs.x_hat_dot.theta_dot = data.data(:,505);
+        log.differentiator.mrad_vs.x_hat_dot.psi_dot   = data.data(:,506);
+        
+        log.differentiator.mrad_2l_vs.x_hat_dot.phi       = data.data(:,507);
+        log.differentiator.mrad_2l_vs.x_hat_dot.theta     = data.data(:,508);
+        log.differentiator.mrad_2l_vs.x_hat_dot.psi       = data.data(:,509);
+        log.differentiator.mrad_2l_vs.x_hat_dot.phi_dot   = data.data(:,510);
+        log.differentiator.mrad_2l_vs.x_hat_dot.theta_dot = data.data(:,511);
+        log.differentiator.mrad_2l_vs.x_hat_dot.psi_dot   = data.data(:,512);
 
+        log.inner_loop.phi_dot = data.data(:, 513);
+        log.inner_loop.theta_dot = data.data(:, 514);
+        log.inner_loop.psi_dot = data.data(:, 515);
+
+    
         % Compute the errors
         % MRAO observer errors
         der.observer.mrao.obs_err.x = log.Position_x_m - log.observer.mrao.x_hat.x;
