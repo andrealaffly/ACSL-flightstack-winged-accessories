@@ -559,6 +559,123 @@ function [] = process_mrac_observer_log(flightRunNames,baseDir,controller,proper
         der.observer.integrated_pos_from_vel.y = log.Position_y_m(1) + cumtrapz(log.Controller_Time_s, log.Velocity_y_ms);
         der.observer.integrated_pos_from_vel.z = log.Position_z_m(1) + cumtrapz(log.Controller_Time_s, log.Velocity_z_ms);
 
+        % =========================================================================
+        % -> Compute the errors for the differentiator
+        % =========================================================================
+        % (a) Error between the euler angles for all four methods
+        der.differentiator.mrad.error.phi       = log.Angle_roll_rad  - log.differentiator.mrad.x_hat.phi;
+        der.differentiator.mrad.error.theta     = log.Angle_pitch_rad - log.differentiator.mrad.x_hat.theta;
+        der.differentiator.mrad.error.psi       = log.Angle_yaw_rad   - log.differentiator.mrad.x_hat.psi;
+        
+        der.differentiator.mrad_2l.error.phi    = log.Angle_roll_rad  - log.differentiator.mrad_2l.x_hat.phi;
+        der.differentiator.mrad_2l.error.theta  = log.Angle_pitch_rad - log.differentiator.mrad_2l.x_hat.theta;
+        der.differentiator.mrad_2l.error.psi    = log.Angle_yaw_rad   - log.differentiator.mrad_2l.x_hat.psi;
+        
+        der.differentiator.mrad_vs.error.phi    = log.Angle_roll_rad  - log.differentiator.mrad_vs.x_hat.phi;
+        der.differentiator.mrad_vs.error.theta  = log.Angle_pitch_rad - log.differentiator.mrad_vs.x_hat.theta;
+        der.differentiator.mrad_vs.error.psi    = log.Angle_yaw_rad   - log.differentiator.mrad_vs.x_hat.psi;
+        
+        der.differentiator.mrad_2l_vs.error.phi   = log.Angle_roll_rad  - log.differentiator.mrad_2l_vs.x_hat.phi;
+        der.differentiator.mrad_2l_vs.error.theta = log.Angle_pitch_rad - log.differentiator.mrad_2l_vs.x_hat.theta;
+        der.differentiator.mrad_2l_vs.error.psi   = log.Angle_yaw_rad   - log.differentiator.mrad_2l_vs.x_hat.psi;
+        
+        % (b) Error between the euler rates for all four methods
+        der.differentiator.mrad.error.phi_dot       = log.inner_loop.phi_dot   - log.differentiator.mrad.x_hat_dot.phi_dot;
+        der.differentiator.mrad.error.theta_dot     = log.inner_loop.theta_dot - log.differentiator.mrad.x_hat_dot.theta_dot;
+        der.differentiator.mrad.error.psi_dot       = log.inner_loop.psi_dot   - log.differentiator.mrad.x_hat_dot.psi_dot;
+        
+        der.differentiator.mrad_2l.error.phi_dot    = log.inner_loop.phi_dot   - log.differentiator.mrad_2l.x_hat_dot.phi_dot;
+        der.differentiator.mrad_2l.error.theta_dot  = log.inner_loop.theta_dot - log.differentiator.mrad_2l.x_hat_dot.theta_dot;
+        der.differentiator.mrad_2l.error.psi_dot    = log.inner_loop.psi_dot   - log.differentiator.mrad_2l.x_hat_dot.psi_dot;
+        
+        der.differentiator.mrad_vs.error.phi_dot    = log.inner_loop.phi_dot   - log.differentiator.mrad_vs.x_hat_dot.phi_dot;
+        der.differentiator.mrad_vs.error.theta_dot  = log.inner_loop.theta_dot - log.differentiator.mrad_vs.x_hat_dot.theta_dot;
+        der.differentiator.mrad_vs.error.psi_dot    = log.inner_loop.psi_dot   - log.differentiator.mrad_vs.x_hat_dot.psi_dot;
+        
+        der.differentiator.mrad_2l_vs.error.phi_dot   = log.inner_loop.phi_dot   - log.differentiator.mrad_2l_vs.x_hat_dot.phi_dot;
+        der.differentiator.mrad_2l_vs.error.theta_dot = log.inner_loop.theta_dot - log.differentiator.mrad_2l_vs.x_hat_dot.theta_dot;
+        der.differentiator.mrad_2l_vs.error.psi_dot   = log.inner_loop.psi_dot   - log.differentiator.mrad_2l_vs.x_hat_dot.psi_dot;
+        
+        % =========================================================================
+        % Running L2 norms (cumulative from t=0), one scalar time series per method
+        % =========================================================================
+        t  = log.Controller_Time_s(:);      % Nx1
+        dt = diff(t);                       % (N-1)x1
+        
+        % Convenience anonymous: inline version of compute_running_L2_padded
+        runL2 = @(E) [0; sqrt( cumsum( sum(E(1:end-1,:).^2, 2) .* dt ) )];
+        
+        % --- Euler angle errors: build Nx3 matrices then L2 ---
+        E_mrad_euler = [ ...
+            der.differentiator.mrad.error.phi(:), ...
+            der.differentiator.mrad.error.theta(:), ...
+            der.differentiator.mrad.error.psi(:) ...
+        ];
+        
+        E_mrad_2l_euler = [ ...
+            der.differentiator.mrad_2l.error.phi(:), ...
+            der.differentiator.mrad_2l.error.theta(:), ...
+            der.differentiator.mrad_2l.error.psi(:) ...
+        ];
+        
+        E_mrad_vs_euler = [ ...
+            der.differentiator.mrad_vs.error.phi(:), ...
+            der.differentiator.mrad_vs.error.theta(:), ...
+            der.differentiator.mrad_vs.error.psi(:) ...
+        ];
+        
+        E_mrad_2l_vs_euler = [ ...
+            der.differentiator.mrad_2l_vs.error.phi(:), ...
+            der.differentiator.mrad_2l_vs.error.theta(:), ...
+            der.differentiator.mrad_2l_vs.error.psi(:) ...
+        ];
+        
+        der.differentiator.L2norm.mrad.euler       = runL2(E_mrad_euler);
+        der.differentiator.L2norm.mrad_2l.euler    = runL2(E_mrad_2l_euler);
+        der.differentiator.L2norm.mrad_vs.euler    = runL2(E_mrad_vs_euler);
+        der.differentiator.L2norm.mrad_2l_vs.euler = runL2(E_mrad_2l_vs_euler);
+        
+        % --- Euler rate errors: build Nx3 matrices then L2 ---
+        E_mrad_euler_dot = [ ...
+            der.differentiator.mrad.error.phi_dot(:), ...
+            der.differentiator.mrad.error.theta_dot(:), ...
+            der.differentiator.mrad.error.psi_dot(:) ...
+        ];
+        
+        E_mrad_2l_euler_dot = [ ...
+            der.differentiator.mrad_2l.error.phi_dot(:), ...
+            der.differentiator.mrad_2l.error.theta_dot(:), ...
+            der.differentiator.mrad_2l.error.psi_dot(:) ...
+        ];
+        
+        E_mrad_vs_euler_dot = [ ...
+            der.differentiator.mrad_vs.error.phi_dot(:), ...
+            der.differentiator.mrad_vs.error.theta_dot(:), ...
+            der.differentiator.mrad_vs.error.psi_dot(:) ...
+        ];
+        
+        E_mrad_2l_vs_euler_dot = [ ...
+            der.differentiator.mrad_2l_vs.error.phi_dot(:), ...
+            der.differentiator.mrad_2l_vs.error.theta_dot(:), ...
+            der.differentiator.mrad_2l_vs.error.psi_dot(:) ...
+        ];
+        
+        der.differentiator.L2norm.mrad.euler_dot       = runL2(E_mrad_euler_dot);
+        der.differentiator.L2norm.mrad_2l.euler_dot    = runL2(E_mrad_2l_euler_dot);
+        der.differentiator.L2norm.mrad_vs.euler_dot    = runL2(E_mrad_vs_euler_dot);
+        der.differentiator.L2norm.mrad_2l_vs.euler_dot = runL2(E_mrad_2l_vs_euler_dot);
+        
+        % --- Total (angles + rates): stack Nx6 and compute one L2 per method ---
+        E_mrad_total = [E_mrad_euler, E_mrad_euler_dot];
+        E_mrad_2l_total = [E_mrad_2l_euler, E_mrad_2l_euler_dot];
+        E_mrad_vs_total = [E_mrad_vs_euler, E_mrad_vs_euler_dot];
+        E_mrad_2l_vs_total = [E_mrad_2l_vs_euler, E_mrad_2l_vs_euler_dot];
+        
+        der.differentiator.L2norm.mrad.total       = runL2(E_mrad_total);
+        der.differentiator.L2norm.mrad_2l.total    = runL2(E_mrad_2l_total);
+        der.differentiator.L2norm.mrad_vs.total    = runL2(E_mrad_vs_total);
+        der.differentiator.L2norm.mrad_2l_vs.total = runL2(E_mrad_2l_vs_total);
+
         % Average algorithm execution time 
         der.average_algorithm_execution_time_us = ...
             mean(log.Alg_exe_time(log.Alg_exe_time > 0));
