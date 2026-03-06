@@ -10,7 +10,7 @@
 close all
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
-set(groot, 'defaultAxesFontSize', 30); 
+set(groot, 'defaultAxesFontSize', 40); 
 addpath("plotters/helpers/general/");
 addpath("plotters/helpers/mocap/");
 addpath("plotters/helpers/vio/");
@@ -28,7 +28,7 @@ addpath("plotters/helpers/mrac_observer/");
 % =========================================================================
 % ADAPTIVE DIFFERENTIATOR STUFF
 % =========================================================================
-%% Plot the sginal (Euler Angles) vs time
+%% Plot the signal (Euler Angles) vs time
 plotEstimatedEulerAngles(log, 'Differentiator - Estimated Euler Angles');
 
 %% Plot the differentiated signal (Euler Rates) vs time
@@ -48,7 +48,7 @@ plotL2NormDifferentiator(log, der, 'Differentiator - L2 Norm of Observation Erro
 % ADAPTIVE OBSERVER STUFF
 % =========================================================================
 %% Plot the estimated singal (position) vs time
-plotEstimatedPos(log, der, 'Observer - Estimated Translational Position');
+plotEstimatedPos(log, 'Observer - Estimated Translational Position');
 
 %% Plot the observed/reconstructed singal (velocity) vs time
 plotEstimatedVel(log, 'Observer - Estimated Translational Velocity');
@@ -61,6 +61,9 @@ plotEstErrVel(log, der, 'Observer - Observation Error Velocity');
 
 %% Plot the L2 Norm of the Errors
 plotEstErrL2Norm(log, der, 'Observer - L2 Norm of Observation Error');
+
+%% Plot the L2 Norm of the Position Observation Error
+plotEstErrL2NormPos(log, der, 'Observer - L2 Norm of Position Observation Error');
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================

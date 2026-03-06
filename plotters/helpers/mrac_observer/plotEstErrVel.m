@@ -7,7 +7,7 @@
 % Author: Giri Mugundan Kumar
 % Department of Mechanical Engineering
 % Virginia Tech
-% 01/20/2026
+% 01/40/4026
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [] = plotEstErrVel(log,der,title)
@@ -16,44 +16,47 @@ set(figure,'Color', 'white')
 
 subplot(3,1,1)
 hold on
-plot(log.Controller_Time_s, abs(der.observer.mrao.obs_err.vx), 'b-.', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, abs(der.observer.mrao2l.obs_err.vx), 'r-', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, abs(der.observer.mraovs.obs_err.vx), 'g-.', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, abs(der.observer.mrao2lvs.obs_err.vx), 'c-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao.obs_err.vx),    'b-.', 'LineWidth', 2.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao2l.obs_err.vx),  'r-',  'LineWidth', 2.5)
+plot(log.Controller_Time_s, abs(der.observer.mraovs.obs_err.vx),  'g-.', 'LineWidth', 2.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao2lvs.obs_err.vx),'LineStyle','-',  'Color',[0.7 0 1], 'LineWidth',2)
 hold off
-l= legend('MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('$$\| e_{\dot{x}} \|$$ [m/s]','interpreter','latex','fontsize',30)
+ylabel('$$\| e_{vx} \|$$ [m/s]','interpreter','latex','fontsize',60)
 axis tight
-grid minor
 
 subplot(3,1,2)
 hold on
-plot(log.Controller_Time_s, abs(der.observer.mrao.obs_err.vy), 'b-.', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, abs(der.observer.mrao2l.obs_err.vy), 'r-', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, abs(der.observer.mraovs.obs_err.vy), 'g-.', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, abs(der.observer.mrao2lvs.obs_err.vy), 'c-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao.obs_err.vy),    'b-.', 'LineWidth', 2.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao2l.obs_err.vy),  'r-',  'LineWidth', 2.5)
+plot(log.Controller_Time_s, abs(der.observer.mraovs.obs_err.vy),  'g-.', 'LineWidth', 2.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao2lvs.obs_err.vy),'LineStyle','-',  'Color',[0.7 0 1], 'LineWidth',2)
 hold off
-l= legend('MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('$$\| e_{\dot{y}} \|$$ [m/s]','interpreter','latex','fontsize',30)
+ylabel('$$\| e_{vy} \|$$ [m/s]','interpreter','latex','fontsize',60)
 axis tight
-grid minor
 
 subplot(3,1,3)
 hold on
-plot(log.Controller_Time_s, abs(der.observer.mrao.obs_err.vz), 'b-.', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, abs(der.observer.mrao2l.obs_err.vz), 'r-', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, abs(der.observer.mraovs.obs_err.vz), 'g-.', 'LineWidth', 1.5)
-plot(log.Controller_Time_s, abs(der.observer.mrao2lvs.obs_err.vz), 'c-', 'LineWidth', 1.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao.obs_err.vz),    'b-.', 'LineWidth', 2.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao2l.obs_err.vz),  'r-',  'LineWidth', 2.5)
+plot(log.Controller_Time_s, abs(der.observer.mraovs.obs_err.vz),  'g-.', 'LineWidth', 2.5)
+plot(log.Controller_Time_s, abs(der.observer.mrao2lvs.obs_err.vz),'LineStyle','-',  'Color',[0.7 0 1], 'LineWidth',2)
 hold off
-l= legend('MRA0', '2L MRAO', 'MRAO VS', '2L MRAO VS');
-set(l,'interpreter','latex','fontsize',15);
-ylabel('$$\| e_{\dot{z}} \|$$ [m/s]','interpreter','latex','fontsize',30)
+ylabel('$$\| e_{vz} \|$$ [m/s]','interpreter','latex','fontsize',60)
 axis tight
-grid minor
-xlabel('t [s]','interpreter','latex','fontsize',30)
-sgtitle(title,'Interpreter','latex','FontSize',20);
+xlabel('t [s]','interpreter','latex','fontsize',60)
+ax3 = gca;
+
+% Legend from third subplot
+h  = get(ax3,'Children');   % handles in reverse plotting order
+h_mrao   = h(4);
+h_2l     = h(3);
+h_vs     = h(2);
+h_2lvs   = h(1);
+leg = legend([h_mrao h_2l h_vs h_2lvs], ...
+    'MRAO', '2L MRAO', 'MRAO VS', '2L MRAO VS', ...
+    'Orientation','horizontal', 'Interpreter','latex', 'FontSize',40);
+set(leg,'Location','southoutside');
+
 
 end
 

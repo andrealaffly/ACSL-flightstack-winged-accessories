@@ -43,6 +43,8 @@ elseif (strcmp(picked_controller, 'MRAC_HYBRID'))
     controller = 'MRAC_HYBRID/';
 elseif (strcmp(picked_controller, 'MRAC_OBSERVER'))
     controller = 'MRAC_OBSERVER/';
+elseif (strcmp(picked_controller, 'MRAC_LONG_LAT'))
+    controller = 'MRAC_LONG_LAT/';
 end
 
 % Define the directory containing the flight logs
@@ -99,6 +101,13 @@ for i = 1:length(items)
     end
 end
 
+% -------------------------------------------------------------------------
+% If this is a simulation run, process physics.log 
+% -------------------------------------------------------------------------
+if sim
+    % physics.log lives directly in each run folder under baseDir
+    process_physics_log(flightRunNames, baseDir);
+end
 
 % Display the names of the flight run subfolders
 disp('Flight run subfolders:');
@@ -117,6 +126,8 @@ elseif (strcmp(picked_controller, 'MRAC_HYBRID'))
     process_mrac_hybrid_log(flightRunNames,baseDir,controller,properties);
 elseif (strcmp(picked_controller, 'MRAC_OBSERVER'))
     process_mrac_observer_log(flightRunNames,baseDir,controller,properties);
+elseif (strcmp(picked_controller, 'MRAC_LONG_LAT'))
+    process_mrac_long_lat_log(flightRunNames,baseDir,controller,properties);
 end
 
 % all the data after saving them so that we can load what we want and plot
