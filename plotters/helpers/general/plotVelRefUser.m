@@ -50,6 +50,8 @@ l= legend('$$\dot{z}_{\rm cmd}(t)$$','$$\dot{z}_{\rm ref}(t)$$', ...
           '$$\dot{z}(t)$$');
 set(l,'interpreter','latex','fontsize',15);
 ylabel('[m/s]','interpreter','latex','fontsize',20)
+ax = gca;
+ax.YDir = 'reverse';
 axis tight
 grid minor
 xlabel('$$t \, {\rm [s]}$$','interpreter','latex','fontsize',20)

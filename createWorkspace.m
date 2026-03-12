@@ -24,7 +24,7 @@ addpath("functions/helpers/");
 acsl_sim_mode = true;
 
 % Specify the date in YYYY_MM_DD
-date = "2026_03_05";
+date = "2026_03_12";
 
 % Uncomment the platform - Should match the flightstack
 picked_platform = "qrbp";
@@ -34,10 +34,11 @@ picked_platform = "qrbp";
 % picked_controller = 'PID';
 % picked_controller = 'MRAC_PID';
 % picked_controller = 'PID_OMEGA';
-picked_controller = 'MRAC_OMEGA';
+% picked_controller = 'MRAC_OMEGA';
 % picked_controller = 'MRAC_HYBRID';
 % picked_controller = 'MRAC_OBSERVER';
 % picked_controller = 'MRAC_LONG_LAT';
+picked_controller = 'PID_QUATERNION';
 
 %==========================================================%
 
