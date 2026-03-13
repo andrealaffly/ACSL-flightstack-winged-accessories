@@ -102,3 +102,8 @@ sim-log/qrbp/*
 # Allow tracking of specific folders inside qrbp
 
 # Ensure all files inside those folders are tracked
+
+
+# reignore the MacOS junk
+.DS_Store
+**/.DS_Store

@@ -188,7 +188,30 @@ function [] = process_pid_quaternion_log(flightRunNames,baseDir,controller,prope
         log.Motor_1_Thr_Sat_Norm = data.data(:,index);   index = index + 1;
         log.Motor_2_Thr_Sat_Norm = data.data(:,index);   index = index + 1;
         log.Motor_3_Thr_Sat_Norm = data.data(:,index);   index = index + 1;
-        log.Motor_4_Thr_Sat_Norm = data.data(:,index);   index = index + 1;      
+        log.Motor_4_Thr_Sat_Norm = data.data(:,index);   index = index + 1; 
+
+        % Norm of the total thrust fd
+        der.Fd = sqrt(log.mu_x_I.^2 + log.mu_y_I.^2 + log.mu_z_I.^2);
+
+        % Build desired and actual quaternions from components (w,x,y,z)
+        q_d = quaternion(log.q_d_w, log.q_d_x, log.q_d_y, log.q_d_z);
+        q   = quaternion(log.q_w,   log.q_x,   log.q_y,   log.q_z);
+        
+        % Use ZYX convention
+        der.euler.sequence = 'ZYX';
+        
+        % Desired Euler (ZYX: yaw, pitch, roll)
+        eul_d = quat2eul(q_d, der.euler.sequence);   % [yaw pitch roll]
+        der.euler.yaw_d   = eul_d(:,1);
+        der.euler.pitch_d = eul_d(:,2);
+        der.euler.roll_d  = eul_d(:,3);
+        
+        % Actual Euler (ZYX: yaw, pitch, roll)
+        eul   = quat2eul(q, der.euler.sequence);     % [yaw pitch roll]
+        der.euler.yaw    = eul(:,1);
+        der.euler.pitch  = eul(:,2);
+        der.euler.roll   = eul(:,3);
+
         
         % Average algorithm execution time 
         der.average_algorithm_execution_time_us = ...

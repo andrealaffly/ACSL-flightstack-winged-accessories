@@ -64,11 +64,8 @@ plotAttitudeTrajEuler(log, der, 'QPID - Euler Orientation');
 %% Plot desired angular velocity vs angluar velocity
 plotAngularVelocityTraj(log, 'QPID - Angular Velocity'); 
 
-%% Plot the error quaternion
-plotErrorQuaternion(log, 'QPID - Error Quaternion');
-
-%% Plot the error in angular velocity
-plotErrorAngularVelocity(log, 'QPID - Angular Velocity Error');
+%% Plot the error quaternion and angular velocity
+plotRotErrors(log, 'QPID - Error Quaternion and Angular Velocity');
 
 %% Plot desired angular acceleration
 plotDesiredAngularAcc(log, 'QPID - Desired Angular Acceleration');
@@ -82,4 +79,3 @@ plotTau(log, 'QPID - Rotational Control Input');
 % =========================================================================
 %% plot the thrust per motor in N and the satruated normalized thrust
 plotMotorControl(log, 'QPID - Motor Thrusts');
-
