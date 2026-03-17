@@ -65,7 +65,7 @@ plotAttitudeTrajEuler(log, der, 'QPID - Euler Orientation');
 plotAngularVelocityTraj(log, 'QPID - Angular Velocity'); 
 
 %% Plot the error quaternion and angular velocity
-plotRotErrors(log, 'QPID - Error Quaternion and Angular Velocity');
+plotRotErrors(log, der, 'QPID - Error Quaternion and Angular Velocity');
 
 %% Plot desired angular acceleration
 plotDesiredAngularAcc(log, 'QPID - Desired Angular Acceleration');

@@ -10,11 +10,11 @@
 % 01/23/2024
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [] = plotRotErrors(log,title)
+function [] = plotRotErrors(log,der,title)
 
 set(figure,'Color','White')
 
-subplot(2,1,1)
+subplot(3,1,1)
 hold on
 plot(log.Controller_Time_s,log.q_e_x, 'r-', 'LineWidth', 2)
 plot(log.Controller_Time_s,log.q_e_y, 'g-', 'LineWidth',2)  
@@ -28,7 +28,22 @@ ylabel('[-]','interpreter','latex','fontsize',20)
 axis tight
 grid minor
 
-subplot(2,1,2)
+subplot(3,1,2)
+hold on
+plot(log.Controller_Time_s,rad2deg(der.euler_e.roll), 'r-', 'LineWidth', 2)
+plot(log.Controller_Time_s,rad2deg(der.euler_e.pitch), 'g-', 'LineWidth', 2)
+plot(log.Controller_Time_s,rad2deg(der.euler_e.yaw), 'b-', 'LineWidth', 2)
+hold off
+l= legend('$$\phi_{\rm e}$$', ...
+          '$$\theta_{\rm e}$$', ...
+          '$$\psi_{\rm e}$$');
+set(l,'interpreter','latex','fontsize',15);
+ylabel('[deg]','interpreter','latex','fontsize',20)
+axis tight
+grid minor
+
+
+subplot(3,1,3)
 plot(log.Controller_Time_s,log.omega_e_x, 'LineWidth',2)
 hold on
 plot(log.Controller_Time_s,log.omega_e_y, 'LineWidth',2)

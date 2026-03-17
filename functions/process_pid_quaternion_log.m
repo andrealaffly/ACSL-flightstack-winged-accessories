@@ -145,10 +145,10 @@ function [] = process_pid_quaternion_log(flightRunNames,baseDir,controller,prope
         log.q_signal_dot_y = data.data(:,index);         index = index + 1;
         log.q_signal_dot_z = data.data(:,index);         index = index + 1;
 
-        log.q_d_dot_w = data.data(:,index);              index = index + 1;
-        log.q_d_dot_x = data.data(:,index);              index = index + 1;
-        log.q_d_dot_y = data.data(:,index);              index = index + 1;
-        log.q_d_dot_z = data.data(:,index);              index = index + 1;
+        log.q_align_dot_w = data.data(:,index);              index = index + 1;
+        log.q_align_dot_x = data.data(:,index);              index = index + 1;
+        log.q_align_dot_y = data.data(:,index);              index = index + 1;
+        log.q_align_dot_z = data.data(:,index);              index = index + 1;
 
         log.omega_d_x = data.data(:,index);              index = index + 1;
         log.omega_d_y = data.data(:,index);              index = index + 1;
@@ -212,6 +212,15 @@ function [] = process_pid_quaternion_log(flightRunNames,baseDir,controller,prope
         der.euler.pitch  = eul(:,2);
         der.euler.roll   = eul(:,3);
 
+        % Build error quaternion from components (w,x,y,z)
+        q_e = quaternion(log.q_e_w, log.q_e_x, log.q_e_y, log.q_e_z);
+        
+        % Euler for error quaternion (same ZYX convention)
+        eul_e = quat2eul(q_e, der.euler.sequence);   % [yaw_e pitch_e roll_e]
+        
+        der.euler_e.yaw   = eul_e(:,1);
+        der.euler_e.pitch = eul_e(:,2);
+        der.euler_e.roll  = eul_e(:,3);
         
         % Average algorithm execution time 
         der.average_algorithm_execution_time_us = ...
