@@ -47,6 +47,10 @@ elseif (strcmp(picked_controller, 'MRAC_LONG_LAT'))
     controller = 'MRAC_LONG_LAT/';
 elseif (strcmp(picked_controller, 'PID_QUATERNION'))
     controller = 'PID_QUATERNION/';
+elseif (strcmp(picked_controller, 'PID_GEOMETRIC'))
+    controller = 'PID_GEOMETRIC';
+elseif (strcmp(picked_controller, 'MRAC_GEOMETRIC'))
+    controller = 'MRAC_GEOMETRIC';
 end
 
 % Define the directory containing the flight logs
@@ -132,6 +136,10 @@ elseif (strcmp(picked_controller, 'MRAC_LONG_LAT'))
     process_mrac_long_lat_log(flightRunNames,baseDir,controller,properties);
 elseif (strcmp(picked_controller, 'PID_QUATERNION'))
     process_pid_quaternion_log(flightRunNames,baseDir,controller,properties);
+elseif (strcmp(picked_controller, 'PID_GEOMETRIC'))
+    process_pid_geometric_log(flightRunNames,baseDir,controller,properties);
+elseif (strcmp(picked_controller, 'MRAC_GEOMETRIC'))
+    process_mrac_geometric_log(flightRunNames,baseDir,controller,properties);
 end
 
 % all the data after saving them so that we can load what we want and plot

@@ -38,7 +38,10 @@ picked_platform = "qrbp";
 % picked_controller = 'MRAC_HYBRID';
 % picked_controller = 'MRAC_OBSERVER';
 % picked_controller = 'MRAC_LONG_LAT';
-picked_controller = 'PID_QUATERNION';
+% picked_controller = 'PID_QUATERNION';
+% picked_controller = 'PID_GEOMETRIC';
+picked_controller = 'MRAC_GEOMETRIC';
+
 
 %==========================================================%
 
