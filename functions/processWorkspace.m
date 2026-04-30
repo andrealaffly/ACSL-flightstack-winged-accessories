@@ -1,33 +1,71 @@
 function [] = processWorkspace(picked_platform, picked_controller, date, sim)
 
-% Properties of qrbp
-properties.G = 9.81;
+if (strcmp(picked_platform, 'qrbp'))
+    % Add the path to qrbp processors
+    addpath("functions/qrbp/");
 
-properties.MASS = 1.68817748; 
+    % Properties of qrbp
+    properties.G = 9.81;
+    
+    properties.MASS = 1.68817748; 
+    
+    properties.I_q = [0.02353227, -0.00000011,  0.00047910;
+                     -0.00000011,  0.01623841, -0.00000128;
+                      0.00047910, -0.00000128,  0.02753728];
+    
+    properties.I_b = [ 0.02753728,  0.00000128, -0.00047910;
+                       0.00000128,  0.01623841, -0.00000011;
+                      -0.00047910, -0.00000011,  0.02353227];
+    
+    properties.RHO_HAT = 1.225;
+    
+    properties.LX = 0.097509;                                        % dist to motor along x^J         [m]
+    properties.LY = 0.110688;                                        % dist to motor along y^J         [m]
+    properties.LZ_S = 0.038779;                                      % dist to aero center of stabs    [m]
+    properties.SPAN_W = 0.50;                                        % span of wings                   [m]
+    properties.CHORD_W = 0.12;                                       % chord of wings                  [m]
+    properties.SPAN_S = 0.175;                                       % span of stabs                   [m]
+    properties.CHORD_S = 0.02;                                       % chord of stabs                  [m]
+    properties.PLANFORM_AREA_W = (2.0 * properties.SPAN_W * properties.CHORD_S);           % planform area of wings        [m^2]
+    properties.PLANFORM_AREA_S = (2.0 * properties.SPAN_S * properties.CHORD_S);           % planform area of stabs        [m^2]
+    
+    % Aerodynamic Dynamic Coefficient Defines
+    properties.DYN_PRESS_COEFF_W = (0.5 * properties.RHO_HAT * properties.PLANFORM_AREA_W);     
+    properties.DYN_PRESS_COEFF_S = (0.5 * properties.RHO_HAT * properties.PLANFORM_AREA_S);
 
-properties.I_q = [0.02353227, -0.00000011,  0.00047910;
-                 -0.00000011,  0.01623841, -0.00000128;
-                  0.00047910, -0.00000128,  0.02753728];
+elseif (strcmp(picked_platform, 'tailsitter'))
+    % Add the path to tailsitter processors
+    addpath("functions/tailsitter/");
+    
+    % Properties of tailsitter
+    properties.G = 9.81;
 
-properties.I_b = [ 0.02753728,  0.00000128, -0.00047910;
-                   0.00000128,  0.01623841, -0.00000011;
-                  -0.00047910, -0.00000011,  0.02353227];
+    properties.MASS = 1.63252801;
 
-properties.RHO_HAT = 1.225;
+    properties.I_q = [0.15226711,-0.00048479, -0.00000929;
+                     -0.00048479, 0.05253416,  0.00110234;
+                     -0.00000929, 0.00110234,  0.18998386];
 
-properties.LX = 0.097509;                                        % dist to motor along x^J         [m]
-properties.LY = 0.110688;                                        % dist to motor along y^J         [m]
-properties.LZ_S = 0.038779;                                      % dist to aero center of stabs    [m]
-properties.SPAN_W = 0.50;                                        % span of wings                   [m]
-properties.CHORD_W = 0.12;                                       % chord of wings                  [m]
-properties.SPAN_S = 0.175;                                       % span of stabs                   [m]
-properties.CHORD_S = 0.02;                                       % chord of stabs                  [m]
-properties.PLANFORM_AREA_W = (2.0 * properties.SPAN_W * properties.CHORD_S);           % planform area of wings        [m^2]
-properties.PLANFORM_AREA_S = (2.0 * properties.SPAN_S * properties.CHORD_S);           % planform area of stabs        [m^2]
+    properties.I_b = [0.18998386, -0.00110233,  0.00000929;
+                     -0.00110233,  0.05253416, -0.00048479;
+                      0.00000929, -0.00048479,  0.15226711];
 
-% Aerodynamic Dynamic Coefficient Defines
-properties.DYN_PRESS_COEFF_W = (0.5 * properties.RHO_HAT * properties.PLANFORM_AREA_W);     
-properties.DYN_PRESS_COEFF_S = (0.5 * properties.RHO_HAT * properties.PLANFORM_AREA_S);
+    properties.LX = 0.2230099724;                                    % dist to motor along x^J         [m]
+    properties.LY = 0.2589711696;                                    % dist to motor along y^J         [m]
+    properties.LZ_S = 0.10234962;                                    % dist to aero center of stabs    [m]
+    properties.SPAN_W = 1.50;                                        % span of wings                   [m]
+    properties.CHORD_W = 0.2;                                        % chord of wings                  [m]
+    properties.SPAN_S = 0.420;                                       % span of stabs                   [m]
+    properties.CHORD_S = 0.05;                                       % chord of stabs                  [m]
+    properties.PLANFORM_AREA_W = (2.0 * properties.SPAN_W * properties.CHORD_S);           % planform area of wings        [m^2]
+    properties.PLANFORM_AREA_S = (2.0 * properties.SPAN_S * properties.CHORD_S);           % planform area of stabs        [m^2]
+    
+    % Aerodynamic Dynamic Coefficient Defines
+    properties.DYN_PRESS_COEFF_W = (0.5 * properties.RHO_HAT * properties.PLANFORM_AREA_W);     
+    properties.DYN_PRESS_COEFF_S = (0.5 * properties.RHO_HAT * properties.PLANFORM_AREA_S);
+
+
+end
 
 
 % Logic for which controller is picked

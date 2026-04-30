@@ -24,13 +24,14 @@ addpath("functions/helpers/");
 acsl_sim_mode = true;
 
 % Specify the date in YYYY_MM_DD
-date = "2026_03_16";
+date = "2026_04_30";
 
 % Uncomment the platform - Should match the flightstack
-picked_platform = "qrbp";
-% picked_platform = "rostestdrone";
+% picked_platform = "qrbp";
+picked_platform = "tailsitter";
 
 % Uncomment the controller - Should match the flightstack
+% Uncomment the controller for the qrbp
 % picked_controller = 'PID';
 % picked_controller = 'MRAC_PID';
 % picked_controller = 'PID_OMEGA';
@@ -40,6 +41,9 @@ picked_platform = "qrbp";
 % picked_controller = 'MRAC_LONG_LAT';
 % picked_controller = 'PID_QUATERNION';
 % picked_controller = 'PID_GEOMETRIC';
+% picked_controller = 'MRAC_GEOMETRIC';
+
+% Uncomment the controller for the tailsitter
 picked_controller = 'MRAC_GEOMETRIC';
 
 

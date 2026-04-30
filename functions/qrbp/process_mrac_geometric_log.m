@@ -1,4 +1,4 @@
-% This function processes the log files for PID_QUATERNION
+% This function processes the log files for MRAC_GEOMETRIC
 function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,properties)
     
     % Assume you are flying both mocap and vio
@@ -8,7 +8,7 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
     % Traverse the length of the flight runs and get the data    
     for ii = 1:length(flightRunNames)
         log_file_path = fullfile(baseDir, flightRunNames{ii}, controller, 'controller_log.log');
-        gains_file_path = fullfile(baseDir,flightRunNames{ii}, controller, 'params', 'gains_PID_QUATERNION.json');
+        gains_file_path = fullfile(baseDir,flightRunNames{ii}, controller, 'params', 'gains_MRAC_GEOMETRIC.json');
         mocap_file_path = fullfile(baseDir,flightRunNames{ii},'mocap_log.log');
         vio_file_path = fullfile(baseDir,flightRunNames{ii},'vio_log.log');
         
@@ -73,6 +73,26 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
         log.Controller_Time_s = data.data(:, index);     index = index + 1;
         log.Alg_exe_time = data.data(:,index);           index = index + 1;
 
+        log.x_m = data.data(:,index);                    index = index + 1;
+        log.y_m = data.data(:,index);                    index = index + 1;
+        log.z_m = data.data(:,index);                    index = index + 1;
+
+        log.vx_ms = data.data(:,index);                  index = index + 1;
+        log.vy_ms = data.data(:,index);                  index = index + 1;
+        log.vz_ms = data.data(:,index);                  index = index + 1;
+
+        log.x_ref = data.data(:,index);                  index = index + 1;
+        log.y_ref = data.data(:,index);                  index = index + 1;
+        log.z_ref = data.data(:,index);                  index = index + 1;
+        
+        log.vx_ref = data.data(:,index);                 index = index + 1;
+        log.vy_ref = data.data(:,index);                 index = index + 1;
+        log.vz_ref = data.data(:,index);                 index = index + 1;
+        
+        log.ax_ref = data.data(:,index);                 index = index + 1;
+        log.ay_ref = data.data(:,index);                 index = index + 1;
+        log.az_ref = data.data(:,index);                 index = index + 1;
+
         log.x_user = data.data(:,index);                 index = index + 1;
         log.y_user = data.data(:,index);                 index = index + 1;
         log.z_user = data.data(:,index);                 index = index + 1;
@@ -85,17 +105,6 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
         log.ay_user = data.data(:,index);                index = index + 1;
         log.az_user = data.data(:,index);                index = index + 1;
 
-        log.psi_user = data.data(:,index);               index = index + 1;
-        log.psi_user_unwrapped = data.data(:,index);     index = index + 1;
-
-        log.x_m = data.data(:,index);                    index = index + 1;
-        log.y_m = data.data(:,index);                    index = index + 1;
-        log.z_m = data.data(:,index);                    index = index + 1;
-
-        log.vx_ms = data.data(:,index);                  index = index + 1;
-        log.vy_ms = data.data(:,index);                  index = index + 1;
-        log.vz_ms = data.data(:,index);                  index = index + 1;
-
         log.e_x = data.data(:,index);                    index = index + 1;
         log.e_y = data.data(:,index);                    index = index + 1;
         log.e_z = data.data(:,index);                    index = index + 1;
@@ -107,48 +116,30 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
         log.e_x_int = data.data(:,index);                index = index + 1;
         log.e_y_int = data.data(:,index);                index = index + 1;
         log.e_z_int = data.data(:,index);                index = index + 1;
+        
+        log.e_x_ref = data.data(:,index);                index = index + 1;
+        log.e_y_ref = data.data(:,index);                index = index + 1;
+        log.e_z_ref = data.data(:,index);                index = index + 1;
 
+        log.e_x_ref_int = data.data(:,index);            index = index + 1;
+        log.e_y_ref_int = data.data(:,index);            index = index + 1;
+        log.e_z_ref_int = data.data(:,index);            index = index + 1;
+
+        log.x_ref_cmd = data.data(:,index);              index = index + 1;
+        log.y_ref_cmd = data.data(:,index);              index = index + 1;
+        log.z_ref_cmd = data.data(:,index);              index = index + 1;
+        
+        log.mu_x_baseline = data.data(:,index);          index = index + 1;
+        log.mu_y_baseline = data.data(:,index);          index = index + 1;
+        log.mu_z_baseline = data.data(:,index);          index = index + 1;
+
+        log.mu_x_adaptive = data.data(:,index);          index = index + 1;
+        log.mu_y_adaptive = data.data(:,index);          index = index + 1;
+        log.mu_z_adaptive = data.data(:,index);          index = index + 1;
+        
         log.mu_x_I = data.data(:,index);                 index = index + 1;
         log.mu_y_I = data.data(:,index);                 index = index + 1;
         log.mu_z_I = data.data(:,index);                 index = index + 1;
-
-        log.mu_x_J = data.data(:,index);                 index = index + 1;
-        log.mu_y_J = data.data(:,index);                 index = index + 1;
-        log.mu_z_J = data.data(:,index);                 index = index + 1;
-
-        log.f_d_hat_x = data.data(:,index);              index = index + 1;
-        log.f_d_hat_y = data.data(:,index);              index = index + 1;
-        log.f_d_hat_z = data.data(:,index);              index = index + 1;
-
-        log.q_align_w = data.data(:,index);              index = index + 1;
-        log.q_align_x = data.data(:,index);              index = index + 1;
-        log.q_align_y = data.data(:,index);              index = index + 1;
-        log.q_align_z = data.data(:,index);              index = index + 1;
-
-        log.q_align_star_w = data.data(:,index);         index = index + 1;
-        log.q_align_star_x = data.data(:,index);         index = index + 1;
-        log.q_align_star_y = data.data(:,index);         index = index + 1;
-        log.q_align_star_z = data.data(:,index);         index = index + 1;
-
-        log.q_yaw_w = data.data(:,index);                index = index + 1;
-        log.q_yaw_x = data.data(:,index);                index = index + 1;
-        log.q_yaw_y = data.data(:,index);                index = index + 1;
-        log.q_yaw_z = data.data(:,index);                index = index + 1;
-
-        log.q_d_w = data.data(:,index);                  index = index + 1;
-        log.q_d_x = data.data(:,index);                  index = index + 1;
-        log.q_d_y = data.data(:,index);                  index = index + 1;
-        log.q_d_z = data.data(:,index);                  index = index + 1;
-
-        log.q_signal_dot_w = data.data(:,index);         index = index + 1;
-        log.q_signal_dot_x = data.data(:,index);         index = index + 1;
-        log.q_signal_dot_y = data.data(:,index);         index = index + 1;
-        log.q_signal_dot_z = data.data(:,index);         index = index + 1;
-
-        log.q_align_dot_w = data.data(:,index);              index = index + 1;
-        log.q_align_dot_x = data.data(:,index);              index = index + 1;
-        log.q_align_dot_y = data.data(:,index);              index = index + 1;
-        log.q_align_dot_z = data.data(:,index);              index = index + 1;
 
         log.omega_d_x = data.data(:,index);              index = index + 1;
         log.omega_d_y = data.data(:,index);              index = index + 1;
@@ -158,28 +149,47 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
         log.alpha_d_y = data.data(:,index);              index = index + 1;
         log.alpha_d_z = data.data(:,index);              index = index + 1;
         
-        log.q_w = data.data(:,index);                    index = index + 1;
-        log.q_x = data.data(:,index);                    index = index + 1;
-        log.q_y = data.data(:,index);                    index = index + 1;
-        log.q_z = data.data(:,index);                    index = index + 1;
-
         log.omega_x = data.data(:,index);                index = index + 1;
         log.omega_y = data.data(:,index);                index = index + 1;
         log.omega_z = data.data(:,index);                index = index + 1;
 
-        log.q_e_w = data.data(:,index);                  index = index + 1;
-        log.q_e_x = data.data(:,index);                  index = index + 1;
-        log.q_e_y = data.data(:,index);                  index = index + 1;
-        log.q_e_z = data.data(:,index);                  index = index + 1;
+        log.omega_x_cmd = data.data(:,index);            index = index + 1;
+        log.omega_y_cmd = data.data(:,index);            index = index + 1;
+        log.omega_z_cmd = data.data(:,index);            index = index + 1;
+
+        log.omega_x_ref = data.data(:,index);            index = index + 1;
+        log.omega_y_ref = data.data(:,index);            index = index + 1;
+        log.omega_z_ref = data.data(:,index);            index = index + 1;
+
+        log.alpha_x_ref = data.data(:,index);            index = index + 1;
+        log.alpha_y_ref = data.data(:,index);            index = index + 1;
+        log.alpha_z_ref = data.data(:,index);            index = index + 1;
+
+        log.Xi_e_x = data.data(:,index);                 index = index + 1;
+        log.Xi_e_y = data.data(:,index);                 index = index + 1;
+        log.Xi_e_z = data.data(:,index);                 index = index + 1;
 
         log.omega_e_x = data.data(:,index);              index = index + 1;
         log.omega_e_y = data.data(:,index);              index = index + 1;
         log.omega_e_z = data.data(:,index);              index = index + 1;
 
-        log.tau_x = data.data(:,index);                  index = index + 1;
-        log.tau_y = data.data(:,index);                  index = index + 1;
-        log.tau_z = data.data(:,index);                  index = index + 1;
-        
+        log.omega_ref_e_x = data.data(:,index);          index = index + 1;
+        log.omega_ref_e_y = data.data(:,index);          index = index + 1;
+        log.omega_ref_e_z = data.data(:,index);          index = index + 1;
+
+        log.tau_x_baseline = data.data(:,index);         index = index + 1;
+        log.tau_y_baseline = data.data(:,index);         index = index + 1;
+        log.tau_z_baseline = data.data(:,index);         index = index + 1;
+
+        log.tau_x_adaptive = data.data(:,index);         index = index + 1;
+        log.tau_y_adaptive = data.data(:,index);         index = index + 1;
+        log.tau_z_adaptive = data.data(:,index);         index = index + 1;
+
+        log.control_input_1 = data.data(:,index);        index = index + 1;
+        log.control_input_2 = data.data(:,index);        index = index + 1;
+        log.control_input_3 = data.data(:,index);        index = index + 1;
+        log.control_input_4 = data.data(:,index);        index = index + 1;
+
         log.Motor_1_Thrust_N = data.data(:,index);       index = index + 1;
         log.Motor_2_Thrust_N = data.data(:,index);       index = index + 1;
         log.Motor_3_Thrust_N = data.data(:,index);       index = index + 1;
@@ -190,37 +200,45 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
         log.Motor_3_Thr_Sat_Norm = data.data(:,index);   index = index + 1;
         log.Motor_4_Thr_Sat_Norm = data.data(:,index);   index = index + 1; 
 
-        % Norm of the total thrust fd
-        der.Fd = sqrt(log.mu_x_I.^2 + log.mu_y_I.^2 + log.mu_z_I.^2);
+        log.dead_zone_value_tran = data.data(:,index);    index = index + 1;
+        log.dead_zone_value_rot = data.data(:,index);     index = index + 1;
 
-        % Build desired and actual quaternions from components (w,x,y,z)
-        q_d = quaternion(log.q_d_w, log.q_d_x, log.q_d_y, log.q_d_z);
-        q   = quaternion(log.q_w,   log.q_x,   log.q_y,   log.q_z);
+        log.proj_activated_K_hat_x_tran = data.data(:,index);
+                                                          index = index + 1;
+        log.proj_activated_K_hat_r_tran = data.data(:,index);
+                                                          index = index + 1;
+        log.proj_activated_Theta_hat_tran = data.data(:,index);
+                                                          index = index + 1;
         
-        % Use ZYX convention
-        der.euler.sequence = 'ZYX';
-        
-        % Desired Euler (ZYX: yaw, pitch, roll)
-        eul_d = quat2eul(q_d, der.euler.sequence);   % [yaw pitch roll]
-        der.euler.yaw_d   = eul_d(:,1);
-        der.euler.pitch_d = eul_d(:,2);
-        der.euler.roll_d  = eul_d(:,3);
-        
-        % Actual Euler (ZYX: yaw, pitch, roll)
-        eul   = quat2eul(q, der.euler.sequence);     % [yaw pitch roll]
-        der.euler.yaw    = eul(:,1);
-        der.euler.pitch  = eul(:,2);
-        der.euler.roll   = eul(:,3);
+        log.proj_activated_K_hat_x_rot = data.data(:,index);
+                                                          index = index + 1;
+        log.proj_activated_K_hat_r_rot = data.data(:,index);
+                                                          index = index + 1;
+        log.proj_activated_Theta_hat_rot = data.data(:,index);
+                                                          index = index + 1;
 
-        % Build error quaternion from components (w,x,y,z)
-        q_e = quaternion(log.q_e_w, log.q_e_x, log.q_e_y, log.q_e_z);
+        % Process the rotation matrices
+        log = processGainMatrixLog(log, 'R_d', data, index, 3, 3);
+                                                         index = index + 3*3;
+        log = processGainMatrixLog(log, 'R_d_dot', data, index, 3, 3);
+                                                         index = index + 3*3;
+        log = processGainMatrixLog(log, 'R_ji', data, index, 3, 3);
+                                                         index = index + 3*3;
+
+        % Process gains data
+        log = processGainMatrixLog(log, 'K_hat_x_tran', data, index, 6, 3);
+                                                         index = index + 6*3;
+        log = processGainMatrixLog(log, 'K_hat_r_tran', data, index, 3, 3);
+                                                         index = index + 3*3;
+        log = processGainMatrixLog(log, 'Theta_hat_tran', data, index, 30, 3);
+                                                         index = index + 30*3;
         
-        % Euler for error quaternion (same ZYX convention)
-        eul_e = quat2eul(q_e, der.euler.sequence);   % [yaw_e pitch_e roll_e]
-        
-        der.euler_e.yaw   = eul_e(:,1);
-        der.euler_e.pitch = eul_e(:,2);
-        der.euler_e.roll  = eul_e(:,3);
+        log = processGainMatrixLog(log, 'K_hat_x_rot', data, index, 3, 3);
+                                                         index = index + 3*3;
+        log = processGainMatrixLog(log, 'K_hat_r_rot', data, index, 3, 3);
+                                                         index = index + 3*3;
+        log = processGainMatrixLog(log, 'Theta_hat_rot', data, index, 12, 3);
+                                                         index = index + 3*3;
         
         % Average algorithm execution time 
         der.average_algorithm_execution_time_us = ...
@@ -320,7 +338,7 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
         
         % Define the folder path
         folder_path = fullfile(baseDir, flightRunNames{ii});
-        file_name = ['PID_QUATERNION_log_', flightRunNames{ii}, '.mat'];
+        file_name = ['MRAC_GEOMETRIC_log_', flightRunNames{ii}, '.mat'];
         full_path = fullfile(folder_path, file_name); % Corrected full_path
         
         % save the data to the specified file
