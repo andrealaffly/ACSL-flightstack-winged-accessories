@@ -11,10 +11,12 @@ close all
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 set(groot, 'defaultAxesFontSize', 30); 
-addpath("plotters/helpers/general/");
+
 addpath("plotters/helpers/mocap/");
 addpath("plotters/helpers/vio/");
 addpath("plotters/helpers/mocap_vio/");
+
+addpath("plotters/qrbp/helpers/general/");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author: Giri Mugundan Kumar
 % Department of Mechanical Engineering

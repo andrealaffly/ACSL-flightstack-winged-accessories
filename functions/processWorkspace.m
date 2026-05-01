@@ -50,6 +50,8 @@ elseif (strcmp(picked_platform, 'tailsitter'))
                      -0.00110233,  0.05253416, -0.00048479;
                       0.00000929, -0.00048479,  0.15226711];
 
+    properties.RHO_HAT = 1.225;
+
     properties.LX = 0.2230099724;                                    % dist to motor along x^J         [m]
     properties.LY = 0.2589711696;                                    % dist to motor along y^J         [m]
     properties.LZ_S = 0.10234962;                                    % dist to aero center of stabs    [m]

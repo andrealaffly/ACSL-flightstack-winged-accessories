@@ -16,14 +16,12 @@ addpath("plotters/helpers/mocap/");
 addpath("plotters/helpers/vio/");
 addpath("plotters/helpers/mocap_vio/");
 
-addpath("plotters/qrbp/helpers/general/");
-addpath("plotters/qrbp/helpers/general/aerodynamics/");
-addpath("plotters/qrbp/helpers/mrac_omega/");
+addpath("plotters/tailsitter/helpers/mrac_geometric/");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author: Giri Mugundan Kumar
 % Department of Mechanical Engineering
 % Virginia Tech
-% 01/23/2025
+% 04/15/2026
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -32,126 +30,120 @@ addpath("plotters/qrbp/helpers/mrac_omega/");
 % OUTERLOOP STUFF
 % =========================================================================
 %% Plot the translational command, reference and state
-plotPosRefUser(log, 'MRAC - Translational Position');
+plotPositionActualReferenceUser(log, 'MRAC GEOMETRIC - Translational Position');
 
 %% Plot the translational velocity command, reference and state
-plotVelRefUser(log, 'MRAC - Translational Velocity');
+plotVelocityActualReferenceUser(log, 'MRAC GEOMETRIC - Translational Velocity');
 
 %% Plot User vs Ref Acceleration
-plotUserRefAcceleration(log, 'MRAC - Translational Acceleration');
+plotAccelerationUserReference(log, 'MRAC GEOMETRIC - Translational Acceleration');
 
 %% Plot translational errors in position and velocity
-plotTranslationalError(log, 'MRAC - Translational Error');
-
-%% Plot translational integral error in position 
-plotTranslationalIntError(log, 'MRAC - Integral Error in Position');
+plotPositionVelocityError(log, 'MRAC GEOMETRIC - Translational Errors');
 
 %% Plot the reference model errors in the outer loop
-plotRefModelErrTran(log, 'MRAC - Translational Reference Model Errors');
+plotTranslationalReferenceModelError(log, 'MRAC GEOMETRIC - Translational Reference Model Errors');
 
 %% Plot the reference model r_cmd in the outer loop
-plotTranslationalRCMD(log, 'MRAC - Translational R Cmd');
-
-%% Translational outerloop virtual controls
-plotOuterLoopVirtualControls(log, 'MRAC - OuterLoop Virtual Controls');
+plotTranslationalReferenceCommand(log, 'MRAC GEOMETRIC - Translational Reference Command');
 
 %% Plot baseline and Adaptive Control inputs
-plotTranslationalBaselineAdaptiveU(log, 'MRAC - OutLoop Control Contributions');
+plotTranslationalVirtualControl(log, 'MRAC GEOMETRIC - Translational Outerloop Control');
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================
 % INNERLOOP STUFF
 % =========================================================================
 %% Plot the Euler Angles
-plotEulerUserAndAngle(log, 'MRAC - Euler Angles');
+plotEulerActualDesiredFiltered(log, der, 'MRAC GEOMETRIC - Rotational Euler States');
 
 %% Plot the angular velocity command, reference and state
-plotAngularVelocitiesUserRefState(log, 'MRAC - Angular Velocities');
+
 
 %% Plot user vs ref angular acceleration
-plotAngularUserRefAcceleration(log, 'MRAC - Angular Acceleration');
+
 
 %% Plot the error in the Euler Angles and the Angular Velocities
-plotErrAngleAngularVelocities(log, 'MRAC - Rotational Error');
+
 
 %% Plot rotational integral error in Euler angles
-plotEulerIntError(log, 'MRAC - Integral Euler Angle Error');
+
 
 %% Plot the reference model errors in the inner loop
-plotRefModelErrRot(log, 'MRAC - Rotational Reference Model Errors');
+
 
 %% Plot reference model r_cmd in the inner loop
-plotRotationalRCMD(log, 'MRAC - Rotational R Cmd');
+
 
 %% Rotational innerloop virtual contols 
-plotInnerLoopControls(log, 'MRAC - Rotational Control Moments');
+
 
 %% Plot baseline and adaptive control inputs
-plotRotationalBaselineAdaptiveU(log, 'MRAC - InnerLoop Control Contributions');
+
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================
 % THRUST REALIZATION STUFF
 % =========================================================================
 %% Plot the total thrust
-plotTotalThrustN(log, 'MRAC - Total Thrust');
+
 
 %% Plot the individual motor thrusts
-plotMotorThrusts(log, 'MRAC - Motor Thrusts');
+
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================
 % ADAPTIVE GAINS STUFF
 % =========================================================================
 %% Plot Deadzone value - Outer Loop
-plotOuterloop_err_dz_op(log, der, 'MRAC - Outerloop DeadZone');
+
 
 %% Plot K Hat X - Outer Loop
-plotOLKx(log, der, 'MRAC - OL $$\hat{K}_{\rm x}$$');
+
 
 %% Plot K Hat R - Outer Loop
-plotOLKr(log, der, 'MRAC - OL $$\hat{K}_{\rm r}$$');
+
 
 %% Plot Theta Hat - Outer Loop
-plotOLTheta(log, der, 'MRAC - OL $$\hat{\Theta}$$');
+
 
 %% Plot Deadzone value - Inner Loop
-plotInnerloop_err_dz_op(log, der, 'MRAC - Innerloop DeadZone');
+
 
 %% Plot K Hat X - Inner Loop
-plotILKx(log, der, 'MRAC - IL $$\hat{K}_{\rm x}$$');
+
 
 %% Plot K Hat R - Inner Loop
-plotILKr(log, der, 'MRAC - IL $$\hat{K}_{\rm r}$$');
+
 
 %% Plot Theta Hat - Inner Loop
-plotILTheta(log, der, 'MRAC - IL $$\hat{\Theta}$$');
+
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================
 % TOTAL COMPUTE TIME
 % =========================================================================
 %% Plot the total compute time 
-plotTotalExecutionTime(log, der, 'MRAC - Compute Load');
+
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================
 % AERODYNAMICS STUFF
 % =========================================================================
 %% Plot the coefficients of Lift, Drag and Moment
-plotAeroCoeff(log,'MRAC - Estimated Aerodynamic Coefficients');
+
 
 %% Plot the squared norm of the body velocities
-plotSqNormVel(log, 'MRAC - Squared Norm of Body Velocities');
+
 
 %% Plot the aerodynamic angles
-plotAeroAngles(log, 'MRAC - Estimated Aerodynamic Angles');
+
 
 %% Plot the estimated Aero Forces and Moments in the wind frame
-plotAeroForcesMoments(log, 'MRAC - Estimated Aerodynamic Forces and Moments');
+
 
 %% Plot the outerloop and inner loop dynamic inversion terms
-plotAeroDynInv(log, 'MRAC - Aero Dynamic Inversion');
+
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================

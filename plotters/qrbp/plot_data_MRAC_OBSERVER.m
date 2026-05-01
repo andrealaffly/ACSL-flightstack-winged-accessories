@@ -11,13 +11,15 @@ close all
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 set(groot, 'defaultAxesFontSize', 40); 
-addpath("plotters/helpers/general/");
+
 addpath("plotters/helpers/mocap/");
 addpath("plotters/helpers/vio/");
 addpath("plotters/helpers/mocap_vio/");
-addpath("plotters/helpers/general/aerodynamics/");
-addpath("plotters/helpers/mrac_omega/");
-addpath("plotters/helpers/mrac_observer/");
+
+addpath("plotters/qrbp/helpers/general/");
+addpath("plotters/qrbp/helpers/general/aerodynamics/");
+addpath("plotters/qrbp/helpers/mrac_omega/");
+addpath("plotters/qrbp/helpers/mrac_observer/");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author: Giri Mugundan Kumar
 % Department of Mechanical Engineering
