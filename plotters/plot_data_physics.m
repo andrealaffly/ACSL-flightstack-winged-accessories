@@ -22,6 +22,9 @@ addpath('plotters/helpers/physics/');   % or wherever you store these fns
 %% Chassis Angles
 plotAnglesAndBp(physics.chassis,        'Chassis: Angles and Body-Frame Angles');
 
+%% Chassis Quaternions
+plotQuaternions(physics.chassis,        'Chassis: Quaternions');
+
 %% Biplane frame pitch difference
 plotPitchDifference(physics.chassis,    'Chassis: Pitch Difference $$\theta - \theta_{\rm bp}$$');
 
