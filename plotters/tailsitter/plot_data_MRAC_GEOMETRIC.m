@@ -54,11 +54,11 @@ plotTranslationalVirtualControl(log, 'MRAC GEOMETRIC - Translational Outerloop C
 % =========================================================================
 % INNERLOOP STUFF
 % =========================================================================
-%% Plot the Euler Angles
-plotEulerActualDesiredFiltered(log, der, 'MRAC GEOMETRIC - Rotational Euler States');
+%% Plot the Quaternions
+plotQuaternionActualDesired(log, der, 'MRAC GEOMETRIC - Rotational Quaternion States');
 
 %% Plot the angular velocity command, reference and state
-
+plotAngularVelocityCommandReferenceState(log, 'MRAC GEOMETRIC - Rotational Angular Velocity');
 
 %% Plot user vs ref angular acceleration
 
@@ -76,7 +76,7 @@ plotEulerActualDesiredFiltered(log, der, 'MRAC GEOMETRIC - Rotational Euler Stat
 
 
 %% Rotational innerloop virtual contols 
-
+plotRotationalVirtualControl(log, 'MRAC GEOMETRIC - Rotational Innerloop Control');
 
 %% Plot baseline and adaptive control inputs
 
@@ -86,10 +86,10 @@ plotEulerActualDesiredFiltered(log, der, 'MRAC GEOMETRIC - Rotational Euler Stat
 % THRUST REALIZATION STUFF
 % =========================================================================
 %% Plot the total thrust
-
+plotTotalThrust(log, 'MRAC GEOMETRIC - Thrust');
 
 %% Plot the individual motor thrusts
-
+plotMotorThrust(log, 'MRAC GEOMETRIC - Motor Thrust');
 
 %% ////////////////////////////////////////////////////////////////////////
 % =========================================================================

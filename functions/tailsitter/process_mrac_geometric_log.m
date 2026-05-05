@@ -165,17 +165,21 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
         log.alpha_y_ref = data.data(:,index);            index = index + 1;
         log.alpha_z_ref = data.data(:,index);            index = index + 1;
 
+        log.omega_ref_e_x = data.data(:,index);          index = index + 1;
+        log.omega_ref_e_y = data.data(:,index);          index = index + 1;
+        log.omega_ref_e_z = data.data(:,index);          index = index + 1;
+
         log.Xi_e_x = data.data(:,index);                 index = index + 1;
         log.Xi_e_y = data.data(:,index);                 index = index + 1;
         log.Xi_e_z = data.data(:,index);                 index = index + 1;
-
+        
         log.omega_e_x = data.data(:,index);              index = index + 1;
         log.omega_e_y = data.data(:,index);              index = index + 1;
         log.omega_e_z = data.data(:,index);              index = index + 1;
 
-        log.omega_ref_e_x = data.data(:,index);          index = index + 1;
-        log.omega_ref_e_y = data.data(:,index);          index = index + 1;
-        log.omega_ref_e_z = data.data(:,index);          index = index + 1;
+        log.omega_ref_e_x_I = data.data(:,index);        index = index + 1;
+        log.omega_ref_e_y_I = data.data(:,index);        index = index + 1;
+        log.omega_ref_e_z_I = data.data(:,index);        index = index + 1;
 
         log.tau_x_baseline = data.data(:,index);         index = index + 1;
         log.tau_y_baseline = data.data(:,index);         index = index + 1;
@@ -185,10 +189,10 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
         log.tau_y_adaptive = data.data(:,index);         index = index + 1;
         log.tau_z_adaptive = data.data(:,index);         index = index + 1;
 
-        log.control_input_1 = data.data(:,index);        index = index + 1;
-        log.control_input_2 = data.data(:,index);        index = index + 1;
-        log.control_input_3 = data.data(:,index);        index = index + 1;
-        log.control_input_4 = data.data(:,index);        index = index + 1;
+        log.u_1 = data.data(:,index);                    index = index + 1;
+        log.u_2 = data.data(:,index);                    index = index + 1;
+        log.u_3 = data.data(:,index);                    index = index + 1;
+        log.u_4 = data.data(:,index);                    index = index + 1;
 
         log.Motor_1_Thrust_N = data.data(:,index);       index = index + 1;
         log.Motor_2_Thrust_N = data.data(:,index);       index = index + 1;
@@ -247,91 +251,47 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
         % Standard deviation of algorithm execution time
         der.standard_deviation_algorithm_execution_time_us = ...
             std(log.Alg_exe_time(log.Alg_exe_time > 0));
-
-        % -----------------------------------------------------------------
-        % Desired / actual attitude from rotation matrices
-        % -----------------------------------------------------------------
-        % Reconstruct rotation matrices R_d and R_ji from logged columns
-        N = size(data.data,1);
-
-        R_d  = zeros(3,3,N);
-        R_ji = zeros(3,3,N);
-
-        for k = 1:N
-            R_d(:,:,k) = [ ...
-                log.R_d.ind0_0(k) log.R_d.ind0_1(k) log.R_d.ind0_2(k); ...
-                log.R_d.ind1_0(k) log.R_d.ind1_1(k) log.R_d.ind1_2(k); ...
-                log.R_d.ind2_0(k) log.R_d.ind2_1(k) log.R_d.ind2_2(k)  ];
-
-            R_ji(:,:,k) = [ ...
-                log.R_ji.ind0_0(k) log.R_ji.ind0_1(k) log.R_ji.ind0_2(k); ...
-                log.R_ji.ind1_0(k) log.R_ji.ind1_1(k) log.R_ji.ind1_2(k); ...
-                log.R_ji.ind2_0(k) log.R_ji.ind2_1(k) log.R_ji.ind2_2(k)  ];
-        end
-
-        % -----------------------------------------------------------------
-        % Convert rotation matrices to quaternions (scalar-first convention)
-        % -----------------------------------------------------------------
-        der.quat_d_0  = zeros(N,1);
-        der.quat_d_1  = zeros(N,1);
-        der.quat_d_2  = zeros(N,1);
-        der.quat_d_3  = zeros(N,1);
-
-        der.quat_ji_0 = zeros(N,1);
-        der.quat_ji_1 = zeros(N,1);
-        der.quat_ji_2 = zeros(N,1);
-        der.quat_ji_3 = zeros(N,1);
-
-        for k = 1:N
-            % Desired attitude
-            qd = rotm2quat(R_d(:,:,k));     % returns [w x y z]
-            der.quat_d_0(k) = qd(1);
-            der.quat_d_1(k) = qd(2);
-            der.quat_d_2(k) = qd(3);
-            der.quat_d_3(k) = qd(4);
-
-            % Actual / ji attitude
-            qji = rotm2quat(R_ji(:,:,k));   % returns [w x y z]
-            der.quat_ji_0(k) = qji(1);
-            der.quat_ji_1(k) = qji(2);
-            der.quat_ji_2(k) = qji(3);
-            der.quat_ji_3(k) = qji(4);
-        end
-
-        % -----------------------------------------------------------------
-        % Convert quaternions to Euler angles (ZYX: yaw-pitch-roll)
-        % -----------------------------------------------------------------
-        quat_d  = quaternion(der.quat_d_0,  der.quat_d_1,  der.quat_d_2,  der.quat_d_3);
-        quat_ji = quaternion(der.quat_ji_0, der.quat_ji_1, der.quat_ji_2, der.quat_ji_3);
-
-        eul_d  = quat2eul(quat_d,  'ZYX');   % [yaw pitch roll]
-        eul_ji = quat2eul(quat_ji, 'ZYX');
-
-        der.yaw_d   = eul_d(:,1);
-        der.pitch_d = eul_d(:,2);
-        der.roll_d  = eul_d(:,3);
-
-        der.yaw_ji   = eul_ji(:,1);
-        der.pitch_ji = eul_ji(:,2);
-        der.roll_ji  = eul_ji(:,3);
-
-        % -----------------------------------------------------------------
-        % Low-pass filter Euler angles to remove chattering
-        % -----------------------------------------------------------------
-        Ts = mean(diff(log.Controller_Time_s));   % sample time
-        Fs = 1/Ts;
-        % Choose a reasonable cutoff, e.g. 5 Hz
-        Fc = 5;
-        [b,a] = butter(2, Fc/(Fs/2));            % 2nd order Butterworth
-
-        der.fil.roll_d  = filtfilt(b,a, der.roll_d);
-        der.fil.pitch_d = filtfilt(b,a, der.pitch_d);
-        der.fil.yaw_d   = filtfilt(b,a, der.yaw_d);
-
-        der.fil.roll_ji  = filtfilt(b,a, der.roll_ji);
-        der.fil.pitch_ji = filtfilt(b,a, der.pitch_ji);
-        der.fil.yaw_ji   = filtfilt(b,a, der.yaw_ji);
         
+        % Obtain the quaternion from the rotation matrices
+        % Convert log.R_d.* (ind0_0, ind0_1, ...) into 3x3xN rotation matrices
+        N = numel(log.R_d.ind0_0);
+        
+        R_d_rotm = zeros(3,3,N);
+        R_d_rotm(1,1,:) = log.R_d.ind0_0;
+        R_d_rotm(1,2,:) = log.R_d.ind0_1;
+        R_d_rotm(1,3,:) = log.R_d.ind0_2;
+        
+        R_d_rotm(2,1,:) = log.R_d.ind1_0;
+        R_d_rotm(2,2,:) = log.R_d.ind1_1;
+        R_d_rotm(2,3,:) = log.R_d.ind1_2;
+        
+        R_d_rotm(3,1,:) = log.R_d.ind2_0;
+        R_d_rotm(3,2,:) = log.R_d.ind2_1;
+        R_d_rotm(3,3,:) = log.R_d.ind2_2;
+        
+        % Convert rotation matrices to quaternions, each row: [w x y z]
+        der.R_d_quat = rotm2quat(R_d_rotm);
+
+        % Obtain the quaternion from the rotation matrices
+        % Convert log.R_ji.* (ind0_0, ind0_1, ...) into 3x3xN rotation matrices
+        N = numel(log.R_ji.ind0_0);
+        
+        R_ji_rotm = zeros(3,3,N);
+        R_ji_rotm(1,1,:) = log.R_ji.ind0_0;
+        R_ji_rotm(1,2,:) = log.R_ji.ind0_1;
+        R_ji_rotm(1,3,:) = log.R_ji.ind0_2;
+        
+        R_ji_rotm(2,1,:) = log.R_ji.ind1_0;
+        R_ji_rotm(2,2,:) = log.R_ji.ind1_1;
+        R_ji_rotm(2,3,:) = log.R_ji.ind1_2;
+        
+        R_ji_rotm(3,1,:) = log.R_ji.ind2_0;
+        R_ji_rotm(3,2,:) = log.R_ji.ind2_1;
+        R_ji_rotm(3,3,:) = log.R_ji.ind2_2;
+        
+        % Convert rotation matrices to quaternions, each row: [w x y z]
+        der.R_ji_quat = rotm2quat(R_ji_rotm);
+
         % If you are flying mocap process the data
         if (~der.not_flying_mocap)
             % Get the mocap data
