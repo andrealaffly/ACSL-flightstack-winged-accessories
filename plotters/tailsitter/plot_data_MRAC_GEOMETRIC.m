@@ -41,6 +41,9 @@ plotAccelerationUserReference(log, 'MRAC GEOMETRIC - Translational Acceleration'
 %% Plot translational errors in position and velocity
 plotPositionVelocityError(log, 'MRAC GEOMETRIC - Translational Errors');
 
+%% Plot the L2-norm of the outerloop errors
+plotL2NormsTranslational(log, der, 'MRAC GEOMETRIC - Translational L2 Norm');
+
 %% Plot the reference model errors in the outer loop
 plotTranslationalReferenceModelError(log, 'MRAC GEOMETRIC - Translational Reference Model Errors');
 

@@ -292,6 +292,37 @@ function [] = process_mrac_geometric_log(flightRunNames,baseDir,controller,prope
         % Convert rotation matrices to quaternions, each row: [w x y z]
         der.R_ji_quat = rotm2quat(R_ji_rotm);
 
+        % ----- START OF L2 NORM CALCULATION FOR THE GEOMETRIC CONTROLLER
+        t = log.Controller_Time_s;   % N×1
+        
+        % ---- position error components (N×1 each)
+        ex = log.e_x;
+        ey = log.e_y;
+        ez = log.e_z;
+        
+        % ---- velocity error components (N×1 each)
+        evx = log.e_vx;
+        evy = log.e_vy;
+        evz = log.e_vz;
+        
+        % ---- squared magnitude of position and velocity errors (no pointwise norms)
+        e_pos_sq = ex.^2 + ey.^2 + ez.^2;
+        e_vel_sq = evx.^2 + evy.^2 + evz.^2;
+        
+        % ---- cumulative integrals: ∫_0^{t_k} ||e(τ)||^2 dτ
+        I_pos = cumtrapz(t, e_pos_sq);
+        I_vel = cumtrapz(t, e_vel_sq);
+        
+        % ---- time-series L2 norms: ||e||_{L2}(t_k) = sqrt(∫_0^{t_k} ||e(τ)||^2 dτ)
+        der.L2_norm_pos = sqrt(I_pos);
+        der.L2_norm_vel = sqrt(I_vel);
+        
+        % ---- combined 6D error L2 time series
+        I_comb = I_pos + I_vel;   % ∫(||e_pos||^2 + ||e_vel||^2)
+        der.L2_norm_combined_tran = sqrt(I_comb);
+
+        % ----- END OF L2 NORM CALCULATION FOR THE GEOMETRIC CONTROLLER
+
         % If you are flying mocap process the data
         if (~der.not_flying_mocap)
             % Get the mocap data
