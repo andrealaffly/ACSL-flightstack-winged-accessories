@@ -1,4 +1,4 @@
-function [] = processWorkspace(picked_platform, picked_controller, date, sim)
+function [der, log] = processWorkspace(picked_platform, picked_controller, date, sim, log_file_name, use_most_recent_log)
 
 if (strcmp(picked_platform, 'qrbp'))
     % Add the path to qrbp processors
@@ -66,6 +66,20 @@ elseif (strcmp(picked_platform, 'tailsitter'))
     properties.DYN_PRESS_COEFF_W = (0.5 * properties.RHO_HAT * properties.PLANFORM_AREA_W);     
     properties.DYN_PRESS_COEFF_S = (0.5 * properties.RHO_HAT * properties.PLANFORM_AREA_S);
 
+elseif (strcmp(picked_platform, 'quadm'))
+    % Add the path to quadm processors
+    addpath("functions/quadm/");
+
+    % Properties of quadm
+    properties.G = 9.81;
+
+    properties.MASS = 1.05748;
+
+    properties.I_q = [0.00356507620334993,  -4.08770048558901e-06, -8.65500570931156e-07;
+                     -4.08770048558901e-06,   0.00408659486216925, -1.15603516031003e-05;
+                     -8.65500570931156e-07, -1.15603516031003e-05,  0.00606507369923718];
+
+    properties.RHO_HAT = 1.28;
 
 end
 
@@ -185,5 +199,72 @@ end
 % all the data after saving them so that we can load what we want and plot
 % in plot_data.m
 % clear all
+
+% -------------------------------------------------------------------------
+% Load a processed flight-run log into the workspace on request.
+%
+% If use_most_recent_log is true, the most recently modified
+% 'flight_run_*' subfolder under baseDir is used, regardless of the name
+% passed in log_file_name.
+%
+% If use_most_recent_log is false, the subfolder named exactly
+% log_file_name is used instead.
+%
+% Either way, the single .mat file inside that subfolder (e.g.
+% 'MRAC_GEOMETRIC_log_flight_run_19_05_13.mat') is loaded and returned
+% in 'der'. This runs after processing above, so a freshly-processed run
+% can be loaded immediately without a second call.
+% -------------------------------------------------------------------------
+der = [];
+log = [];
+if nargin >= 6 && ~isempty(use_most_recent_log)
+    % Gather ALL flight_run_ subfolders (processed or not) so we can pick
+    % from runs that already have a saved .mat, not just newly-processed ones
+    allItems = dir(baseDir);
+    allRunNames = {};
+    allRunDatenums = [];
+    for i = 1:length(allItems)
+        if allItems(i).isdir && startsWith(allItems(i).name, 'flight_run_')
+            allRunNames{end+1} = allItems(i).name; %#ok<AGROW>
+            allRunDatenums(end+1) = allItems(i).datenum; %#ok<AGROW>
+        end
+    end
+
+    if isempty(allRunNames)
+        error('No flight_run_ subfolders found in %s.', baseDir);
+    end
+
+    if use_most_recent_log
+        % Pick the subfolder with the latest modification time
+        [~, idx] = max(allRunDatenums);
+        runName = allRunNames{idx};
+    else
+        if nargin < 5 || isempty(log_file_name)
+            error('log_file_name must be provided when use_most_recent_log is false.');
+        end
+        if ~ismember(log_file_name, allRunNames)
+            error('Flight run "%s" was not found in %s.', log_file_name, baseDir);
+        end
+        runName = log_file_name;
+    end
+
+    runFolder = fullfile(baseDir, runName);
+    matFiles = dir(fullfile(runFolder, '*.mat'));
+
+    if isempty(matFiles)
+        error(['No processed .mat file found in %s.\n', ...
+            'Run processing first (call without use_most_recent_log, ', ...
+            'or ensure this run has already been processed).'], runFolder);
+    % elseif numel(matFiles) > 1
+    %     warning('Multiple .mat files found in %s; loading the first one: %s', ...
+    %         runFolder, matFiles(1).name);
+    end
+
+    matFilePath = fullfile(runFolder, matFiles(1).name);
+    fprintf('Loading processed log: %s\n', matFilePath);
+    temp = load(matFilePath);
+    log = temp.log;
+    der = temp.der;
+end
 
 end
