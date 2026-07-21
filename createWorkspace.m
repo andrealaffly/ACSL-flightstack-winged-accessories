@@ -24,11 +24,16 @@ addpath("functions/helpers/");
 acsl_sim_mode = true;
 
 % Specify the date in YYYY_MM_DD
-date = "2026_05_15";
+date = "2026_07_16";
+
+% Specify the log file to load
+use_most_recent_log = true;
+log_file_name = "flight_run_19_05_13";
 
 % Uncomment the platform - Should match the flightstack
 % picked_platform = "qrbp";
-picked_platform = "tailsitter";
+% picked_platform = "tailsitter";
+picked_platform = "quadm";
 
 % Uncomment the controller - Should match the flightstack
 % Uncomment the controller for the qrbp
@@ -51,5 +56,5 @@ picked_controller = 'MRAC_GEOMETRIC';
 
 % Process all the data and create workspaces for the specified date and
 % controller.
-processWorkspace(picked_platform, picked_controller, date, acsl_sim_mode)
+[der, log] = processWorkspace(picked_platform, picked_controller, date, acsl_sim_mode, log_file_name, use_most_recent_log);
 

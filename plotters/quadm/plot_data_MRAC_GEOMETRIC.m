@@ -16,7 +16,7 @@ addpath("plotters/helpers/mocap/");
 addpath("plotters/helpers/vio/");
 addpath("plotters/helpers/mocap_vio/");
 
-addpath("plotters/tailsitter/helpers/mrac_geometric/");
+addpath("plotters/quadm/helpers/mrac_geometric/");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author: Giri Mugundan Kumar
 % Department of Mechanical Engineering
