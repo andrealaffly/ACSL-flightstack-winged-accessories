@@ -24,7 +24,7 @@ addpath("functions/helpers/");
 acsl_sim_mode = true;
 
 % Specify the date in YYYY_MM_DD
-date = "2026_07_13";
+date = "2026_07_16";
 
 % Specify the log file to load
 use_most_recent_log = true;

@@ -64,7 +64,7 @@ plotQuaternionActualDesired(log, der, 'MRAC GEOMETRIC - Rotational Quaternion St
 plotAngularVelocityCommandReferenceState(log, 'MRAC GEOMETRIC - Rotational Angular Velocity');
 
 %% Plot user vs ref angular acceleration
-
+plotAngularAccelerationUserReference(log,  'MRAC GEOMETRIC - Rotational Angular Acceleration');
 
 %% Plot the error in the Euler Angles and the Angular Velocities
 
