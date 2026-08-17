@@ -24,7 +24,7 @@ addpath("functions/helpers/");
 acsl_sim_mode = true;
 
 % Specify the date in YYYY_MM_DD
-date = "2026_07_16";
+date = "2026_08_16";
 
 % Specify the log file to load
 use_most_recent_log = true;
@@ -32,8 +32,8 @@ log_file_name = "flight_run_19_05_13";
 
 % Uncomment the platform - Should match the flightstack
 % picked_platform = "qrbp";
-% picked_platform = "tailsitter";
-picked_platform = "quadm";
+picked_platform = "tailsitter";
+% picked_platform = "quadm";
 
 % Uncomment the controller - Should match the flightstack
 % Uncomment the controller for the qrbp

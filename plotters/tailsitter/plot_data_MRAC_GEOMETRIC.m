@@ -32,6 +32,15 @@ addpath("plotters/tailsitter/helpers/mrac_geometric/");
 %% Plot the translational command, reference and state
 plotPositionActualReferenceUser(log, 'MRAC GEOMETRIC - Translational Position');
 
+%% Plot the translational command, reference and state in 3D
+plotPositionActualReferenceUser3D(log, 'MRAC GEOMETRIC - 3D trajectory');
+
+%% Plot the translational command, reference and state in XY Plane  
+plotXYPositionActualReferenceUser(log, 'MRAC GEOMETRIC - XY Plane');
+
+%% Plot the translational command, reference and state in XZ Plane  
+plotXZPositionActualReferenceUser(log, 'MRAC GEOMETRIC - XZ Plane');
+    
 %% Plot the translational velocity command, reference and state
 plotVelocityActualReferenceUser(log, 'MRAC GEOMETRIC - Translational Velocity');
 
