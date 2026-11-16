@@ -4,7 +4,7 @@
 # Define variables
 REMOTE_USER="odroid"
 REMOTE_HOST="192.168.12.1"
-REMOTE_DIR="~/acsl-flight-stack/src/acsl_flight/flight_log/"
+REMOTE_DIR="~/ACSL-flightstack-winged/src/acsl_flight/flight_log/"
 LOCAL_DIR="$(pwd)/"  # Automatically set the script's execution directory
 
 # Print that you are copying files

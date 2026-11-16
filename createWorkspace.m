@@ -21,10 +21,10 @@ addpath("functions/helpers/");
 %==================== INPUT PARAMETERS ====================%
 % Specify if the simulator is used or flightstack
 % Set true for simulator mode
-acsl_sim_mode = true;
+acsl_sim_mode = false;
 
 % Specify the date in YYYY_MM_DD
-date = "2026_08_16";
+date = "2017_08_04";
 
 % Specify the log file to load
 use_most_recent_log = true;
@@ -32,8 +32,8 @@ log_file_name = "flight_run_19_05_13";
 
 % Uncomment the platform - Should match the flightstack
 % picked_platform = "qrbp";
-picked_platform = "tailsitter";
-% picked_platform = "quadm";
+% picked_platform = "tailsitter";
+picked_platform = "quadm";
 
 % Uncomment the controller - Should match the flightstack
 % Uncomment the controller for the qrbp
@@ -49,7 +49,12 @@ picked_platform = "tailsitter";
 % picked_controller = 'MRAC_GEOMETRIC';
 
 % Uncomment the controller for the tailsitter
-picked_controller = 'MRAC_GEOMETRIC';
+% picked_controller = 'MRAC_GEOMETRIC';
+
+% Uncomment the controller for the quadm
+% picked_controller = 'MRAC_GEOMETRIC';
+picked_controller = 'NMPC';
+% picked_controller = 'NMPC_HYBRID';
 
 
 %==========================================================%

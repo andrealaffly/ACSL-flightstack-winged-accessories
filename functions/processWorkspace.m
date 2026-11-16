@@ -105,6 +105,10 @@ elseif (strcmp(picked_controller, 'PID_GEOMETRIC'))
     controller = 'PID_GEOMETRIC';
 elseif (strcmp(picked_controller, 'MRAC_GEOMETRIC'))
     controller = 'MRAC_GEOMETRIC';
+elseif (strcmp(picked_controller, 'NMPC'))
+    controller = 'NMPC';
+elseif (strcmp(picked_controller, 'NMPC_HYBRID'))
+    controller = 'NMPC_HYBRID';
 end
 
 % Define the directory containing the flight logs
@@ -194,6 +198,10 @@ elseif (strcmp(picked_controller, 'PID_GEOMETRIC'))
     process_pid_geometric_log(flightRunNames,baseDir,controller,properties);
 elseif (strcmp(picked_controller, 'MRAC_GEOMETRIC'))
     process_mrac_geometric_log(flightRunNames,baseDir,controller,properties);
+elseif (strcmp(picked_controller, 'NMPC'))
+    process_nmpc_log(flightRunNames,baseDir,controller,properties);
+elseif (strcmp(picked_controller, 'NMPC_HYBRID'))
+    process_nmpc_hybrid_log(flightRunNames,baseDir,controller,properties);
 end
 
 % all the data after saving them so that we can load what we want and plot
